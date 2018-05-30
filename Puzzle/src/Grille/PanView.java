@@ -15,6 +15,51 @@ import javafx.scene.shape.Rectangle;
  */
 public class PanView {
 
+
+
+    private GridPane gPane2 = new GridPane();
+    private Rectangle[][] rectPan;
+    private boolean[][] coloredRectPan;
+    private javafx.scene.paint.Color[][] colorsRectPan;
+    private Agent.Color colorsRectPans[][];
+   
+
+    public PanView(int nBlignes, int nBcols) {
+        rectPan = new Rectangle[nBlignes][nBcols];
+        coloredRectPan = new boolean[nBlignes][nBcols];
+        colorsRectPan = new javafx.scene.paint.Color[nBlignes][nBcols];
+        colorsRectPans = new Agent.Color[nBlignes][nBcols];
+        drawView(nBlignes,nBcols);
+    }
+
+    public void drawView(int nBlignes, int nBcols) {
+        for (int i = 0; i < nBlignes; i++) {
+            for (int j = 0; j < nBcols; j++) {
+                getRectPan()[i][j] = new Rectangle(i, j, 30, 25);
+                getRectPan()[i][j].setFill(javafx.scene.paint.Color.BLACK);
+                getRectPan()[i][j].setArcWidth(10.0);
+                getRectPan()[i][j].setArcHeight(10.0);
+                getColoredRectPan()[i][j] = false;
+                getColorsRectPan()[i][j] = javafx.scene.paint.Color.BLACK;
+                getRectPan()[i][j].setStroke(javafx.scene.paint.Color.WHITE);
+                getgPane2().add(getRectPan()[i][j], j, i);
+            }
+        }
+    }
+
+    /**
+     * @return the gPane2
+     */
+    public GridPane getgPane2() {
+        return gPane2;
+    }
+
+    /**
+     * @param gPane2 the gPane2 to set
+     */
+    public void setgPane2(GridPane gPane2) {
+        this.gPane2 = gPane2;
+    }
     /**
      * @return the rectPan
      */
@@ -69,50 +114,6 @@ public class PanView {
      */
     public void setColorsRectPans(Agent.Color[][] colorsRectPans) {
         this.colorsRectPans = colorsRectPans;
-    }
-
-    private GridPane gPane2 = new GridPane();
-    private Rectangle[][] rectPan;
-    private boolean[][] coloredRectPan;
-    private javafx.scene.paint.Color[][] colorsRectPan;
-    private Agent.Color[][] colorsRectPans;
-   
-
-    public PanView(int nBlignes, int nBcols) {
-        rectPan = new Rectangle[nBlignes][nBcols];
-        coloredRectPan = new boolean[nBlignes][nBcols];
-        colorsRectPan = new javafx.scene.paint.Color[nBlignes][nBcols];
-        colorsRectPans = new Agent.Color[nBlignes][nBcols];
-        drawView(nBlignes,nBcols);
-    }
-
-    public void drawView(int nBlignes, int nBcols) {
-        for (int i = 0; i < nBlignes; i++) {
-            for (int j = 0; j < nBcols; j++) {
-                getRectPan()[i][j] = new Rectangle(i, j, 30, 25);
-                getRectPan()[i][j].setFill(javafx.scene.paint.Color.BLACK);
-                getRectPan()[i][j].setArcWidth(10.0);
-                getRectPan()[i][j].setArcHeight(10.0);
-                getColoredRectPan()[i][j] = false;
-                getColorsRectPan()[i][j] = javafx.scene.paint.Color.BLACK;
-                getRectPan()[i][j].setStroke(javafx.scene.paint.Color.WHITE);
-                getgPane2().add(getRectPan()[i][j], j, i);
-            }
-        }
-    }
-
-    /**
-     * @return the gPane2
-     */
-    public GridPane getgPane2() {
-        return gPane2;
-    }
-
-    /**
-     * @param gPane2 the gPane2 to set
-     */
-    public void setgPane2(GridPane gPane2) {
-        this.gPane2 = gPane2;
     }
 
     

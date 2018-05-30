@@ -290,27 +290,7 @@ public class PlateauJeu extends Application {
         songPanel.getChildren().add(mute);
         songPanel.getChildren().add(pause);
         GridPane.setHalignment(nextTetrimino, HPos.CENTER);
-        Rectangle[][] rectSuivants = new Rectangle[6][4];
-        boolean colouredRectSuivant[][] = new boolean[6][4];
-        int column, row = 0;
-        for (int i = 1; i <= 6; i++) {
-            column = 0;
-            for (int j = 0; j < 4; j++) {
-                rectSuivants[row][column] = new Rectangle(i, j, 30, 30);
-                rectSuivants[row][column].setFill(Color.BLACK);
-                rectSuivants[row][column].setArcWidth(10.0);
-                rectSuivants[row][column].setArcHeight(10.0);
-                rectSuivants[row][column].setStroke(Color.WHITE);
-                colouredRectSuivant[row][column] = false;
-                colorsRectSuivants[row][column] = Color.BLACK;
-                if (i == 2 || i == 4 || i == 6) {
-                    GridPane.setMargin(rectSuivants[row][column], new Insets(0, 0, 10, 0));
-                }
-                gPane3.add(rectSuivants[row][column], j, i);
-                column++;
-            }
-            row++;
-        }
+
         GridPane.setMargin(btnPanel, new Insets(10, 0, 10, 0));
         GridPane.setMargin(nextTetrimino, new Insets(0, 0, 10, 0));
         btnPanel.setAlignment(Pos.CENTER);

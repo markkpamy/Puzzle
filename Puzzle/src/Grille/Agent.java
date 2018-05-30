@@ -38,7 +38,7 @@ public class Agent extends Thread {
     public Agent(int nbLinesGrid, int nbColsGrid) {
         this.nbColsGrid = nbColsGrid;
         this.nbLinesGrid = nbLinesGrid;
-        this.color = Color.BLACK;
+        this.color = Color.RED;
         idAgent = 0;
         nameAgent ="Agent";
     }
