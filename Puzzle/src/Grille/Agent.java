@@ -59,7 +59,7 @@ public class Agent implements Cloneable {
         }
     }
 
-    public void moveUp() {
+    public void moveUp(Plateau plateau) {
         // if (verifMoveRight(plateau) == true) {
         for (int i = 0; i < this.nBlignesGrille; i++) {
 
