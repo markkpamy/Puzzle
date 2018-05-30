@@ -1,5 +1,5 @@
 public class Message {
-    
+
     private Agent emitter;
     private Agent recipient;
     private String type;
