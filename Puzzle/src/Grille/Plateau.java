@@ -6,7 +6,7 @@
 package Grille;
 
 import java.util.Observable;
-import Grille.Agent.Couleur;
+import Grille.Agent.Color;
 
 /**
  *
@@ -18,7 +18,7 @@ public class Plateau extends Observable {
     private final int nbCols;
     private boolean[][] grille;
     private final Case[][] coordCasesGrille;
-    private Couleur[][] rectPlateau ;
+    private Agent.Color[][] rectPlateau ;
     private Agent currentAgent;
     private final int nBlignesGrille;
     private final int nBcolsGrille;
@@ -31,20 +31,20 @@ public class Plateau extends Observable {
         for (int i = 0; i < nbLignes; i++) {
             for (int j = 0; j < nbCols; j++) {
                 this.grille[i][j] = false;
-                this.coordCasesGrille[i][j] = new Case(new Coordonnees(i, j));
+                this.coordCasesGrille[i][j] = new Case(new Position(i, j));
             }
         }
         this.currentAgent = new Agent(nBlignesGrille, nBcolsGrille);
         this.nBcolsGrille = nBcolsGrille;
         this.nBlignesGrille = nBlignesGrille;
-        rectPlateau = new Couleur[nbLignes][nbCols];
+        rectPlateau = new Agent.Color[nbLignes][nbCols];
     }
 
     public boolean displayPiece(Agent t) {
         boolean result = true;
         int compt = 0;
-        for (int i = 0; i < t.getnBlignesGrille(); i++) {
-            for (int j = 0; j < t.getnBcolsGrille(); j++) {
+        for (int i = 0; i < t.getNbLinesGrid(); i++) {
+            for (int j = 0; j < t.getNbColsGrid(); j++) {
                /* if (t.getTABTETRIMINO()[t.getPositionCourante()][compt] == true) {
                     if (((t.getCoordCaseTetriminos()[i][j].getCoord().getY()) >= 0) && ((t.getCoordCaseTetriminos()[i][j].getCoord().getY()) < this.nbCols) && ((t.getCoordCaseTetriminos()[i][j].getCoord().getX()) < this.nbLignes) && ((t.getCoordCaseTetriminos()[i][j].getCoord().getX()) >= 0)) {
                         if (this.grille[t.getCoordCaseTetriminos()[i][j].getCoord().getX()][t.getCoordCaseTetriminos()[i][j].getCoord().getY()] == false) {
@@ -96,8 +96,8 @@ public class Plateau extends Observable {
      */
     public void effaceTracePiece(Agent t) {
         int compt = 0;
-        for (int i = 0; i < t.getnBlignesGrille(); i++) {
-            for (int j = 0; j < t.getnBcolsGrille(); j++) {
+        for (int i = 0; i < t.getNbLinesGrid(); i++) {
+            for (int j = 0; j < t.getNbColsGrid(); j++) {
                 /*if (t.getTABTETRIMINO()[t.getPositionCourante()][compt] == true) {
                     if (((t.getCoordCaseTetriminos()[i][j].getCoord().getY()) >= 0) && ((t.getCoordCaseTetriminos()[i][j].getCoord().getY()) < this.nbCols) && ((t.getCoordCaseTetriminos()[i][j].getCoord().getX()) < this.nbLignes) && ((t.getCoordCaseTetriminos()[i][j].getCoord().getX()) >= 0)) {
                         setGrilleCaseFalse(t.getCoordCaseTetriminos()[i][j].getCoord().getX(), t.getCoordCaseTetriminos()[i][j].getCoord().getY());
@@ -174,14 +174,14 @@ public class Plateau extends Observable {
     /**
      * @return the rectPlateau
      */
-    public Couleur[][] getRectPlateau() {
+    public Color[][] getRectPlateau() {
         return rectPlateau;
     }
 
     /**
      * @param rectPlateau the rectPlateau to set
      */
-    public void setRectPlateau(Couleur[][] rectPlateau) {
+    public void setRectPlateau(Color[][] rectPlateau) {
         this.rectPlateau = rectPlateau;
     }
 }

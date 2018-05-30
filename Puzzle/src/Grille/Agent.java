@@ -14,31 +14,31 @@ import static java.lang.Math.abs;
 public class Agent implements Cloneable {
 
     private final int idAgent;
-    private final String nomAgent;
+    private final String nameAgent;
 
-    public static enum Couleur {
+    public static enum Color {
         CYAN, GREEN, RED, YELLOW, BLUE, PURPLE, BLACK, ORANGE
     };
-    private Couleur color;
-    private Case coordonnes;
-    private final int nBlignesGrille;
-    private final int nBcolsGrille;
+    private Color color;
+    private Case coordinates;
+    private final int nbLinesGrid;
+    private final int nbColsGrid;
 
-    public Agent(int idAgent, String nomAgent, Case coordonnes, int nBlignesGrille, int nBcolsGrille, Couleur color) {
-        this.nBlignesGrille = nBlignesGrille;
-        this.nBcolsGrille = nBcolsGrille;
+    public Agent(int idAgent, String nameAgent, Case coordinates, int nbLinesGrid, int nbColsGrid, Color color) {
+        this.nbLinesGrid = nbLinesGrid;
+        this.nbColsGrid = nbColsGrid;
         this.idAgent = idAgent;
-        this.nomAgent = nomAgent;
-        this.coordonnes = coordonnes;
+        this.nameAgent = nameAgent;
+        this.coordinates = coordinates;
         this.color=color;
     }
 
-    public Agent(int nBlignesGrille, int nBcolsGrille) {
-        this.nBcolsGrille = nBcolsGrille;
-        this.nBlignesGrille = nBlignesGrille;
-        this.color = Couleur.BLACK;
+    public Agent(int nbLinesGrid, int nbColsGrid) {
+        this.nbColsGrid = nbColsGrid;
+        this.nbLinesGrid = nbLinesGrid;
+        this.color = Color.BLACK;
         idAgent = 0;
-        nomAgent ="Agent";
+        nameAgent ="Agent";
     }
 
     public void moveLeft(Plateau plateau) {
@@ -61,7 +61,7 @@ public class Agent implements Cloneable {
 
     public void moveUp() {
         // if (verifMoveRight(plateau) == true) {
-        for (int i = 0; i < this.nBlignesGrille; i++) {
+        for (int i = 0; i < this.nbLinesGrid; i++) {
 
         }
     }
@@ -87,20 +87,20 @@ public class Agent implements Cloneable {
     }
 
     /**
-     * @return the nBlignesGrille
+     * @return the nbLinesGrid
      */
-    public int getnBlignesGrille() {
-        return nBlignesGrille;
+    public int getNbLinesGrid() {
+        return nbLinesGrid;
     }
 
     /**
-     * @param nBlignesGrille the nBlignesGrille to set
+     * @param nbLinesGrid the nbLinesGrid to set
      */
     /**
-     * @return the nBcolsGrille
+     * @return the nbColsGrid
      */
-    public int getnBcolsGrille() {
-        return nBcolsGrille;
+    public int getNbColsGrid() {
+        return nbColsGrid;
     }
 
     /**
@@ -122,14 +122,14 @@ public class Agent implements Cloneable {
     /**
      * @return the color
      */
-    public Couleur getColor() {
+    public Color getColor() {
         return color;
     }
 
     /**
      * @param color the color to set
      */
-    public void setColor(Couleur color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
@@ -137,16 +137,16 @@ public class Agent implements Cloneable {
         return idAgent;
     }
 
-    public String getNomAgent() {
-        return nomAgent;
+    public String getNameAgent() {
+        return nameAgent;
     }
 
-    public Case getCoordonnes() {
-        return coordonnes;
+    public Case getCoordinates() {
+        return coordinates;
     }
 
-    public void setCoordonnes(Case coordonnes) {
-        this.coordonnes = coordonnes;
+    public void setCoordinates(Case coordinates) {
+        this.coordinates = coordinates;
     }
 
 }
