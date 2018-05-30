@@ -7,7 +7,7 @@ public class Communication {
     private HashMap<Agent, LinkedList<Message>> messages;
 
     public static Communication getInstance(){
-        return INSTANCE == null ? new Communication(): INSTANCE;
+        return INSTANCE == null ? INSTANCE = new Communication(): INSTANCE;
     }
 
     private Communication() {
