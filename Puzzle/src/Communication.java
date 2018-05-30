@@ -2,15 +2,15 @@ import java.util.*;
 
 public class Communication {
 
-    private static Communication INSTANCE = new Communication();
+    private static Communication INSTANCE = null;
 
     private HashMap<Agent, LinkedList<Message>> messages;
 
     public static Communication getInstance(){
-        return INSTANCE;
+        return INSTANCE == null ? new Communication(): INSTANCE;
     }
 
-    public Communication() {
+    private Communication() {
         messages = new HashMap<>();
     }
 
