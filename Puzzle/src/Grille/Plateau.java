@@ -6,10 +6,10 @@
 package Grille;
 
 import java.util.Observable;
+
 import Grille.Agent.Color;
 
 /**
- *
  * @author markk
  */
 public class Plateau extends Observable {
@@ -17,8 +17,8 @@ public class Plateau extends Observable {
     private final int nbLignes;
     private final int nbCols;
     private boolean[][] grille;
-    private final Case[][] coordCasesGrille;
-    private Agent.Color[][] rectPlateau ;
+    private final Case[][] panCases;
+    private Agent.Color[][] rectPlateau;
     private Agent currentAgent;
     private final int nBlignesGrille;
     private final int nBcolsGrille;
@@ -26,12 +26,12 @@ public class Plateau extends Observable {
     public Plateau(int nbLignes, int nbCols, int nBlignesGrille, int nBcolsGrille) {
         this.nbCols = nbCols;
         this.nbLignes = nbLignes;
-        this.coordCasesGrille = new Case[nbLignes][nbCols];
+        this.panCases = new Case[nbLignes][nbCols];
         this.grille = new boolean[nbLignes][nbCols];
         for (int i = 0; i < nbLignes; i++) {
             for (int j = 0; j < nbCols; j++) {
                 this.grille[i][j] = false;
-                this.coordCasesGrille[i][j] = new Case(new Position(i, j));
+                this.panCases[i][j] = new Case(new Position(i, j));
             }
         }
         this.currentAgent = new Agent(nBlignesGrille, nBcolsGrille);
@@ -42,27 +42,15 @@ public class Plateau extends Observable {
 
     public boolean displayPiece(Agent t) {
         boolean result = true;
-        int compt = 0;
-        for (int i = 0; i < t.getNbLinesGrid(); i++) {
-            for (int j = 0; j < t.getNbColsGrid(); j++) {
-               /* if (t.getTABTETRIMINO()[t.getPositionCourante()][compt] == true) {
-                    if (((t.getCoordCaseTetriminos()[i][j].getCoord().getY()) >= 0) && ((t.getCoordCaseTetriminos()[i][j].getCoord().getY()) < this.nbCols) && ((t.getCoordCaseTetriminos()[i][j].getCoord().getX()) < this.nbLignes) && ((t.getCoordCaseTetriminos()[i][j].getCoord().getX()) >= 0)) {
-                        if (this.grille[t.getCoordCaseTetriminos()[i][j].getCoord().getX()][t.getCoordCaseTetriminos()[i][j].getCoord().getY()] == false) {
-                            setGrilleCaseTrue(t.getCoordCaseTetriminos()[i][j].getCoord().getX(), t.getCoordCaseTetriminos()[i][j].getCoord().getY());
-                        } else {
-                            result = false;
-                        }
-                    } else {
-                        result = false;
-                    }
-                }*/
-                compt++;
-            }
+        if (!this.grille[t.getaCase().getCoord().getX()][t.getaCase().getCoord().getY()]) {
+            setGrilleCaseTrue(t.getaCase().getCoord().getX(), t.getaCase().getCoord().getY());
+        } else {
+            result = false;
         }
         return result;
     }
 
-    ;
+
     public void clearPlateau() {
         for (int i = 0; i < this.nbLignes; i++) {
             for (int j = 0; j < this.nbCols; j++) {
@@ -72,9 +60,9 @@ public class Plateau extends Observable {
     }
 
     ;
-    
+
     public void setGrilleCaseTrue(int i, int j) {
-        if (this.grille[i][j] != true) {
+        if (!this.grille[i][j]) {
             this.grille[i][j] = true;
             setChanged();
             notifyObservers(getCoordCasesGrille()[i][j]);
@@ -83,7 +71,7 @@ public class Plateau extends Observable {
 
     //public void displayPiece(Tetrimino t){
     public void setGrilleCaseFalse(int i, int j) {
-        if (this.grille[i][j] != false) {
+        if (this.grille[i][j]) {
             this.grille[i][j] = false;
             setChanged();
             notifyObservers(getCoordCasesGrille()[i][j]);
@@ -91,23 +79,15 @@ public class Plateau extends Observable {
     }
 
     //}
+
     /**
      * @param t
      */
     public void effaceTracePiece(Agent t) {
-        int compt = 0;
-        for (int i = 0; i < t.getNbLinesGrid(); i++) {
-            for (int j = 0; j < t.getNbColsGrid(); j++) {
-                /*if (t.getTABTETRIMINO()[t.getPositionCourante()][compt] == true) {
-                    if (((t.getCoordCaseTetriminos()[i][j].getCoord().getY()) >= 0) && ((t.getCoordCaseTetriminos()[i][j].getCoord().getY()) < this.nbCols) && ((t.getCoordCaseTetriminos()[i][j].getCoord().getX()) < this.nbLignes) && ((t.getCoordCaseTetriminos()[i][j].getCoord().getX()) >= 0)) {
-                        setGrilleCaseFalse(t.getCoordCaseTetriminos()[i][j].getCoord().getX(), t.getCoordCaseTetriminos()[i][j].getCoord().getY());
-                    }
-                }*/
-                compt++;
-            }
+        if (!this.grille[t.getaCase().getCoord().getX()][t.getaCase().getCoord().getY()]) {
+            setGrilleCaseFalse(t.getaCase().getCoord().getX(), t.getaCase().getCoord().getY());
         }
     }
-
 
 
     public boolean[][] getGrille() {
@@ -125,7 +105,7 @@ public class Plateau extends Observable {
      * @return the coordCasesGrille
      */
     public Case[][] getCoordCasesGrille() {
-        return coordCasesGrille;
+        return panCases;
     }
 
     /**
