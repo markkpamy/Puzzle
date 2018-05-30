@@ -66,7 +66,7 @@ public class PlateauJeu extends Application {
                         alert.setTitle("Game Over");
                         alert.setHeaderText("Alerte !");
                         alert.setContentText("Le jeu est terminé");
-        Plateau plateau = new Plateau(20, 10, 4, 4);
+        Plateau plateau = new Plateau(10, 10, 1, 1);
         //Timeline timeline = null
         
         //
@@ -258,8 +258,7 @@ public class PlateauJeu extends Application {
         gPane3.add(nextTetrimino, 0, 0, 4, 1);
         VBox btnPanel = new VBox(5);
         Button startGame = new Button("Jouer");
-        Color[][] colorsRectSuivants = new Color[6][4];
-        Color[][] couleursRectSuivants = new Color[6][4];
+
         startGame.setPrefWidth(60);
         //startGame.setPadding(new Insets(10, 0, 10, 0));
         HBox songPanel = new HBox(5);
