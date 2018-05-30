@@ -27,4 +27,8 @@ public class Communication {
     public Message readMessage(Agent agent){
         return messages.get(agent).pollFirst();
     }
+
+    public void writeMessage(Agent agent, Message message) {
+        messages.get(agent).addLast(message);
+    }
 }
