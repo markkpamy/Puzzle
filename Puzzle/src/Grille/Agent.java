@@ -5,6 +5,8 @@
  */
 package Grille;
 
+import java.util.List;
+
 import static java.lang.Math.abs;
 
 /**
@@ -39,6 +41,11 @@ public class Agent extends Thread {
         this.color = Color.BLACK;
         idAgent = 0;
         nameAgent ="Agent";
+    }
+
+    @Override
+    public void start() {
+
     }
 
     public void moveLeft(Plateau plateau) {
@@ -153,6 +160,10 @@ public class Agent extends Thread {
 
     public void setaCase(Case aCase) {
         this.aCase = aCase;
+    }
+
+    public List<Position> getShortestPath() {
+
     }
 
 }
