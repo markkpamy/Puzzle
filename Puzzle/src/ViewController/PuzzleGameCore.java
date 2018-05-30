@@ -33,7 +33,7 @@ public class PuzzleGameCore {
 
     }
 
-    public static void moveDown(Plateau plateau, Agent.Couleur[][] couleursRectPlateau) {
+    public static void moveDown(Plateau plateau) {
             plateau.effaceTracePiece(plateau.getCurrentAgent());
             plateau.getCurrentAgent().moveDown(plateau);
             //TetrisGameCore.copyRectPlateauColors(plateau.getCurrentTetrimino(), couleursRectPlateau);

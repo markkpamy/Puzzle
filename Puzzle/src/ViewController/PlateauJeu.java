@@ -6,10 +6,11 @@
 package ViewController;
 
 
+import Grille.Agent;
 import Grille.Agent.*;
 import Grille.Case;
 import Grille.Plateau;
-import Grille.VuePlateau;
+import Grille.PanView;
 import java.io.File;
 import java.util.Observable;
 import javafx.animation.Animation;
@@ -213,7 +214,7 @@ public class PlateauJeu extends Application {
         //*********//
         //GridPane2//
         //*********//
-        VuePlateau puzzleView = new VuePlateau(20,10);
+        PanView puzzleView = new PanView(10,10);
         puzzleView.getgPane2().setPrefWidth(300);
         puzzleView.getgPane2().setPrefHeight(520);
         //gPane2.setStyle("-fx-background-color: #008000;");
@@ -258,7 +259,7 @@ public class PlateauJeu extends Application {
         VBox btnPanel = new VBox(5);
         Button startGame = new Button("Jouer");
         Color[][] colorsRectSuivants = new Color[6][4];
-        Couleur[][] couleursRectSuivants = new Couleur[6][4];
+        Color[][] couleursRectSuivants = new Color[6][4];
         startGame.setPrefWidth(60);
         //startGame.setPadding(new Insets(10, 0, 10, 0));
         HBox songPanel = new HBox(5);
@@ -335,6 +336,9 @@ public class PlateauJeu extends Application {
         //
         startGame.setOnAction((ActionEvent e) -> {
             plateau.clearPlateau();
+            Agent newAgent = new Agent(1,1);
+            plateau.setCurrentAgent(newAgent);
+            plateau.displayPiece(newAgent);
            // mediaPlayer.play();
           //  timeline.play();
         });
@@ -342,12 +346,12 @@ public class PlateauJeu extends Application {
         plateau.addObserver((Observable o, Object arg) -> {
             if(arg instanceof Case){
             Case tmp = (Case) arg;
-            if (puzzleView.getColouredRectPlateau()[tmp.getCoord().getX()][tmp.getCoord().getY()] == false) {
-                puzzleView.getRectPlateau()[tmp.getCoord().getX()][tmp.getCoord().getY()].setFill(convertColor(puzzleView.getCouleursRectPlateau()[tmp.getCoord().getX()][tmp.getCoord().getY()]));
-                puzzleView.getColouredRectPlateau()[tmp.getCoord().getX()][tmp.getCoord().getY()] = true;
-            } else if (puzzleView.getColouredRectPlateau()[tmp.getCoord().getX()][tmp.getCoord().getY()] == true) {
-                puzzleView.getRectPlateau()[tmp.getCoord().getX()][tmp.getCoord().getY()].setFill(Color.BLACK);
-                puzzleView.getColouredRectPlateau()[tmp.getCoord().getX()][tmp.getCoord().getY()] = false;
+            if (puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()] == false) {
+                puzzleView.getRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()].setFill(convertColor(puzzleView.getColorsRectPans()[tmp.getCoord().getX()][tmp.getCoord().getY()]));
+                puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()] = true;
+            } else if (puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()] == true) {
+                puzzleView.getRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()].setFill(Color.BLACK);
+                puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()] = false;
             }
            }/*
             if(arg instanceof Integer[]){
@@ -371,31 +375,27 @@ public class PlateauJeu extends Application {
         scene.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.LEFT) {
                 
-                PuzzleGameCore.moveLeft(plateau, puzzleView.getCouleursRectPlateau());
+                PuzzleGameCore.moveLeft(plateau);
                 
             }
             if (e.getCode() == KeyCode.RIGHT) {
                 
-                PuzzleGameCore.moveRight(plateau, puzzleView.getCouleursRectPlateau());
+                PuzzleGameCore.moveRight(plateau);
             }
-            if (e.getCode() == KeyCode.UP) {
-                
-                PuzzleGameCore.rotate(plateau, puzzleView.getCouleursRectPlateau());
-               
-            }
+
             if (e.getCode() == KeyCode.DOWN) {
                 
-                PuzzleGameCore.moveDown(plateau, puzzleView.getCouleursRectPlateau());
+                PuzzleGameCore.moveDown(plateau);
                 
             }
 
         });
     }
     
-    public Color convertColor(Couleur couleur){
+    public Color convertColor(Agent.Color couleur){
     
     switch(couleur){
-        case CYAN: 
+        case CYAN:
             return Color.CYAN;
         case RED:
             return Color.RED;

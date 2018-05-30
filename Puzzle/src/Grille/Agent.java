@@ -37,6 +37,7 @@ public class Agent implements Cloneable {
         this.nbColsGrid = nbColsGrid;
         this.nbLinesGrid = nbLinesGrid;
         this.color = Color.BLACK;
+        this.coordinates = new Case(new Position(4,4));
         idAgent = 0;
         nameAgent ="Agent";
     }
