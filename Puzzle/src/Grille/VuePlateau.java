@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ModuleGestionPlateau;
+package Grille;
 
 
-import java.util.Observable;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -62,14 +61,14 @@ public class VuePlateau {
     /**
      * @return the couleursRectPlateau
      */
-    public Tetrimino.Couleur[][] getCouleursRectPlateau() {
+    public Agent.Couleur[][] getCouleursRectPlateau() {
         return couleursRectPlateau;
     }
 
     /**
      * @param couleursRectPlateau the couleursRectPlateau to set
      */
-    public void setCouleursRectPlateau(Tetrimino.Couleur[][] couleursRectPlateau) {
+    public void setCouleursRectPlateau(Agent.Couleur[][] couleursRectPlateau) {
         this.couleursRectPlateau = couleursRectPlateau;
     }
 
@@ -77,14 +76,14 @@ public class VuePlateau {
     private Rectangle[][] rectPlateau;
     private boolean[][] colouredRectPlateau;
     private Color[][] colorsRectPlateau;
-    private Tetrimino.Couleur[][] couleursRectPlateau;
+    private Agent.Couleur[][] couleursRectPlateau;
    
 
     public VuePlateau(int nBlignes, int nBcols) {
         rectPlateau = new Rectangle[nBlignes][nBcols];
         colouredRectPlateau = new boolean[nBlignes][nBcols];
         colorsRectPlateau = new Color[nBlignes][nBcols];
-        couleursRectPlateau = new Tetrimino.Couleur[nBlignes][nBcols];
+        couleursRectPlateau = new Agent.Couleur[nBlignes][nBcols];
         drawView(nBlignes,nBcols);
     }
 
