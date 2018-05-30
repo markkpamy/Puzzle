@@ -1,3 +1,8 @@
+package Comm;
+
+import Grille.Agent;
+import Grille.Position;
+
 public class Message {
 
     private Agent emitter;
