@@ -73,7 +73,7 @@ public class Plateau extends Observable {
 
     ;
     
-    private void setGrilleCaseTrue(int i, int j) {
+    public void setGrilleCaseTrue(int i, int j) {
         if (this.grille[i][j] != true) {
             this.grille[i][j] = true;
             setChanged();
@@ -82,7 +82,7 @@ public class Plateau extends Observable {
     }
 
     //public void displayPiece(Tetrimino t){
-    private void setGrilleCaseFalse(int i, int j) {
+    public void setGrilleCaseFalse(int i, int j) {
         if (this.grille[i][j] != false) {
             this.grille[i][j] = false;
             setChanged();

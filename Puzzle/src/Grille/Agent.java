@@ -42,25 +42,45 @@ public class Agent extends Thread {
     }
 
     public void moveLeft(Plateau plateau) {
-        if (verifMoveLeft(plateau) == true) {
-
+        if (!verifMoveLeft(plateau)) {
+            return;
         }
+        Position position = aCase.getCoord();
+        plateau.setGrilleCaseFalse(position.getX(), position.getY());
+        plateau.setGrilleCaseTrue(position.getX() - 1, position.getY());
     }
 
     public void moveRight(Plateau plateau) {
-        if (verifMoveRight(plateau)) {
-
+        if (!verifMoveRight(plateau)) {
+            return;
         }
+        Position position = aCase.getCoord();
+        plateau.setGrilleCaseFalse(position.getX(), position.getY());
+        plateau.setGrilleCaseTrue(position.getX() + 1, position.getY());
     }
 
     public void moveDown(Plateau plateau) {
-        if (verifMoveDown(plateau)) {
-
+        if (!verifMoveDown(plateau)) {
+            return;
         }
+
+        Position position = aCase.getCoord();
+        plateau.setGrilleCaseFalse(position.getX(), position.getY());
+        plateau.setGrilleCaseTrue(position.getX(), position.getY() - 1);
     }
 
-    public boolean moveUp(Plateau plateau) {
-        if (plateau.getNbLignes() == aCase.getCoord().getY()) {
+    public void moveUp(Plateau plateau) {
+        if (!verifMoveDown(plateau)) {
+            return;
+        }
+
+        Position position = aCase.getCoord();
+        plateau.setGrilleCaseFalse(position.getX(), position.getY());
+        plateau.setGrilleCaseTrue(position.getX(), position.getY() + 1);
+    }
+
+    public boolean verifMoveUp(Plateau plateau) {
+        if (aCase.getCoord().getX() == 0) {
             return false;
         }
         return !(plateau.getGrille()[aCase.getCoord().getX()][aCase.getCoord().getX() - 1]);
