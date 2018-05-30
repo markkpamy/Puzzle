@@ -1,3 +1,7 @@
+package Comm;
+
+import Grille.Agent;
+
 import java.util.*;
 
 public class Communication {

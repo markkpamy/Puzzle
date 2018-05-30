@@ -1,17 +1,22 @@
+package Comm;
+
+import Grille.Agent;
+import Grille.Coordonnees;
+
 public class Message {
 
     private Agent emitter;
     private Agent recipient;
     private String type;
     private String action;
-    private Position position;
+    private Coordonnees coordonnees;
 
-    public Message(Agent emitter, Agent recipient, String type, String action, Position position) {
+    public Message(Agent emitter, Agent recipient, String type, String action, Coordonnees coordonnees) {
         this.emitter = emitter;
         this.recipient = recipient;
         this.type = type;
         this.action = action;
-        this.position = position;
+        this.coordonnees = coordonnees;
     }
 
     public Agent getEmitter() {
@@ -46,11 +51,11 @@ public class Message {
         this.action = action;
     }
 
-    public Position getPosition() {
-        return position;
+    public Coordonnees getCoordonnees() {
+        return coordonnees;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
+    public void setCoordonnees(Coordonnees coordonnees) {
+        this.coordonnees = coordonnees;
     }
 }
