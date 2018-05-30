@@ -3,4 +3,9 @@ public class Agent  extends Thread{
     //Position terminale
     //Grille
 
+
+    //Connaisseurs
+
+    //Comportements
+
 }
