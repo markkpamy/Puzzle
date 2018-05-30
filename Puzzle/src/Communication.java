@@ -1,19 +1,20 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Communication {
 
-    private HashMap<Integer, ArrayList<Message>> messages;
+    private HashMap<Agent, LinkedList<Message>> messages;
 
     public Communication() {
         this.messages = new HashMap<>();
     }
 
-    public Communication(int nb){
-        for (int i = 0; i <= nb; i++) {
-            this.messages.put(i,new ArrayList<>());
+    public Communication(ArrayList<Agent> listAgents){
+        for (Agent agent: listAgents) {
+            this.messages.put(agent,new LinkedList<>());
         }
+    }
+
+    public Message readMessage(Agent agent){
+        return messages.get(agent).pollFirst();
     }
 }
