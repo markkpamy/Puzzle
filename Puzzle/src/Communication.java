@@ -2,15 +2,21 @@ import java.util.*;
 
 public class Communication {
 
+    private static Communication INSTANCE = new Communication();
+
     private HashMap<Agent, LinkedList<Message>> messages;
 
-    public Communication() {
-        this.messages = new HashMap<>();
+    public static Communication getInstance(){
+        return INSTANCE;
     }
 
-    public Communication(ArrayList<Agent> listAgents){
+    public Communication() {
+        messages = new HashMap<>();
+    }
+
+    public void setCommunication(ArrayList<Agent> listAgents){
         for (Agent agent: listAgents) {
-            this.messages.put(agent,new LinkedList<>());
+            messages.put(agent,new LinkedList<>());
         }
     }
 
