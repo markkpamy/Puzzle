@@ -11,7 +11,7 @@ import static java.lang.Math.abs;
  *
  * @author markk
  */
-public class Agent implements Cloneable {
+public class Agent extends Thread {
 
     private final int idAgent;
     private final String nameAgent;
@@ -20,16 +20,16 @@ public class Agent implements Cloneable {
         CYAN, GREEN, RED, YELLOW, BLUE, PURPLE, BLACK, ORANGE
     };
     private Color color;
-    private Case coordinates;
+    private Case aCase;
     private final int nbLinesGrid;
     private final int nbColsGrid;
 
-    public Agent(int idAgent, String nameAgent, Case coordinates, int nbLinesGrid, int nbColsGrid, Color color) {
+    public Agent(int idAgent, String nameAgent, Case aCase, int nbLinesGrid, int nbColsGrid, Color color) {
         this.nbLinesGrid = nbLinesGrid;
         this.nbColsGrid = nbColsGrid;
         this.idAgent = idAgent;
         this.nameAgent = nameAgent;
-        this.coordinates = coordinates;
+        this.aCase = aCase;
         this.color=color;
     }
 
@@ -59,31 +59,33 @@ public class Agent implements Cloneable {
         }
     }
 
-    public void moveUp() {
-        // if (verifMoveRight(plateau) == true) {
-        for (int i = 0; i < this.nbLinesGrid; i++) {
-
+    public boolean moveUp(Plateau plateau) {
+        if (plateau.getNbLignes() == aCase.getCoord().getY()) {
+            return false;
         }
+        return !(plateau.getGrille()[aCase.getCoord().getX()][aCase.getCoord().getX() - 1]);
     }
     
 
     public boolean verifMoveLeft(Plateau plateau) {
-        //verifier qu'on ne sort pas en dehors du tableau
-        boolean result = true;//par défaut on suppose qu'on peut bouger à gauche
-       
-        return result;
+        if (plateau.getnBcolsGrille() == aCase.getCoord().getX()) {
+            return false;
+        }
+        return !(plateau.getGrille()[aCase.getCoord().getX() - 1][aCase.getCoord().getX()]);
     }
 
     public boolean verifMoveRight(Plateau plateau) {
-        boolean result = true;//par défaut on suppose qu'on peut bouger à droite
-       
-        return result;
+        if (plateau.getnBcolsGrille() - 1 == aCase.getCoord().getX()) {
+            return false;
+        }
+        return !(plateau.getGrille()[aCase.getCoord().getX() + 1][aCase.getCoord().getX()]);
     }
 
     public boolean verifMoveDown(Plateau plateau) {
-        boolean result = true;//par défaut on suppose qu'on peut descendre
-        
-        return result;
+        if (plateau.getNbLignes() - 1 == aCase.getCoord().getY()) {
+            return false;
+        }
+        return !(plateau.getGrille()[aCase.getCoord().getX()][aCase.getCoord().getX() + 1]);
     }
 
     /**
@@ -101,22 +103,6 @@ public class Agent implements Cloneable {
      */
     public int getNbColsGrid() {
         return nbColsGrid;
-    }
-
-    /**
-     *
-     * @return un objet cloné de la classe Tetrimino
-     * @throws CloneNotSupportedException
-     */
-    @Override
-    public Object clone() {
-        Object o = null;
-        try {
-            o = super.clone();
-        } catch (CloneNotSupportedException cnse) {
-            cnse.printStackTrace(System.err);
-        }
-        return o;
     }
 
     /**
@@ -141,12 +127,12 @@ public class Agent implements Cloneable {
         return nameAgent;
     }
 
-    public Case getCoordinates() {
-        return coordinates;
+    public Case getaCase() {
+        return aCase;
     }
 
-    public void setCoordinates(Case coordinates) {
-        this.coordinates = coordinates;
+    public void setaCase(Case aCase) {
+        this.aCase = aCase;
     }
 
 }
