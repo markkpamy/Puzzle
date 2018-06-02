@@ -18,9 +18,10 @@ public class Agent extends Thread {
     private final int idAgent;
     private final String nameAgent;
 
-    public static enum Color {
+    public enum Color {
         CYAN, GREEN, RED, YELLOW, BLUE, PURPLE, BLACK, ORANGE
-    };
+    }
+
     private Color color;
     private Case aCase;
 
@@ -35,7 +36,7 @@ public class Agent extends Thread {
         this.color = Color.RED;
         idAgent = 0;
         nameAgent ="Agent";
-        this.aCase = new Case(new Position(4,4));
+        this.aCase = new Case(new Position(9,0));
     }
 
     @Override
@@ -72,32 +73,31 @@ public class Agent extends Thread {
     }
 
     public boolean verifMoveUp(Plateau plateau) {
-        if (aCase.getCoord().getX() == 0) {
-            return false;
-        }
-        return !(plateau.getGrille()[aCase.getCoord().getX()][aCase.getCoord().getX() - 1]);
+        if ((aCase.getCoord().getX() -1 >= 0)) {
+            return (!plateau.getGrille()[aCase.getCoord().getX() - 1][aCase.getCoord().getY()]);
+        }else return  false;
+
     }
     
 
     public boolean verifMoveLeft(Plateau plateau) {
-        if (plateau.getNbCols() == aCase.getCoord().getY()) {
-            return false;
-        }
-        return !(plateau.getGrille()[aCase.getCoord().getY() - 1][aCase.getCoord().getY()]);
+        if ((aCase.getCoord().getY() - 1 >= 0) ) {
+            return !plateau.getGrille()[aCase.getCoord().getX()][aCase.getCoord().getY() - 1];
+        }else return  false;
+
     }
 
     public boolean verifMoveRight(Plateau plateau) {
-        if (plateau.getNbCols() - 1 == aCase.getCoord().getY()) {
-            return false;
-        }
-        return !(plateau.getGrille()[aCase.getCoord().getY() + 1][aCase.getCoord().getY()]);
-    }
+        if ((aCase.getCoord().getY()+1 <= plateau.getNbCols()-1) ) {
+            return !plateau.getGrille()[aCase.getCoord().getX()][aCase.getCoord().getY() + 1];
+        }else return  false;  }
 
     public boolean verifMoveDown(Plateau plateau) {
-        if (plateau.getNbLignes() - 1 == aCase.getCoord().getX()) {
-            return false;
-        }
-        return !(plateau.getGrille()[aCase.getCoord().getX()][aCase.getCoord().getX() + 1]);
+
+        if (((aCase.getCoord().getX()+1) <= plateau.getNbLignes()-1 )  ) {
+            return !plateau.getGrille()[aCase.getCoord().getX() + 1][aCase.getCoord().getY()];
+        }else  return  false;
+
     }
 
 
