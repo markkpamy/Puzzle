@@ -58,14 +58,14 @@ public class Agent extends Thread {
 
 
     public boolean verifMoveLeft(Plateau plateau) {
-        if (plateau.getnBcolsGrille() == currentPosition.getX()) {
+        if (plateau.getNbCols() == currentPosition.getX()) {
             return false;
         }
         return !(plateau.getGrille()[currentPosition.getX() - 1][currentPosition.getX()]);
     }
 
     public boolean verifMoveRight(Plateau plateau) {
-        if (plateau.getnBcolsGrille() - 1 == currentPosition.getX()) {
+        if (plateau.getNbCols() - 1 == currentPosition.getX()) {
             return false;
         }
         return !(plateau.getGrille()[currentPosition.getX() + 1][currentPosition.getX()]);

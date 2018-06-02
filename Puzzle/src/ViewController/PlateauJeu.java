@@ -66,7 +66,7 @@ public class PlateauJeu extends Application {
                         alert.setTitle("Game Over");
                         alert.setHeaderText("Alerte !");
                         alert.setContentText("Le jeu est terminé");
-        Plateau plateau = new Plateau(10, 10, 1, 1);
+        Plateau plateau = new Plateau(10, 10);
         //Creation du menu
         MenuBar menuBar = new MenuBar();
         // --- Menu Jeu
@@ -291,11 +291,8 @@ public class PlateauJeu extends Application {
         //
         startGame.setOnAction((ActionEvent e) -> {
             plateau.clearPlateau();
-           /* Agent newAgent = new Agent(1,1);
-            plateau.setCurrentAgent(newAgent);*/
+            puzzleView.getNaturalLanguageColors()[plateau.getCurrentAgent().getaCase().getCoord().getX()][plateau.getCurrentAgent().getaCase().getCoord().getY()] = plateau.getCurrentAgent().getColor();
             plateau.displayPiece(plateau.getCurrentAgent());
-           // mediaPlayer.play();
-          //  timeline.play();
         });
         //
         plateau.addObserver((Observable o, Object arg) -> {

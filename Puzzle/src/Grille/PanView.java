@@ -14,9 +14,6 @@ import javafx.scene.shape.Rectangle;
  * @author markk
  */
 public class PanView {
-
-
-
     private GridPane gPane2 = new GridPane();
     private Rectangle[][] rectPan;
     private boolean[][] coloredRectPan;

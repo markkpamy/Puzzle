@@ -23,25 +23,19 @@ public class Agent extends Thread {
     };
     private Color color;
     private Case aCase;
-    private final int nbLinesGrid;
-    private final int nbColsGrid;
 
-    public Agent(int idAgent, String nameAgent, Case aCase, int nbLinesGrid, int nbColsGrid, Color color) {
-        this.nbLinesGrid = nbLinesGrid;
-        this.nbColsGrid = nbColsGrid;
+    public Agent(int idAgent, String nameAgent, Case aCase, Color color) {
         this.idAgent = idAgent;
         this.nameAgent = nameAgent;
         this.aCase = aCase;
         this.color=color;
     }
 
-    public Agent(int nbLinesGrid, int nbColsGrid) {
-        this.nbColsGrid = nbColsGrid;
-        this.nbLinesGrid = nbLinesGrid;
+    public Agent() {
         this.color = Color.RED;
         idAgent = 0;
         nameAgent ="Agent";
-        this.aCase = new Case(new Position(5,5));
+        this.aCase = new Case(new Position(4,4));
     }
 
     @Override
@@ -53,28 +47,28 @@ public class Agent extends Thread {
         if (!verifMoveLeft(plateau)) {
             return;
         }
-       this.getaCase().getCoord().setX(this.getaCase().getCoord().getX()-1);
+       this.getaCase().getCoord().setY(this.getaCase().getCoord().getY()-1);
     }
 
     public void moveRight(Plateau plateau) {
         if (!verifMoveRight(plateau)) {
             return;
         }
-        this.getaCase().getCoord().setX(this.getaCase().getCoord().getX()+1);
+        this.getaCase().getCoord().setY(this.getaCase().getCoord().getY()+1);
     }
 
     public void moveDown(Plateau plateau) {
         if (!verifMoveDown(plateau)) {
             return;
         }
-        this.getaCase().getCoord().setY(this.getaCase().getCoord().getY()+1);
+        this.getaCase().getCoord().setX(this.getaCase().getCoord().getX()+1);
     }
 
     public void moveUp(Plateau plateau) {
         if (!verifMoveUp(plateau)) {
             return;
         }
-        this.getaCase().getCoord().setY(this.getaCase().getCoord().getY()+1);
+        this.getaCase().getCoord().setX(this.getaCase().getCoord().getX()-1);
     }
 
     public boolean verifMoveUp(Plateau plateau) {
@@ -86,42 +80,27 @@ public class Agent extends Thread {
     
 
     public boolean verifMoveLeft(Plateau plateau) {
-        if (plateau.getnBcolsGrille() == aCase.getCoord().getX()) {
+        if (plateau.getNbCols() == aCase.getCoord().getY()) {
             return false;
         }
-        return !(plateau.getGrille()[aCase.getCoord().getX() - 1][aCase.getCoord().getX()]);
+        return !(plateau.getGrille()[aCase.getCoord().getY() - 1][aCase.getCoord().getY()]);
     }
 
     public boolean verifMoveRight(Plateau plateau) {
-        if (plateau.getnBcolsGrille() - 1 == aCase.getCoord().getX()) {
+        if (plateau.getNbCols() - 1 == aCase.getCoord().getY()) {
             return false;
         }
-        return !(plateau.getGrille()[aCase.getCoord().getX() + 1][aCase.getCoord().getX()]);
+        return !(plateau.getGrille()[aCase.getCoord().getY() + 1][aCase.getCoord().getY()]);
     }
 
     public boolean verifMoveDown(Plateau plateau) {
-        if (plateau.getNbLignes() - 1 == aCase.getCoord().getY()) {
+        if (plateau.getNbLignes() - 1 == aCase.getCoord().getX()) {
             return false;
         }
         return !(plateau.getGrille()[aCase.getCoord().getX()][aCase.getCoord().getX() + 1]);
     }
 
-    /**
-     * @return the nbLinesGrid
-     */
-    public int getNbLinesGrid() {
-        return nbLinesGrid;
-    }
 
-    /**
-     * @param nbLinesGrid the nbLinesGrid to set
-     */
-    /**
-     * @return the nbColsGrid
-     */
-    public int getNbColsGrid() {
-        return nbColsGrid;
-    }
 
     /**
      * @return the color

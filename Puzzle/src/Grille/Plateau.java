@@ -20,10 +20,8 @@ public class Plateau extends Observable {
     private final Case[][] panCases;
     private Agent.Color[][] rectPlateau;
     private Agent currentAgent;
-    private final int nBlignesGrille;
-    private final int nBcolsGrille;
 
-    public Plateau(int nbLignes, int nbCols, int nBlignesGrille, int nBcolsGrille) {
+    public Plateau(int nbLignes, int nbCols) {
         this.nbCols = nbCols;
         this.nbLignes = nbLignes;
         this.panCases = new Case[nbLignes][nbCols];
@@ -34,9 +32,7 @@ public class Plateau extends Observable {
                 this.panCases[i][j] = new Case(new Position(i, j));
             }
         }
-        this.currentAgent = new Agent(nBlignesGrille, nBcolsGrille);
-        this.nBcolsGrille = nBcolsGrille;
-        this.nBlignesGrille = nBlignesGrille;
+        this.currentAgent = new Agent();
         rectPlateau = new Agent.Color[nbLignes][nbCols];
     }
 
@@ -134,20 +130,6 @@ public class Plateau extends Observable {
      */
     public int getNbCols() {
         return nbCols;
-    }
-
-    /**
-     * @return the nBlignesGrille
-     */
-    public int getnBlignesGrille() {
-        return nBlignesGrille;
-    }
-
-    /**
-     * @return the nBcolsGrille
-     */
-    public int getnBcolsGrille() {
-        return nBcolsGrille;
     }
 
 
