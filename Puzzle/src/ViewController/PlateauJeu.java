@@ -67,28 +67,7 @@ public class PlateauJeu extends Application {
                         alert.setHeaderText("Alerte !");
                         alert.setContentText("Le jeu est terminé");
         Plateau plateau = new Plateau(10, 10, 1, 1);
-        //Timeline timeline = null
-        
-        //
-        isStarted = false;
-        gameOver = false;
-        Label nextTetrimino = new Label();
-        nextTetrimino.setText("NEXT");
-        nextTetrimino.setAlignment(Pos.CENTER);
-        nextTetrimino.setStyle(""
-                + "-fx-font-size: 20px;"
-                + "-fx-font-weight: bold;"
-                + "-fx-text-fill:black;"
-                + "-fx-alignment:center;"
-                + "-fx-content-display:center;"
-                + "-fx-border-insets:2,2,2,2;"
-                + "-fx-border-style:solid;"
-                + "-fx-border-width:3,3,3,3;"
-                + "-fx-border-color:cyan;"
-                + "-fx-border-radius:5;");
         //Creation du menu
-        HBox HboxTop = new HBox();
-        HboxTop.getChildren().add(nextTetrimino);
         MenuBar menuBar = new MenuBar();
         // --- Menu Jeu
         Menu menuJeu = new Menu("Jouer");
@@ -255,7 +234,6 @@ public class PlateauJeu extends Application {
         gPane3.setPrefHeight(540);
         //gPane3.setStyle("-fx-background-color: #333cc4;");
         gPane3.setBackground(new Background(myBI));
-        gPane3.add(nextTetrimino, 0, 0, 4, 1);
         VBox btnPanel = new VBox(5);
         Button startGame = new Button("Jouer");
 
@@ -289,10 +267,8 @@ public class PlateauJeu extends Application {
         songPanel.getChildren().add(song);
         songPanel.getChildren().add(mute);
         songPanel.getChildren().add(pause);
-        GridPane.setHalignment(nextTetrimino, HPos.CENTER);
 
         GridPane.setMargin(btnPanel, new Insets(10, 0, 10, 0));
-        GridPane.setMargin(nextTetrimino, new Insets(0, 0, 10, 0));
         btnPanel.setAlignment(Pos.CENTER);
         songPanel.setAlignment(Pos.CENTER);
         gPane3.add(btnPanel, 0, 7, 4, 4);
@@ -315,9 +291,9 @@ public class PlateauJeu extends Application {
         //
         startGame.setOnAction((ActionEvent e) -> {
             plateau.clearPlateau();
-            Agent newAgent = new Agent(1,1);
-            plateau.setCurrentAgent(newAgent);
-            plateau.displayPiece(newAgent);
+           /* Agent newAgent = new Agent(1,1);
+            plateau.setCurrentAgent(newAgent);*/
+            plateau.displayPiece(plateau.getCurrentAgent());
            // mediaPlayer.play();
           //  timeline.play();
         });
@@ -326,7 +302,7 @@ public class PlateauJeu extends Application {
             if(arg instanceof Case){
             Case tmp = (Case) arg;
             if (puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()] == false) {
-                puzzleView.getRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()].setFill(convertColor(puzzleView.getColorsRectPans()[tmp.getCoord().getX()][tmp.getCoord().getY()]));
+                puzzleView.getRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()].setFill(convertColor(puzzleView.getNaturalLanguageColors()[tmp.getCoord().getX()][tmp.getCoord().getY()]));
                 puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()] = true;
             } else if (puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()] == true) {
                 puzzleView.getRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()].setFill(Color.BLACK);
@@ -354,18 +330,23 @@ public class PlateauJeu extends Application {
         scene.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.LEFT) {
                 
-                PuzzleGameCore.moveLeft(plateau);
+                PuzzleGameCore.moveLeft(plateau,puzzleView.getNaturalLanguageColors());
                 
             }
             if (e.getCode() == KeyCode.RIGHT) {
                 
-                PuzzleGameCore.moveRight(plateau);
+                PuzzleGameCore.moveRight(plateau,puzzleView.getNaturalLanguageColors());
             }
 
             if (e.getCode() == KeyCode.DOWN) {
                 
-                PuzzleGameCore.moveDown(plateau);
+                PuzzleGameCore.moveDown(plateau,puzzleView.getNaturalLanguageColors());
                 
+            }
+            if (e.getCode() == KeyCode.UP) {
+
+                PuzzleGameCore.moveUp(plateau,puzzleView.getNaturalLanguageColors());
+
             }
 
         });

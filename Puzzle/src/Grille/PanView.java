@@ -20,15 +20,15 @@ public class PanView {
     private GridPane gPane2 = new GridPane();
     private Rectangle[][] rectPan;
     private boolean[][] coloredRectPan;
-    private javafx.scene.paint.Color[][] colorsRectPan;
-    private Agent.Color colorsRectPans[][];
-   
+    private javafx.scene.paint.Color[][] fxColorsRectPan;
+    private Agent.Color naturalLanguageColors[][];
+
 
     public PanView(int nBlignes, int nBcols) {
         rectPan = new Rectangle[nBlignes][nBcols];
         coloredRectPan = new boolean[nBlignes][nBcols];
-        colorsRectPan = new javafx.scene.paint.Color[nBlignes][nBcols];
-        colorsRectPans = new Agent.Color[nBlignes][nBcols];
+        fxColorsRectPan = new javafx.scene.paint.Color[nBlignes][nBcols];
+        naturalLanguageColors = new Agent.Color[nBlignes][nBcols];
         drawView(nBlignes,nBcols);
     }
 
@@ -40,7 +40,7 @@ public class PanView {
                 getRectPan()[i][j].setArcWidth(10.0);
                 getRectPan()[i][j].setArcHeight(10.0);
                 getColoredRectPan()[i][j] = false;
-                getColorsRectPan()[i][j] = javafx.scene.paint.Color.BLACK;
+                getFxColorsRectPan()[i][j] = javafx.scene.paint.Color.BLACK;
                 getRectPan()[i][j].setStroke(javafx.scene.paint.Color.WHITE);
                 getgPane2().add(getRectPan()[i][j], j, i);
             }
@@ -91,29 +91,29 @@ public class PanView {
     /**
      * @return the colorsRectPan
      */
-    public javafx.scene.paint.Color[][] getColorsRectPan() {
-        return colorsRectPan;
+    public javafx.scene.paint.Color[][] getFxColorsRectPan() {
+        return fxColorsRectPan;
     }
 
     /**
      * @param colorsRectPan the colorsRectPan to set
      */
-    public void setColorsRectPan(javafx.scene.paint.Color[][] colorsRectPan) {
-        this.colorsRectPan = colorsRectPan;
+    public void setFxColorsRectPan(javafx.scene.paint.Color[][] colorsRectPan) {
+        this.fxColorsRectPan = colorsRectPan;
     }
 
     /**
      * @return the colorsRectPans
      */
-    public Agent.Color[][] getColorsRectPans() {
-        return colorsRectPans;
+    public Agent.Color[][] getNaturalLanguageColors() {
+        return naturalLanguageColors;
     }
 
     /**
      * @param colorsRectPans the colorsRectPans to set
      */
-    public void setColorsRectPans(Agent.Color[][] colorsRectPans) {
-        this.colorsRectPans = colorsRectPans;
+    public void setNaturalLanguageColors(Agent.Color[][] colorsRectPans) {
+        this.naturalLanguageColors = colorsRectPans;
     }
 
     

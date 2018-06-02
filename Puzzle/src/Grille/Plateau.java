@@ -94,7 +94,7 @@ public class Plateau extends Observable {
         return grille;
     }
 
-    /**
+    /*K*
      * @param grille the grille to set
      */
     public void setGrille(boolean[][] grille) {

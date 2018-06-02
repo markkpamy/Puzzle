@@ -41,6 +41,7 @@ public class Agent extends Thread {
         this.color = Color.RED;
         idAgent = 0;
         nameAgent ="Agent";
+        this.aCase = new Case(new Position(5,5));
     }
 
     @Override
@@ -52,38 +53,28 @@ public class Agent extends Thread {
         if (!verifMoveLeft(plateau)) {
             return;
         }
-        Position position = aCase.getCoord();
-        plateau.setGrilleCaseFalse(position.getX(), position.getY());
-        plateau.setGrilleCaseTrue(position.getX() - 1, position.getY());
+       this.getaCase().getCoord().setX(this.getaCase().getCoord().getX()-1);
     }
 
     public void moveRight(Plateau plateau) {
         if (!verifMoveRight(plateau)) {
             return;
         }
-        Position position = aCase.getCoord();
-        plateau.setGrilleCaseFalse(position.getX(), position.getY());
-        plateau.setGrilleCaseTrue(position.getX() + 1, position.getY());
+        this.getaCase().getCoord().setX(this.getaCase().getCoord().getX()+1);
     }
 
     public void moveDown(Plateau plateau) {
         if (!verifMoveDown(plateau)) {
             return;
         }
-
-        Position position = aCase.getCoord();
-        plateau.setGrilleCaseFalse(position.getX(), position.getY());
-        plateau.setGrilleCaseTrue(position.getX(), position.getY() - 1);
+        this.getaCase().getCoord().setY(this.getaCase().getCoord().getY()+1);
     }
 
     public void moveUp(Plateau plateau) {
-        if (!verifMoveDown(plateau)) {
+        if (!verifMoveUp(plateau)) {
             return;
         }
-
-        Position position = aCase.getCoord();
-        plateau.setGrilleCaseFalse(position.getX(), position.getY());
-        plateau.setGrilleCaseTrue(position.getX(), position.getY() + 1);
+        this.getaCase().getCoord().setY(this.getaCase().getCoord().getY()+1);
     }
 
     public boolean verifMoveUp(Plateau plateau) {
@@ -163,7 +154,8 @@ public class Agent extends Thread {
     }
 
     public List<Position> getShortestPath() {
-
+//getshortestpath à completer
+        return null;
     }
 
 }
