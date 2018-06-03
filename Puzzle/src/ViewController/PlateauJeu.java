@@ -298,10 +298,10 @@ public class PlateauJeu extends Application {
         plateau.addObserver((Observable o, Object arg) -> {
             if(arg instanceof Case){
             Case tmp = (Case) arg;
-            if (puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()] == false) {
+            if (!puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()]) {
                 puzzleView.getRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()].setFill(convertColor(puzzleView.getNaturalLanguageColors()[tmp.getCoord().getX()][tmp.getCoord().getY()]));
                 puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()] = true;
-            } else if (puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()] == true) {
+            } else if (puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()]) {
                 puzzleView.getRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()].setFill(Color.BLACK);
                 puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()] = false;
             }

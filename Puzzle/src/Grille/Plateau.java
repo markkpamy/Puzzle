@@ -80,7 +80,7 @@ public class Plateau extends Observable {
      * @param t
      */
     public void effaceTracePiece(Agent t) {
-        if (!this.grille[t.getaCase().getCoord().getX()][t.getaCase().getCoord().getY()]) {
+        if (this.grille[t.getaCase().getCoord().getX()][t.getaCase().getCoord().getY()]) {
             setGrilleCaseFalse(t.getaCase().getCoord().getX(), t.getaCase().getCoord().getY());
         }
     }
