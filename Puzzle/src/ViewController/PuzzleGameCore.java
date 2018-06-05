@@ -6,7 +6,7 @@ import Grille.Plateau;
 public class PuzzleGameCore {
 
     public static void updatePlateauColors(Agent t, Agent.Color[][] colorsTable) {
-        colorsTable[t.getaCase().getCoord().getX()][t.getaCase().getCoord().getY()] = t.getColor();
+        colorsTable[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()] = t.getColor();
     }
 
 
@@ -27,7 +27,6 @@ public class PuzzleGameCore {
     }
 
     public static void moveRight(Plateau plateau, Agent.Color[][] rectPlateau) {
-
         plateau.effaceTracePiece(plateau.getCurrentAgent());
         plateau.getCurrentAgent().moveRight(plateau);
         updatePlateauColors(plateau.getCurrentAgent(), rectPlateau);

@@ -10,28 +10,28 @@ package Grille;
  * @author markk
  */
 public class Case {
-    private Position coord;
+    private Position position;
     
     /**
-     * @return the coord
+     * @return the position
      */
     public Case(Position coord){
-    this.coord=coord;
+    this.position =coord;
     }
     public Case (){
-    this.coord=null;
+    this.position =null;
     }
-    public Position getCoord() {
-        return coord;
+    public Position getPosition() {
+        return position;
         //TetriminoI t = new TetriminoI();
         //t.
     }
 
     /**
-     * @param coord the coord to set
+     * @param position the position to set
      */
-    public void setCoord(Position coord) {
-        this.coord = coord;
+    public void setPosition(Position position) {
+        this.position = position;
     }
     
     

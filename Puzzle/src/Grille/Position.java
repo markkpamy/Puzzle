@@ -44,5 +44,14 @@ public class Position {
     public void setY(int y) {
         this.y = y;
     }
-    
+
+    public double getDistance(Position position) {
+        return Math.sqrt(Math.pow(position.getX() - this.x, 2) + Math.pow(position.getY() - this.y, 2));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Position tmp = (Position) obj;
+        return tmp.x == this.x && tmp.y == this.y;
+    }
 }

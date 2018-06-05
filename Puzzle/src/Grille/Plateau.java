@@ -5,6 +5,8 @@
  */
 package Grille;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 
 import Grille.Agent.Color;
@@ -20,6 +22,7 @@ public class Plateau extends Observable {
     private final Case[][] panCases;
     private Agent.Color[][] rectPlateau;
     private Agent currentAgent;
+    private Map<Integer, Agent> agentMap;
 
     public Plateau(int nbLignes, int nbCols) {
         this.nbCols = nbCols;
@@ -32,18 +35,27 @@ public class Plateau extends Observable {
                 this.panCases[i][j] = new Case(new Position(i, j));
             }
         }
+        agentMap = new HashMap<>();
         this.currentAgent = new Agent();
         rectPlateau = new Agent.Color[nbLignes][nbCols];
     }
 
     public boolean displayPiece(Agent t) {
         boolean result = true;
-        if (!this.grille[t.getaCase().getCoord().getX()][t.getaCase().getCoord().getY()]) {
-            setGrilleCaseTrue(t.getaCase().getCoord().getX(), t.getaCase().getCoord().getY());
+        if (!this.grille[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()]) {
+            setGrilleCaseTrue(t.getCurrentCase().getPosition().getX(), t.getCurrentCase().getPosition().getY());
         } else {
             result = false;
         }
+        t.setPlateau(this);
         return result;
+    }
+
+    public Agent findAgent(Position position) {
+        Agent agent = agentMap.entrySet().stream().filter(agentEntry -> {
+            return position.equals(agentEntry.getValue().getCurrentCase().getPosition());
+        }).findFirst().get().getValue();
+        return agent;
     }
 
 
@@ -80,8 +92,8 @@ public class Plateau extends Observable {
      * @param t
      */
     public void effaceTracePiece(Agent t) {
-        if (this.grille[t.getaCase().getCoord().getX()][t.getaCase().getCoord().getY()]) {
-            setGrilleCaseFalse(t.getaCase().getCoord().getX(), t.getaCase().getCoord().getY());
+        if (this.grille[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()]) {
+            setGrilleCaseFalse(t.getCurrentCase().getPosition().getX(), t.getCurrentCase().getPosition().getY());
         }
     }
 
@@ -145,5 +157,20 @@ public class Plateau extends Observable {
      */
     public void setRectPlateau(Color[][] rectPlateau) {
         this.rectPlateau = rectPlateau;
+    }
+
+    public Case[][] getPanCases() {
+        return panCases;
+    }
+
+    public Map<Integer, Agent> getAgentMap() {
+        return agentMap;
+    }
+
+    public void setAgentMap(Map<Integer, Agent> agentMap) {
+        this.agentMap = agentMap;
+        agentMap.forEach(((integer, agent) -> {
+            agent.setPlateau(this);
+        }));
     }
 }

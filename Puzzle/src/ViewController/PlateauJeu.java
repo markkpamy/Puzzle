@@ -6,19 +6,16 @@
 package ViewController;
 
 
-import Grille.Agent;
-import Grille.Agent.*;
-import Grille.Case;
-import Grille.Plateau;
-import Grille.PanView;
+import Grille.*;
+
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
+
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -47,10 +44,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.util.Duration;
 
 /**
  *
@@ -67,6 +62,7 @@ public class PlateauJeu extends Application {
                         alert.setHeaderText("Alerte !");
                         alert.setContentText("Le jeu est terminé");
         Plateau plateau = new Plateau(10, 10);
+        setAgents(plateau);
         //Creation du menu
         MenuBar menuBar = new MenuBar();
         // --- Menu Jeu
@@ -200,7 +196,7 @@ public class PlateauJeu extends Application {
         //gPane2.setGridLinesVisible(true);
         puzzleView.getgPane2().requestFocus();
         //Sound
-        String sound = "ressources\\tetris.wav";
+        String sound = "ressources/tetris.wav";
         Media media = new Media(new File(sound).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         MediaView mediaView = new MediaView(mediaPlayer);
@@ -291,19 +287,19 @@ public class PlateauJeu extends Application {
         //
         startGame.setOnAction((ActionEvent e) -> {
             plateau.clearPlateau();
-            puzzleView.getNaturalLanguageColors()[plateau.getCurrentAgent().getaCase().getCoord().getX()][plateau.getCurrentAgent().getaCase().getCoord().getY()] = plateau.getCurrentAgent().getColor();
+            puzzleView.getNaturalLanguageColors()[plateau.getCurrentAgent().getCurrentCase().getPosition().getX()][plateau.getCurrentAgent().getCurrentCase().getPosition().getY()] = plateau.getCurrentAgent().getColor();
             plateau.displayPiece(plateau.getCurrentAgent());
         });
         //
         plateau.addObserver((Observable o, Object arg) -> {
             if(arg instanceof Case){
             Case tmp = (Case) arg;
-            if (!puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()]) {
-                puzzleView.getRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()].setFill(convertColor(puzzleView.getNaturalLanguageColors()[tmp.getCoord().getX()][tmp.getCoord().getY()]));
-                puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()] = true;
-            } else if (puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()]) {
-                puzzleView.getRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()].setFill(Color.BLACK);
-                puzzleView.getColoredRectPan()[tmp.getCoord().getX()][tmp.getCoord().getY()] = false;
+            if (!puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()]) {
+                puzzleView.getRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()].setFill(convertColor(puzzleView.getNaturalLanguageColors()[tmp.getPosition().getX()][tmp.getPosition().getY()]));
+                puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()] = true;
+            } else if (puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()]) {
+                puzzleView.getRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()].setFill(Color.BLACK);
+                puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()] = false;
             }
            }/*
             if(arg instanceof Integer[]){
@@ -348,7 +344,20 @@ public class PlateauJeu extends Application {
 
         });
     }
-    
+
+    private void setAgents(Plateau plateau) {
+        Map<Integer, Agent> map = new HashMap<>();
+        Agent mark = new Agent(1, "Mark", new Case(new Position(2, 6)), Agent.Color.RED);
+        Agent martial = new Agent(2, "Martial", new Case(new Position(1, 4)), Agent.Color.RED);
+        Agent fabien = new Agent(3, "Fabien", new Case(new Position(7, 3)), Agent.Color.RED);
+        Agent aknine = new Agent(4, "Aknine", new Case(new Position(8, 2)), Agent.Color.RED);
+        map.put(mark.getIdAgent(), mark);
+        map.put(martial.getIdAgent(), martial);
+        map.put(fabien.getIdAgent(), fabien);
+        map.put(aknine.getIdAgent(), aknine);
+        plateau.setAgentMap(map);
+    }
+
     public Color convertColor(Agent.Color couleur){
     
     switch(couleur){
@@ -373,7 +382,8 @@ public class PlateauJeu extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-private void setTimelineStop(Timeline t){
+
+    private void setTimelineStop(Timeline t){
     t.stop();
     }
 }
