@@ -113,6 +113,7 @@ public class Agent extends Thread {
                 }
                 break;
         }
+        System.out.println(position);
         if (plateau.getGrille()[position.getX()][position.getY()]){
             sendMessage(plateau, position);
             return false;
@@ -212,16 +213,16 @@ public class Agent extends Thread {
         Position position = null;
         switch (move) {
             case UP:
-                position = new Position(currentCase.getPosition().getX() +1,currentCase.getPosition().getY());
-                break;
-            case DOWN:
                 position = new Position(currentCase.getPosition().getX() -1,currentCase.getPosition().getY());
                 break;
+            case DOWN:
+                position = new Position(currentCase.getPosition().getX() +1,currentCase.getPosition().getY());
+                break;
             case LEFT:
-                position = new Position(currentCase.getPosition().getX(),currentCase.getPosition().getY() + 1);
+                position = new Position(currentCase.getPosition().getX(),currentCase.getPosition().getY() - 1);
                 break;
             case RIGHT:
-                position = new Position(currentCase.getPosition().getX(),currentCase.getPosition().getY() - 1);
+                position = new Position(currentCase.getPosition().getX(),currentCase.getPosition().getY() + 1);
                 break;
         }
         return position;

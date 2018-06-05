@@ -6,13 +6,13 @@
 package ViewController;
 
 
-import Grille.*;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
+import Grille.*;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -190,6 +190,8 @@ public class PlateauJeu extends Application {
         //GridPane2//
         //*********//
         PanView puzzleView = new PanView(10,10);
+        plateau.setNaturalLanguageColors(puzzleView.getNaturalLanguageColors());
+
         puzzleView.getgPane2().setPrefWidth(300);
         puzzleView.getgPane2().setPrefHeight(520);
         //gPane2.setStyle("-fx-background-color: #008000;");
