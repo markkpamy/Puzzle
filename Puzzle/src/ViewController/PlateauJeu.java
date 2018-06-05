@@ -343,7 +343,6 @@ public class PlateauJeu extends Application {
     }
 
     public Color convertColor(Agent.Color couleur) {
-        System.out.println(couleur);
         switch (couleur) {
             case CYAN:
                 return Color.CYAN;

@@ -40,12 +40,14 @@ public class PuzzleGameCore {
     public static void play(Plateau plateau, PanView view) {
         plateau.clearPlateau();
         setAgents(plateau);
-        view.getNaturalLanguageColors()[plateau.getCurrentAgent().getCurrentCase().getPosition().getX()][plateau.getCurrentAgent().getCurrentCase().getPosition().getY()] = plateau.getCurrentAgent().getColor();
         Map<Integer, Agent> agentMap =  plateau.getAgentMap();
+        agentMap.values().forEach(agent -> {
+            view.getNaturalLanguageColors()[agent.getCurrentCase().getPosition().getX()][agent.getCurrentCase().getPosition().getY()] = agent.getColor();
+        });
         plateau.displayPieces();
-//        agentMap.forEach((integer, agent) -> {
-//            agent.run();
-//        });
+        agentMap.forEach((integer, agent) -> {
+            agent.run();
+        });
     }
 
     private static void setAgents(Plateau plateau) {
