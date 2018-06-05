@@ -30,11 +30,7 @@ public class Agent extends Thread {
     private Plateau plateau;
 
     public Agent(int idAgent, String nameAgent, Case currentCase, Color color) {
-        this.idAgent = idAgent;
-        this.nameAgent = nameAgent;
-        this.currentCase = currentCase;
-        this.goalCase = new Case(currentCase.getPosition());
-        this.color = color;
+        this(idAgent, nameAgent, currentCase, new Case(new Position(currentCase.getPosition().getY(), currentCase.getPosition().getX())), color);
     }
 
     public Agent(int idAgent, String nameAgent, Case currentCase, Case goalCase, Color color) {
@@ -54,7 +50,11 @@ public class Agent extends Thread {
 
     @Override
     public void start() {
+        System.out.println(currentCase.getPosition());
+        System.out.println(goalCase.getPosition());
         while (!currentCase.getPosition().equals(goalCase.getPosition())) {
+            System.out.println("dans le while");
+
             Move nextMove = chooseNextMove();
             this.plateau.effaceTracePiece(this);
             move(this.plateau, nextMove);
@@ -67,6 +67,7 @@ public class Agent extends Thread {
 
     public void move(Plateau plateau, Move move) {
         if (verifMove(plateau, move)) {
+            System.out.println(this);
             this.getCurrentCase().setPosition(positionByMove(move));
         }
     }
@@ -226,5 +227,10 @@ public class Agent extends Thread {
                 break;
         }
         return position;
+    }
+
+    @Override
+    public String toString() {
+        return "Agent:"+this.color + " position:" + this.currentCase.getPosition() + " destination:" + this.goalCase.getPosition();
     }
 }

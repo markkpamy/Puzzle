@@ -45,9 +45,7 @@ public class PuzzleGameCore {
             view.getNaturalLanguageColors()[agent.getCurrentCase().getPosition().getX()][agent.getCurrentCase().getPosition().getY()] = agent.getColor();
         });
         plateau.displayPieces();
-        agentMap.forEach((integer, agent) -> {
-            agent.run();
-        });
+        agentMap.values().forEach(Agent::start);
     }
 
     private static void setAgents(Plateau plateau) {
