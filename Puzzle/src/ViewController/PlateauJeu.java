@@ -298,23 +298,7 @@ public class PlateauJeu extends Application {
                     puzzleView.getRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()].setFill(Color.BLACK);
                     puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()] = false;
                 }
-            }/*
-            if(arg instanceof Integer[]){
-                Integer[] tmp = (Integer[]) arg;
-                if(tmp[0] == 0){
-                 scoreInput.setText(tmp[1].toString());   
-                }
-                else if(tmp[0] == 1){
-                removedLinesInput.setText(tmp[1].toString());
-                }                        
             }
-            if(arg instanceof Integer){
-                  Integer tmp1 = (Integer) arg;
-                  if(tmp1==5){
-                     timeline.stop();
-                     alert.showAndWait();
-                  }
-               } */
         });
 
         scene.setOnKeyPressed((KeyEvent e) -> {

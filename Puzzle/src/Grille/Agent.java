@@ -54,11 +54,15 @@ public class Agent extends Thread {
         System.out.println(goalCase.getPosition());
         while (!currentCase.getPosition().equals(goalCase.getPosition())) {
             System.out.println("dans le while");
-
             Move nextMove = chooseNextMove();
-            this.plateau.effaceTracePiece(this);
+//            this.plateau.effaceTracePiece(this);
             move(this.plateau, nextMove);
             this.plateau.updatePlateau(this);
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

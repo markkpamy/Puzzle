@@ -45,6 +45,9 @@ public class PuzzleGameCore {
             view.getNaturalLanguageColors()[agent.getCurrentCase().getPosition().getX()][agent.getCurrentCase().getPosition().getY()] = agent.getColor();
         });
         plateau.displayPieces();
+        agentMap.values().forEach(agent -> {
+            agent.setPlateau(plateau);
+        });
         agentMap.values().forEach(Agent::start);
     }
 
@@ -55,9 +58,9 @@ public class PuzzleGameCore {
         Agent fabien = new Agent(3, "Fabien", new Case(new Position(7, 3)), Agent.Color.GREEN);
         Agent aknine = new Agent(4, "Aknine", new Case(new Position(8, 2)), Agent.Color.YELLOW);
         map.put(mark.getIdAgent(), mark);
-        map.put(martial.getIdAgent(), martial);
-        map.put(fabien.getIdAgent(), fabien);
-        map.put(aknine.getIdAgent(), aknine);
+//        map.put(martial.getIdAgent(), martial);
+//        map.put(fabien.getIdAgent(), fabien);
+//        map.put(aknine.getIdAgent(), aknine);
         plateau.setAgentMap(map);
     }
 

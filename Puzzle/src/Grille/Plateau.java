@@ -44,6 +44,7 @@ public class Plateau extends Observable {
     public void displayPieces() {
         agentMap.values().forEach(this::displayPiece);
     }
+
     public boolean displayPiece(Agent t) {
         boolean result = true;
         if (!this.grille[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()]) {
@@ -188,4 +189,14 @@ public class Plateau extends Observable {
     public void setNaturalLanguageColors(Color[][] naturalLanguageColors) {
         this.naturalLanguageColors = naturalLanguageColors;
     }
+
+//    @Override
+//    public String toString() {
+//        String result = "";
+//        for (boolean[] i : grille) {
+//            for (boolean j : i) {
+//                if
+//            }
+//        }
+//    }
 }
