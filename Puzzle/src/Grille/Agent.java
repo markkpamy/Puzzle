@@ -72,10 +72,7 @@ public class Agent extends Thread {
     }
 
     public void moveLeft(Plateau plateau) {
-        if (!verifMoveLeft(plateau)) {
-            return;
-        }
-       this.getCurrentCase().getPosition().setY(this.getCurrentCase().getPosition().getY()-1);
+        move(plateau, Move.LEFT);
     }
 
     public void moveRight(Plateau plateau) {
@@ -122,36 +119,6 @@ public class Agent extends Thread {
         }
         return true;
     }
-
-    public boolean verifMoveUp(Plateau plateau) {
-        if ((currentCase.getPosition().getX() - 1 >= 0)) {
-            return (!plateau.getGrille()[currentCase.getPosition().getX() - 1][currentCase.getPosition().getY()]);
-        } else return false;
-
-    }
-
-
-    public boolean verifMoveLeft(Plateau plateau) {
-        if ((currentCase.getPosition().getY() - 1 >= 0)) {
-            return !plateau.getGrille()[currentCase.getPosition().getX()][currentCase.getPosition().getY() - 1];
-        } else return false;
-
-    }
-
-    public boolean verifMoveRight(Plateau plateau) {
-        if ((currentCase.getPosition().getY() + 1 <= plateau.getNbCols() - 1)) {
-            return !plateau.getGrille()[currentCase.getPosition().getX()][currentCase.getPosition().getY() + 1];
-        } else return false;
-    }
-
-    public boolean verifMoveDown(Plateau plateau) {
-
-        if (((currentCase.getPosition().getX() + 1) <= plateau.getNbLignes() - 1)) {
-            return !plateau.getGrille()[currentCase.getPosition().getX() + 1][currentCase.getPosition().getY()];
-        } else return false;
-
-    }
-
     /**
      * See which position is the closest to the goal
      */
