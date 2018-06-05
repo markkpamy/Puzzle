@@ -56,15 +56,10 @@ public class Agent extends Thread {
     public void start() {
         while (!currentCase.getPosition().equals(goalCase.getPosition())) {
             Move nextMove = chooseNextMove();
+            this.plateau.effaceTracePiece(this);
             move(this.plateau, nextMove);
+            this.plateau.updatePlateau(this);
         }
-    }
-
-    public void moveLeft(Plateau plateau) {
-        if (!verifMoveLeft(plateau)) {
-            return;
-        }
-       this.getCurrentCase().getPosition().setY(this.getCurrentCase().getPosition().getY()-1);
     }
 
     private void sendMessage(Plateau plateau, Position position) {
@@ -76,25 +71,24 @@ public class Agent extends Thread {
         }
     }
 
-    public void moveRight(Plateau plateau) {
-        if (!verifMoveRight(plateau)) {
+    public void moveLeft(Plateau plateau) {
+        if (!verifMoveLeft(plateau)) {
             return;
         }
-        this.getCurrentCase().getPosition().setY(this.getCurrentCase().getPosition().getY() + 1);
+       this.getCurrentCase().getPosition().setY(this.getCurrentCase().getPosition().getY()-1);
+    }
+
+    public void moveRight(Plateau plateau) {
+        move(plateau, Move.RIGHT);
     }
 
     public void moveDown(Plateau plateau) {
-        if (!verifMoveDown(plateau)) {
-            return;
-        }
-        this.getCurrentCase().getPosition().setX(this.getCurrentCase().getPosition().getX() + 1);
+        move(plateau, Move.DOWN);
     }
 
     public void moveUp(Plateau plateau) {
-        if (!verifMoveUp(plateau)) {
-            return;
-        }
-        this.getCurrentCase().getPosition().setX(this.getCurrentCase().getPosition().getX() - 1);
+        move(plateau, Move.UP);
+
     }
 
     public boolean verifMove(Plateau plateau, Move move) {
@@ -186,6 +180,15 @@ public class Agent extends Thread {
         return move;
     }
 
+    public static void moveUp(Plateau plateau, Agent.Color[][] rectPlateau) {
+        plateau.effaceTracePiece(plateau.getCurrentAgent());
+        plateau.getCurrentAgent().moveUp(plateau);
+        updatePlateauColors(plateau.getCurrentAgent(), rectPlateau);
+        plateau.displayPiece(plateau.getCurrentAgent());
+    }
+    public static void updatePlateauColors(Agent t, Agent.Color[][] colorsTable) {
+        colorsTable[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()] = t.getColor();
+    }
 
     /**
      * @return the color

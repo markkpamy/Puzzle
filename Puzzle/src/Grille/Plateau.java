@@ -23,6 +23,7 @@ public class Plateau extends Observable {
     private Agent.Color[][] rectPlateau;
     private Agent currentAgent;
     private Map<Integer, Agent> agentMap;
+    private Agent.Color naturalLanguageColors[][];
 
     public Plateau(int nbLignes, int nbCols) {
         this.nbCols = nbCols;
@@ -67,7 +68,10 @@ public class Plateau extends Observable {
         }
     }
 
-    ;
+    public void updatePlateau(Agent t) {
+        naturalLanguageColors[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()] = t.getColor();
+        this.displayPiece(t);
+    }
 
     public void setGrilleCaseTrue(int i, int j) {
         if (!this.grille[i][j]) {
@@ -172,5 +176,13 @@ public class Plateau extends Observable {
         agentMap.forEach(((integer, agent) -> {
             agent.setPlateau(this);
         }));
+    }
+
+    public Color[][] getNaturalLanguageColors() {
+        return naturalLanguageColors;
+    }
+
+    public void setNaturalLanguageColors(Color[][] naturalLanguageColors) {
+        this.naturalLanguageColors = naturalLanguageColors;
     }
 }
