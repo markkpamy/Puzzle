@@ -41,6 +41,9 @@ public class Plateau extends Observable {
         rectPlateau = new Agent.Color[nbLignes][nbCols];
     }
 
+    public void displayPieces() {
+        agentMap.values().forEach(this::displayPiece);
+    }
     public boolean displayPiece(Agent t) {
         boolean result = true;
         if (!this.grille[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()]) {

@@ -23,8 +23,6 @@ public class Case {
     }
     public Position getPosition() {
         return position;
-        //TetriminoI t = new TetriminoI();
-        //t.
     }
 
     /**

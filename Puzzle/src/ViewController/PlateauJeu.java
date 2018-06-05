@@ -6,7 +6,6 @@
 package ViewController;
 
 
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +47,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 /**
- *
  * @author markk
  */
 public class PlateauJeu extends Application {
@@ -58,11 +56,10 @@ public class PlateauJeu extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Game Over");
-                        alert.setHeaderText("Alerte !");
-                        alert.setContentText("Le jeu est terminé");
+        alert.setTitle("Game Over");
+        alert.setHeaderText("Alerte !");
+        alert.setContentText("Le jeu est terminé");
         Plateau plateau = new Plateau(10, 10);
-        setAgents(plateau);
         //Creation du menu
         MenuBar menuBar = new MenuBar();
         // --- Menu Jeu
@@ -71,7 +68,7 @@ public class PlateauJeu extends Application {
         MenuItem sauvegarder = new Menu("Sauvegarder");
         MenuItem charger = new Menu("Charger");
         MenuItem quitter = new Menu("Quitter");
-        menuJeu.getItems().addAll(commencer,sauvegarder,charger,quitter);
+        menuJeu.getItems().addAll(commencer, sauvegarder, charger, quitter);
         // --- Menu Score
         Menu menuScore = new Menu("Meilleurs Scores");
         // --- Menu Aide
@@ -102,7 +99,7 @@ public class PlateauJeu extends Application {
         Label removedLines = new Label();
         Text removedLinesInput = new Text("0");
         removedLinesInput.setTextAlignment(TextAlignment.CENTER);
-        removedLinesInput.setWrappingWidth(90);        
+        removedLinesInput.setWrappingWidth(90);
         removedLinesInput.setFill(Color.BLACK);
         score.setText("SCORE");
         level.setText("NIVEAU");
@@ -165,23 +162,23 @@ public class PlateauJeu extends Application {
                 + "-fx-border-color:cyan;"
                 + "-fx-border-radius:5;"
                 + "-fx-background-color:#000000");
-        scoreVbox[0]=new VBox(5);
+        scoreVbox[0] = new VBox(5);
         scoreVbox[0].getChildren().add(score);
-        gPane1.add(scoreInput,3,1);
-        scoreVbox[1]=new VBox(5);
+        gPane1.add(scoreInput, 3, 1);
+        scoreVbox[1] = new VBox(5);
         scoreVbox[1].getChildren().add(level);
         //scoreVbox.getChildren().add(levelInput);
-        scoreVbox[2]=new VBox(5);
+        scoreVbox[2] = new VBox(5);
         scoreVbox[2].getChildren().add(removedLines);
         //scoreVbox.getChildren().add(removedLinesInput);
-        gPane1.add(removedLinesInput,3,5);
+        gPane1.add(removedLinesInput, 3, 5);
         scoreVbox[0].setAlignment(Pos.CENTER);
         scoreVbox[1].setAlignment(Pos.CENTER);
         scoreVbox[2].setAlignment(Pos.CENTER);
         //gPane1.add(scoreVbox, 0, 0, 5, 6);
-        gPane1.add(scoreVbox[0],0,0, 5, 1);
-        gPane1.add(scoreVbox[1],0,2, 5, 1);
-        gPane1.add(scoreVbox[2],0,4, 5, 1);
+        gPane1.add(scoreVbox[0], 0, 0, 5, 1);
+        gPane1.add(scoreVbox[1], 0, 2, 5, 1);
+        gPane1.add(scoreVbox[2], 0, 4, 5, 1);
         gPane1.setAlignment(Pos.CENTER);
         GridPane.setHalignment(level, HPos.CENTER);
         GridPane.setHalignment(score, HPos.CENTER);
@@ -189,7 +186,7 @@ public class PlateauJeu extends Application {
         //*********//
         //GridPane2//
         //*********//
-        PanView puzzleView = new PanView(10,10);
+        PanView puzzleView = new PanView(10, 10);
         plateau.setNaturalLanguageColors(puzzleView.getNaturalLanguageColors());
 
         puzzleView.getgPane2().setPrefWidth(300);
@@ -205,7 +202,7 @@ public class PlateauJeu extends Application {
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         puzzleView.getgPane2().getChildren().add(mediaView);
         //
-        
+
         //
         /*Rectangle[][] rectPlateau = new Rectangle[20][10];
         boolean[][] colouredRectPlateau = new boolean[20][10];
@@ -288,22 +285,20 @@ public class PlateauJeu extends Application {
 
         //
         startGame.setOnAction((ActionEvent e) -> {
-            plateau.clearPlateau();
-            puzzleView.getNaturalLanguageColors()[plateau.getCurrentAgent().getCurrentCase().getPosition().getX()][plateau.getCurrentAgent().getCurrentCase().getPosition().getY()] = plateau.getCurrentAgent().getColor();
-            plateau.displayPiece(plateau.getCurrentAgent());
+            PuzzleGameCore.play(plateau, puzzleView);
         });
         //
         plateau.addObserver((Observable o, Object arg) -> {
-            if(arg instanceof Case){
-            Case tmp = (Case) arg;
-            if (!puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()]) {
-                puzzleView.getRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()].setFill(convertColor(puzzleView.getNaturalLanguageColors()[tmp.getPosition().getX()][tmp.getPosition().getY()]));
-                puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()] = true;
-            } else if (puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()]) {
-                puzzleView.getRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()].setFill(Color.BLACK);
-                puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()] = false;
-            }
-           }/*
+            if (arg instanceof Case) {
+                Case tmp = (Case) arg;
+                if (!puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()]) {
+                    puzzleView.getRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()].setFill(convertColor(puzzleView.getNaturalLanguageColors()[tmp.getPosition().getX()][tmp.getPosition().getY()]));
+                    puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()] = true;
+                } else if (puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()]) {
+                    puzzleView.getRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()].setFill(Color.BLACK);
+                    puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()] = false;
+                }
+            }/*
             if(arg instanceof Integer[]){
                 Integer[] tmp = (Integer[]) arg;
                 if(tmp[0] == 0){
@@ -324,68 +319,55 @@ public class PlateauJeu extends Application {
 
         scene.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.LEFT) {
-                
-                PuzzleGameCore.moveLeft(plateau,puzzleView.getNaturalLanguageColors());
-                
+
+                PuzzleGameCore.moveLeft(plateau, puzzleView.getNaturalLanguageColors());
+
             }
             if (e.getCode() == KeyCode.RIGHT) {
-                
-                PuzzleGameCore.moveRight(plateau,puzzleView.getNaturalLanguageColors());
+
+                PuzzleGameCore.moveRight(plateau, puzzleView.getNaturalLanguageColors());
             }
 
             if (e.getCode() == KeyCode.DOWN) {
-                
-                PuzzleGameCore.moveDown(plateau,puzzleView.getNaturalLanguageColors());
-                
+
+                PuzzleGameCore.moveDown(plateau, puzzleView.getNaturalLanguageColors());
+
             }
             if (e.getCode() == KeyCode.UP) {
 
-                PuzzleGameCore.moveUp(plateau,puzzleView.getNaturalLanguageColors());
+                PuzzleGameCore.moveUp(plateau, puzzleView.getNaturalLanguageColors());
 
             }
 
         });
     }
 
-    private void setAgents(Plateau plateau) {
-        Map<Integer, Agent> map = new HashMap<>();
-        Agent mark = new Agent(1, "Mark", new Case(new Position(2, 6)), Agent.Color.RED);
-        Agent martial = new Agent(2, "Martial", new Case(new Position(1, 4)), Agent.Color.RED);
-        Agent fabien = new Agent(3, "Fabien", new Case(new Position(7, 3)), Agent.Color.RED);
-        Agent aknine = new Agent(4, "Aknine", new Case(new Position(8, 2)), Agent.Color.RED);
-        map.put(mark.getIdAgent(), mark);
-        map.put(martial.getIdAgent(), martial);
-        map.put(fabien.getIdAgent(), fabien);
-        map.put(aknine.getIdAgent(), aknine);
-        plateau.setAgentMap(map);
+    public Color convertColor(Agent.Color couleur) {
+        System.out.println(couleur);
+        switch (couleur) {
+            case CYAN:
+                return Color.CYAN;
+            case RED:
+                return Color.RED;
+            case GREEN:
+                return Color.GREEN;
+            case PURPLE:
+                return Color.PURPLE;
+            case ORANGE:
+                return Color.ORANGE;
+            case BLUE:
+                return Color.BLUE;
+            case YELLOW:
+                return Color.YELLOW;
+        }
+        return Color.BLANCHEDALMOND;
     }
-
-    public Color convertColor(Agent.Color couleur){
-    
-    switch(couleur){
-        case CYAN:
-            return Color.CYAN;
-        case RED:
-            return Color.RED;
-        case GREEN:
-            return Color.GREEN;
-        case PURPLE:
-            return Color.PURPLE;
-        case ORANGE :
-            return Color.ORANGE;
-        case BLUE :
-            return Color.BLUE;
-        case YELLOW :
-            return Color.YELLOW;
-    }
-        return Color.BLANCHEDALMOND;  
- }
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    private void setTimelineStop(Timeline t){
-    t.stop();
+    private void setTimelineStop(Timeline t) {
+        t.stop();
     }
 }
