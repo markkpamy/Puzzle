@@ -80,56 +80,8 @@ public class PlateauJeu extends Application {
         MenuItem aPropos = new Menu("A propos");
         menuAide.getItems().addAll(regleJeu, aPropos);
         menuBar.getMenus().addAll(menuJeu, menuScore, menuAide);
-        //*********//
-        //GridPane1//
-        //*********//
-        GridPane gPane1 = new GridPane();
-        //gPane1.setGridLinesVisible(true);
-        gPane1.setPadding(new Insets(10));
-        gPane1.setPrefWidth(160);
-        gPane1.setPrefHeight(250);
         BackgroundImage myBI = new BackgroundImage(new Image(new File("ressources\\background.png").toURI().toString()),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(160, 540, false, false, true, true));
-        //then you set to your node
-        gPane1.setBackground(new Background(myBI));
-        VBox scoreVbox[] = new VBox[3];
-        Label score = new Label();
-        Text scoreInput = new Text("0");
-        scoreInput.setTextAlignment(TextAlignment.CENTER);
-        scoreInput.setWrappingWidth(90);
-        Label level = new Label();
-
-        Label removedLines = new Label();
-        Text removedLinesInput = new Text("0");
-        removedLinesInput.setTextAlignment(TextAlignment.CENTER);
-        removedLinesInput.setWrappingWidth(90);
-        removedLinesInput.setFill(Color.BLACK);
-        score.setText("SCORE");
-        level.setText("NIVEAU");
-        removedLines.setText("LIGNES");
-        setStyles(score, scoreInput, level, removedLines, removedLinesInput);
-        scoreVbox[0] = new VBox(5);
-        scoreVbox[0].getChildren().add(score);
-        gPane1.add(scoreInput, 3, 1);
-        scoreVbox[1] = new VBox(5);
-        scoreVbox[1].getChildren().add(level);
-        //scoreVbox.getChildren().add(levelInput);
-        scoreVbox[2] = new VBox(5);
-        scoreVbox[2].getChildren().add(removedLines);
-        //scoreVbox.getChildren().add(removedLinesInput);
-        gPane1.add(removedLinesInput, 3, 5);
-        scoreVbox[0].setAlignment(Pos.CENTER);
-        scoreVbox[1].setAlignment(Pos.CENTER);
-        scoreVbox[2].setAlignment(Pos.CENTER);
-        //gPane1.add(scoreVbox, 0, 0, 5, 6);
-        gPane1.add(scoreVbox[0], 0, 0, 5, 1);
-        gPane1.add(scoreVbox[1], 0, 2, 5, 1);
-        gPane1.add(scoreVbox[2], 0, 4, 5, 1);
-        gPane1.setAlignment(Pos.CENTER);
-        GridPane.setHalignment(level, HPos.CENTER);
-        GridPane.setHalignment(score, HPos.CENTER);
-        GridPane.setHalignment(removedLines, HPos.CENTER);
-        //*********//
         //GridPane2//
         //*********//
         PanView puzzleView = new PanView(10, 10);
@@ -137,8 +89,6 @@ public class PlateauJeu extends Application {
 
         puzzleView.getgPane2().setPrefWidth(300);
         puzzleView.getgPane2().setPrefHeight(520);
-        //gPane2.setStyle("-fx-background-color: #008000;");
-        //gPane2.setGridLinesVisible(true);
         puzzleView.getgPane2().requestFocus();
         //
         //*********//
@@ -187,89 +137,19 @@ public class PlateauJeu extends Application {
         gPane3.setPadding(new Insets(10));
         //BorderPane
         BorderPane border = new BorderPane();
-        border.setLeft(gPane1);
         border.setCenter(puzzleView.getgPane2());
         border.setRight(gPane3);
         border.setTop(menuBar);
-        Scene scene = new Scene(border, 640, 290);
-        primaryStage.setTitle("Tetris");
+        Scene scene = new Scene(border, 480, 290);
+        primaryStage.setTitle("Puzzle");
         primaryStage.setScene(scene);
-        primaryStage.getIcons().add(new Image(new File("ressources\\tetris-logo.png").toURI().toString()));
+        primaryStage.getIcons().add(new Image(new File("ressources\\puzzle-logo.jpg").toURI().toString()));
         primaryStage.show();
-        //timeline
-        /*Timeline timeline = new Timeline(new KeyFrame(
-                Duration.millis(100),
-                (ActionEvent ae) -> {
-                  PuzzleGameCore.play();
-        timeline.setCycleCount(Animation.INDEFINITE);
-*/
-        //
         startGame.setOnAction((ActionEvent e) -> {
             PuzzleGameCore.play(plateau, puzzleView);
         });
         //
         setObserver(plateau, puzzleView);
-    }
-
-    private void setStyles(Label score, Text scoreInput, Label level, Label removedLines, Text removedLinesInput) {
-        score.setStyle(""
-                + "-fx-font-size: 20px;"
-                + "-fx-font-weight: bold;"
-                + "-fx-text-fill:black;"
-                + "-fx-alignment:center;"
-                + "-fx-content-display:center;"
-                + "-fx-border-insets:2,2,2,2;"
-                + "-fx-border-style:solid;"
-                + "-fx-border-width:3,3,3,3;"
-                + "-fx-border-color:cyan;"
-                + "-fx-border-radius:5;");
-        scoreInput.setStyle(""
-                + "-fx-font-size: 20px;"
-                + "-fx-font-weight: bold;"
-                + "-fx-text-fill:black;"
-                + "-fx-alignment:center;"
-                + "-fx-content-display:center;"
-                + "-fx-border-insets:2,2,2,2;"
-                + "-fx-border-style:solid;"
-                + "-fx-border-width:3,3,3,3;"
-                + "-fx-border-color:cyan;"
-                + "-fx-border-radius:5;"
-                + "-fx-background-color:black");
-        level.setStyle(""
-                + "-fx-font-size: 20px;"
-                + "-fx-font-weight: bold;"
-                + "-fx-text-fill:black;"
-                + "-fx-alignment:center;"
-                + "-fx-content-display:center;"
-                + "-fx-border-insets:2,2,2,2;"
-                + "-fx-border-style:solid;"
-                + "-fx-border-width:3,3,3,3;"
-                + "-fx-border-color:cyan;"
-                + "-fx-border-radius:5;");
-
-        removedLines.setStyle(""
-                + "-fx-font-size: 20px;"
-                + "-fx-font-weight: bold;"
-                + "-fx-text-fill:black;"
-                + "-fx-alignment:center;"
-                + "-fx-content-display:center;"
-                + "-fx-border-insets:2,2,2,2;"
-                + "-fx-border-style:solid;"
-                + "-fx-border-width:3,3,3,3;"
-                + "-fx-border-color:cyan;"
-                + "-fx-border-radius:5;");
-        removedLinesInput.setStyle(""
-                + "-fx-font-size: 20px;"
-                + "-fx-font-weight: bold;"
-                + "-fx-text-fill:black;"
-                + "-fx-alignment:center;"
-                + "-fx-content-display:center;"
-                + "-fx-border-insets:2,2,2,2;"
-                + "-fx-border-style:solid;"
-                + "-fx-border-width:3,3,3,3;"
-                + "-fx-border-color:cyan;"
-                + "-fx-border-radius:5;"
-                + "-fx-background-color:#000000");
     }
 
     private void setObserver(Plateau plateau, PanView puzzleView) {
