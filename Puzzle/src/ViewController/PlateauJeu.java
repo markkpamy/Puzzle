@@ -104,64 +104,7 @@ public class PlateauJeu extends Application {
         score.setText("SCORE");
         level.setText("NIVEAU");
         removedLines.setText("LIGNES");
-        score.setStyle(""
-                + "-fx-font-size: 20px;"
-                + "-fx-font-weight: bold;"
-                + "-fx-text-fill:black;"
-                + "-fx-alignment:center;"
-                + "-fx-content-display:center;"
-                + "-fx-border-insets:2,2,2,2;"
-                + "-fx-border-style:solid;"
-                + "-fx-border-width:3,3,3,3;"
-                + "-fx-border-color:cyan;"
-                + "-fx-border-radius:5;");
-        scoreInput.setStyle(""
-                + "-fx-font-size: 20px;"
-                + "-fx-font-weight: bold;"
-                + "-fx-text-fill:black;"
-                + "-fx-alignment:center;"
-                + "-fx-content-display:center;"
-                + "-fx-border-insets:2,2,2,2;"
-                + "-fx-border-style:solid;"
-                + "-fx-border-width:3,3,3,3;"
-                + "-fx-border-color:cyan;"
-                + "-fx-border-radius:5;"
-                + "-fx-background-color:black");
-        level.setStyle(""
-                + "-fx-font-size: 20px;"
-                + "-fx-font-weight: bold;"
-                + "-fx-text-fill:black;"
-                + "-fx-alignment:center;"
-                + "-fx-content-display:center;"
-                + "-fx-border-insets:2,2,2,2;"
-                + "-fx-border-style:solid;"
-                + "-fx-border-width:3,3,3,3;"
-                + "-fx-border-color:cyan;"
-                + "-fx-border-radius:5;");
-
-        removedLines.setStyle(""
-                + "-fx-font-size: 20px;"
-                + "-fx-font-weight: bold;"
-                + "-fx-text-fill:black;"
-                + "-fx-alignment:center;"
-                + "-fx-content-display:center;"
-                + "-fx-border-insets:2,2,2,2;"
-                + "-fx-border-style:solid;"
-                + "-fx-border-width:3,3,3,3;"
-                + "-fx-border-color:cyan;"
-                + "-fx-border-radius:5;");
-        removedLinesInput.setStyle(""
-                + "-fx-font-size: 20px;"
-                + "-fx-font-weight: bold;"
-                + "-fx-text-fill:black;"
-                + "-fx-alignment:center;"
-                + "-fx-content-display:center;"
-                + "-fx-border-insets:2,2,2,2;"
-                + "-fx-border-style:solid;"
-                + "-fx-border-width:3,3,3,3;"
-                + "-fx-border-color:cyan;"
-                + "-fx-border-radius:5;"
-                + "-fx-background-color:#000000");
+        setStyles(score, scoreInput, level, removedLines, removedLinesInput);
         scoreVbox[0] = new VBox(5);
         scoreVbox[0].getChildren().add(score);
         gPane1.add(scoreInput, 3, 1);
@@ -195,24 +138,6 @@ public class PlateauJeu extends Application {
         //gPane2.setGridLinesVisible(true);
         puzzleView.getgPane2().requestFocus();
         //
-
-        //
-        /*Rectangle[][] rectPlateau = new Rectangle[20][10];
-        boolean[][] colouredRectPlateau = new boolean[20][10];
-        Color[][] colorsRectPlateau = new Color[20][10];
-        Couleur[][] couleursRectPlateau = new Couleur[20][10];
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 10; j++) {
-                rectPlateau[i][j] = new Rectangle(i, j, 30, 25);
-                rectPlateau[i][j].setFill(Color.BLACK);
-                rectPlateau[i][j].setArcWidth(10.0);
-                rectPlateau[i][j].setArcHeight(10.0);
-                colouredRectPlateau[i][j] = false;
-                colorsRectPlateau[i][j] = Color.BLACK;
-                rectPlateau[i][j].setStroke(Color.WHITE);
-                gPane2.add(rectPlateau[i][j], j, i);
-            }
-        }*/
         //*********//
         //GridPane3//
         //*********//              
@@ -275,6 +200,71 @@ public class PlateauJeu extends Application {
             PuzzleGameCore.play(plateau, puzzleView);
         });
         //
+        setObserver(plateau, puzzleView);
+    }
+
+    private void setStyles(Label score, Text scoreInput, Label level, Label removedLines, Text removedLinesInput) {
+        score.setStyle(""
+                + "-fx-font-size: 20px;"
+                + "-fx-font-weight: bold;"
+                + "-fx-text-fill:black;"
+                + "-fx-alignment:center;"
+                + "-fx-content-display:center;"
+                + "-fx-border-insets:2,2,2,2;"
+                + "-fx-border-style:solid;"
+                + "-fx-border-width:3,3,3,3;"
+                + "-fx-border-color:cyan;"
+                + "-fx-border-radius:5;");
+        scoreInput.setStyle(""
+                + "-fx-font-size: 20px;"
+                + "-fx-font-weight: bold;"
+                + "-fx-text-fill:black;"
+                + "-fx-alignment:center;"
+                + "-fx-content-display:center;"
+                + "-fx-border-insets:2,2,2,2;"
+                + "-fx-border-style:solid;"
+                + "-fx-border-width:3,3,3,3;"
+                + "-fx-border-color:cyan;"
+                + "-fx-border-radius:5;"
+                + "-fx-background-color:black");
+        level.setStyle(""
+                + "-fx-font-size: 20px;"
+                + "-fx-font-weight: bold;"
+                + "-fx-text-fill:black;"
+                + "-fx-alignment:center;"
+                + "-fx-content-display:center;"
+                + "-fx-border-insets:2,2,2,2;"
+                + "-fx-border-style:solid;"
+                + "-fx-border-width:3,3,3,3;"
+                + "-fx-border-color:cyan;"
+                + "-fx-border-radius:5;");
+
+        removedLines.setStyle(""
+                + "-fx-font-size: 20px;"
+                + "-fx-font-weight: bold;"
+                + "-fx-text-fill:black;"
+                + "-fx-alignment:center;"
+                + "-fx-content-display:center;"
+                + "-fx-border-insets:2,2,2,2;"
+                + "-fx-border-style:solid;"
+                + "-fx-border-width:3,3,3,3;"
+                + "-fx-border-color:cyan;"
+                + "-fx-border-radius:5;");
+        removedLinesInput.setStyle(""
+                + "-fx-font-size: 20px;"
+                + "-fx-font-weight: bold;"
+                + "-fx-text-fill:black;"
+                + "-fx-alignment:center;"
+                + "-fx-content-display:center;"
+                + "-fx-border-insets:2,2,2,2;"
+                + "-fx-border-style:solid;"
+                + "-fx-border-width:3,3,3,3;"
+                + "-fx-border-color:cyan;"
+                + "-fx-border-radius:5;"
+                + "-fx-background-color:#000000");
+    }
+
+    private void setObserver(Plateau plateau, PanView puzzleView) {
         plateau.addObserver((Observable o, Object arg) -> {
             if (arg instanceof Case) {
                 Case tmp = (Case) arg;
@@ -286,30 +276,6 @@ public class PlateauJeu extends Application {
                     puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()] = false;
                 }
             }
-        });
-
-        scene.setOnKeyPressed((KeyEvent e) -> {
-            if (e.getCode() == KeyCode.LEFT) {
-
-                PuzzleGameCore.moveLeft(plateau, puzzleView.getNaturalLanguageColors());
-
-            }
-            if (e.getCode() == KeyCode.RIGHT) {
-
-                PuzzleGameCore.moveRight(plateau, puzzleView.getNaturalLanguageColors());
-            }
-
-            if (e.getCode() == KeyCode.DOWN) {
-
-                PuzzleGameCore.moveDown(plateau, puzzleView.getNaturalLanguageColors());
-
-            }
-            if (e.getCode() == KeyCode.UP) {
-
-                PuzzleGameCore.moveUp(plateau, puzzleView.getNaturalLanguageColors());
-
-            }
-
         });
     }
 

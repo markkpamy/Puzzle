@@ -76,21 +76,6 @@ public class Agent implements Runnable {
         }
     }
 
-    public void moveLeft(Plateau plateau) {
-        move(plateau, Move.LEFT);
-    }
-
-    public void moveRight(Plateau plateau) {
-        move(plateau, Move.RIGHT);
-    }
-
-    public void moveDown(Plateau plateau) {
-        move(plateau, Move.DOWN);
-    }
-
-    public void moveUp(Plateau plateau) {
-        move(plateau, Move.UP);
-    }
 
     public boolean verifMove(Plateau plateau, Move move) {
         boolean result = true;
@@ -150,16 +135,6 @@ public class Agent implements Runnable {
             move = Move.DOWN;
         }
         return move;
-    }
-
-    public static void moveUp(Plateau plateau, Agent.Color[][] rectPlateau) {
-        plateau.effaceTracePiece(plateau.getCurrentAgent());
-        plateau.getCurrentAgent().moveUp(plateau);
-        updatePlateauColors(plateau.getCurrentAgent(), rectPlateau);
-        plateau.displayPiece(plateau.getCurrentAgent());
-    }
-    public static void updatePlateauColors(Agent t, Agent.Color[][] colorsTable) {
-        colorsTable[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()] = t.getColor();
     }
 
     /**
