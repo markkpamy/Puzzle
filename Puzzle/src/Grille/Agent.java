@@ -54,9 +54,7 @@ public class Agent implements Runnable {
 
     @Override
     public void run() {
-       // System.out.println(currentCase.getPosition());
-       // System.out.println(goalCase.getPosition());
-        while (!currentCase.getPosition().equals(goalCase.getPosition())) {
+        while (!this.plateau.isFinished()) {
             //System.out.println("dans le while");
             Move nextMove = chooseNextMove();
             this.plateau.effaceTracePiece(this);
@@ -234,6 +232,10 @@ public class Agent implements Runnable {
                 break;
         }
         return position;
+    }
+
+    public boolean isGoalReached() {
+        return currentCase.getPosition().equals(goalCase.getPosition());
     }
 
     @Override

@@ -8,6 +8,7 @@ package Grille;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Optional;
 
 import Grille.Agent.Color;
 
@@ -57,10 +58,10 @@ public class Plateau extends Observable {
     }
 
     public Agent findAgent(Position position) {
-        Agent agent = agentMap.entrySet().stream().filter(agentEntry -> {
-            return position.equals(agentEntry.getValue().getCurrentCase().getPosition());
-        }).findFirst().get().getValue();
-        return agent;
+        Optional<Map.Entry<Integer, Agent>> optionalAgent = agentMap.entrySet().stream()
+                .filter(agentEntry -> position.equals(agentEntry.getValue().getCurrentCase().getPosition()))
+                .findFirst();
+        return optionalAgent.isPresent() ? optionalAgent.get().getValue() : null;
     }
 
 
@@ -190,13 +191,9 @@ public class Plateau extends Observable {
         this.naturalLanguageColors = naturalLanguageColors;
     }
 
-//    @Override
-//    public String toString() {
-//        String result = "";
-//        for (boolean[] i : grille) {
-//            for (boolean j : i) {
-//                if
-//            }
-//        }
-//    }
+    public boolean isFinished() {
+        agentMap.values().removeIf(Agent::isGoalReached);
+        return agentMap.isEmpty();
+    }
+
 }
