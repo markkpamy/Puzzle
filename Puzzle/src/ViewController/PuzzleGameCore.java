@@ -50,10 +50,14 @@ public class PuzzleGameCore {
         Agent martial = new Agent(2, "Martial", new Case(new Position(1, 4)), Agent.Color.BLUE);
         Agent fabien = new Agent(3, "Fabien", new Case(new Position(7, 3)), Agent.Color.GREEN);
         Agent aknine = new Agent(4, "Aknine", new Case(new Position(8, 2)), Agent.Color.YELLOW);
+        Agent hulk = new Agent(5, "Hulk", new Case(new Position(1, 5)), Agent.Color.CYAN);
+        Agent cptAmerica = new Agent(6, "cptAmerica", new Case(new Position(3, 1)), Agent.Color.ORANGE);
         map.put(martial.getIdAgent(), martial);
         map.put(fabien.getIdAgent(), fabien);
         map.put(aknine.getIdAgent(), aknine);
         map.put(mark.getIdAgent(), mark);
+        map.put(hulk.getIdAgent(), hulk);
+        map.put(cptAmerica.getIdAgent(), cptAmerica);
         Communication.getInstance().setCommunication(new ArrayList<Agent>(map.values()));
         plateau.setAgentMap(map);
     }
