@@ -142,8 +142,8 @@ public class PlateauJeu extends Application {
         border.setCenter(puzzleView.getgPane2());
         border.setRight(gPane3);
         border.setTop(menuBar);
-        Scene scene = new Scene(border, 640, 290);
-        primaryStage.setTitle("Tetris");
+        Scene scene = new Scene(border, 480, 290);
+        primaryStage.setTitle("Puzzle");
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(new File("ressources\\puzzle-logo.jpg").toURI().toString()));
         primaryStage.show();
