@@ -62,7 +62,6 @@ public class PlateauJeu extends Application {
         alert.setTitle("Game Over");
         alert.setHeaderText("Alerte !");
         alert.setContentText("Le jeu est terminé");
-        Plateau plateau = new Plateau(10, 10);
         //Creation du menu
         MenuBar menuBar = new MenuBar();
         // --- Menu Jeu
@@ -85,12 +84,9 @@ public class PlateauJeu extends Application {
         //GridPane2//
         //*********//
         PanView puzzleView = new PanView(10, 10);
-        plateau.setNaturalLanguageColors(puzzleView.getNaturalLanguageColors());
 
         puzzleView.getgPane2().setPrefWidth(300);
         puzzleView.getgPane2().setPrefHeight(520);
-        //gPane2.setStyle("-fx-background-color: #008000;");
-        //gPane2.setGridLinesVisible(true);
         puzzleView.getgPane2().requestFocus();
         //
         //*********//
@@ -148,65 +144,9 @@ public class PlateauJeu extends Application {
         primaryStage.getIcons().add(new Image(new File("ressources\\puzzle-logo.jpg").toURI().toString()));
         primaryStage.show();
         startGame.setOnAction((ActionEvent e) -> {
-            PuzzleGameCore.play(plateau, puzzleView);
+            PuzzleGameCore.play(puzzleView);
         });
         //
-        plateau.addObserver((Observable o, Object arg) -> {
-            if (arg instanceof Case) {
-                Case tmp = (Case) arg;
-                if (!puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()]) {
-                    puzzleView.getRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()].setFill(convertColor(puzzleView.getNaturalLanguageColors()[tmp.getPosition().getX()][tmp.getPosition().getY()]));
-                    puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()] = true;
-                } else if (puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()]) {
-                    puzzleView.getRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()].setFill(Color.BLACK);
-                    puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()] = false;
-                }
-            }
-        });
-
-        scene.setOnKeyPressed((KeyEvent e) -> {
-            if (e.getCode() == KeyCode.LEFT) {
-
-                PuzzleGameCore.moveLeft(plateau, puzzleView.getNaturalLanguageColors());
-
-            }
-            if (e.getCode() == KeyCode.RIGHT) {
-
-                PuzzleGameCore.moveRight(plateau, puzzleView.getNaturalLanguageColors());
-            }
-
-            if (e.getCode() == KeyCode.DOWN) {
-
-                PuzzleGameCore.moveDown(plateau, puzzleView.getNaturalLanguageColors());
-
-            }
-            if (e.getCode() == KeyCode.UP) {
-
-                PuzzleGameCore.moveUp(plateau, puzzleView.getNaturalLanguageColors());
-
-            }
-
-        });
-    }
-
-    public Color convertColor(Agent.Color couleur) {
-        switch (couleur) {
-            case CYAN:
-                return Color.CYAN;
-            case RED:
-                return Color.RED;
-            case GREEN:
-                return Color.GREEN;
-            case PURPLE:
-                return Color.PURPLE;
-            case ORANGE:
-                return Color.ORANGE;
-            case BLUE:
-                return Color.BLUE;
-            case YELLOW:
-                return Color.YELLOW;
-        }
-        return Color.BLANCHEDALMOND;
     }
 
     public static void main(String[] args) {
