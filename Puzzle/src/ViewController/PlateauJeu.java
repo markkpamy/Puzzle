@@ -147,14 +147,6 @@ public class PlateauJeu extends Application {
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(new File("ressources\\puzzle-logo.jpg").toURI().toString()));
         primaryStage.show();
-        //timeline
-        /*Timeline timeline = new Timeline(new KeyFrame(
-                Duration.millis(100),
-                (ActionEvent ae) -> {
-                  PuzzleGameCore.play();
-        timeline.setCycleCount(Animation.INDEFINITE);
-*/
-        //
         startGame.setOnAction((ActionEvent e) -> {
             PuzzleGameCore.play(plateau, puzzleView);
         });
