@@ -74,14 +74,16 @@ public class Agent implements Runnable {
         if ((message = Communication.getInstance().readMessage(this)) != null) {
             switch (message.getType()) {
                 case "request":
-
                     switch (message.getAction()) {
                         case "move":
+                            Move nextMove = chooseNextMove();
+                            this.plateau.effaceTracePiece(this);
+                            move(this.plateau, nextMove);
+                            this.plateau.updatePlateau(this);
                             break;
                         default:
                             break;
                     }
-
                     break;
                 default:
                     break;
