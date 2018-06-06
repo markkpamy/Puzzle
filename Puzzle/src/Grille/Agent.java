@@ -50,10 +50,10 @@ public class Agent implements Runnable {
 
     @Override
     public void run() {
-        System.out.println(currentCase.getPosition());
-        System.out.println(goalCase.getPosition());
+       // System.out.println(currentCase.getPosition());
+       // System.out.println(goalCase.getPosition());
         while (!currentCase.getPosition().equals(goalCase.getPosition())) {
-            System.out.println("dans le while");
+            //System.out.println("dans le while");
             Move nextMove = chooseNextMove();
             this.plateau.effaceTracePiece(this);
             move(this.plateau, nextMove);
@@ -69,9 +69,9 @@ public class Agent implements Runnable {
     private void sendMessage(Plateau plateau, Position position) {
     }
 
-    public void move(Plateau plateau, Move move) {
+    public synchronized void move(Plateau plateau, Move move) {
         if (verifMove(plateau, move)) {
-            System.out.println(this);
+            //System.out.println(this);
             this.getCurrentCase().setPosition(positionByMove(move));
         }
     }
@@ -117,7 +117,7 @@ public class Agent implements Runnable {
                 }
                 break;
         }
-        System.out.println(position);
+       // System.out.println(position);
         if (plateau.getGrille()[position.getX()][position.getY()]){
             sendMessage(plateau, position);
             return false;
@@ -127,7 +127,7 @@ public class Agent implements Runnable {
     /**
      * See which position is the closest to the goal
      */
-    public Move chooseNextMove() {
+    public synchronized Move chooseNextMove() {
         // right
         Move move = Move.RIGHT;
         Position right = positionByMove(move);

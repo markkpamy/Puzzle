@@ -45,7 +45,7 @@ public class Plateau extends Observable {
         agentMap.values().forEach(this::displayPiece);
     }
 
-    public boolean displayPiece(Agent t) {
+    public synchronized boolean displayPiece(Agent t) {
         boolean result = true;
         if (!this.grille[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()]) {
             setGrilleCaseTrue(t.getCurrentCase().getPosition().getX(), t.getCurrentCase().getPosition().getY());
@@ -72,7 +72,7 @@ public class Plateau extends Observable {
         }
     }
 
-    public void updatePlateau(Agent t) {
+    public synchronized void updatePlateau(Agent t) {
         naturalLanguageColors[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()] = t.getColor();
         this.displayPiece(t);
     }
@@ -99,7 +99,7 @@ public class Plateau extends Observable {
     /**
      * @param t
      */
-    public void effaceTracePiece(Agent t) {
+    public synchronized void  effaceTracePiece(Agent t) {
         if (this.grille[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()]) {
             setGrilleCaseFalse(t.getCurrentCase().getPosition().getX(), t.getCurrentCase().getPosition().getY());
         }
