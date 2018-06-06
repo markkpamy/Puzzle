@@ -28,7 +28,6 @@ public class PuzzleGameCore {
         plateau.effaceTracePiece(plateau.getCurrentAgent());
         plateau.getCurrentAgent().moveRight(plateau);
         plateau.updatePlateau(plateau.getCurrentAgent());
-
     }
 
     public static void moveDown(Plateau plateau, Agent.Color[][] rectPlateau) {
@@ -48,7 +47,7 @@ public class PuzzleGameCore {
         agentMap.values().forEach(agent -> {
             agent.setPlateau(plateau);
         });
-        agentMap.values().forEach(Agent::start);
+        agentMap.values().forEach(agent -> {new Thread(agent).start();});
     }
 
     private static void setAgents(Plateau plateau) {
@@ -58,9 +57,9 @@ public class PuzzleGameCore {
         Agent fabien = new Agent(3, "Fabien", new Case(new Position(7, 3)), Agent.Color.GREEN);
         Agent aknine = new Agent(4, "Aknine", new Case(new Position(8, 2)), Agent.Color.YELLOW);
         map.put(mark.getIdAgent(), mark);
-//        map.put(martial.getIdAgent(), martial);
-//        map.put(fabien.getIdAgent(), fabien);
-//        map.put(aknine.getIdAgent(), aknine);
+        map.put(martial.getIdAgent(), martial);
+        map.put(fabien.getIdAgent(), fabien);
+        map.put(aknine.getIdAgent(), aknine);
         plateau.setAgentMap(map);
     }
 
