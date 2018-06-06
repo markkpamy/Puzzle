@@ -8,7 +8,7 @@ public class Communication {
 
     private static Communication INSTANCE = null;
 
-    private HashMap<Agent, LinkedList<Message>> messages;
+    private HashMap<Integer, LinkedList<Message>> messages;
 
     public static Communication getInstance(){
         return INSTANCE == null ? INSTANCE = new Communication(): INSTANCE;
@@ -20,15 +20,23 @@ public class Communication {
 
     public void setCommunication(ArrayList<Agent> listAgents){
         for (Agent agent: listAgents) {
-            messages.put(agent,new LinkedList<>());
+            messages.put(agent.getIdAgent(),new LinkedList<>());
         }
     }
 
     public Message readMessage(Agent agent){
-        return messages.get(agent).pollFirst();
+        return this.messages.get(agent.getIdAgent()).pollFirst();
     }
 
     public void writeMessage(Agent agent, Message message) {
-        messages.get(agent).addLast(message);
+        this.messages.get(agent.getIdAgent()).addLast(message);
+    }
+
+    public void displayMessages(){
+        this.messages.forEach((a,b) -> System.out.println(a + " " + b));
+    }
+
+    public void displayMessagesofAgent(Agent agent){
+        System.out.println(this.messages.get(agent.getIdAgent()));
     }
 }
