@@ -1,8 +1,10 @@
 package ViewController;
 
+import Comm.Communication;
 import Grille.*;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -52,6 +54,7 @@ public class PuzzleGameCore {
         map.put(fabien.getIdAgent(), fabien);
         map.put(aknine.getIdAgent(), aknine);
         map.put(mark.getIdAgent(), mark);
+        Communication.getInstance().setCommunication(new ArrayList<Agent>(map.values()));
         plateau.setAgentMap(map);
     }
 
