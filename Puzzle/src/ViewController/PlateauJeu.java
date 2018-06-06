@@ -197,13 +197,6 @@ public class PlateauJeu extends Application {
         //gPane2.setStyle("-fx-background-color: #008000;");
         //gPane2.setGridLinesVisible(true);
         puzzleView.getgPane2().requestFocus();
-        //Sound
-        String sound = "ressources/tetris.wav";
-        Media media = new Media(new File(sound).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        MediaView mediaView = new MediaView(mediaPlayer);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        puzzleView.getgPane2().getChildren().add(mediaView);
         //
 
         //
@@ -242,16 +235,10 @@ public class PlateauJeu extends Application {
         Image songImage = new Image(new File("ressources\\song.png").toURI().toString());
         Image pauseImage = new Image(new File("ressources\\pause.png").toURI().toString());
         Button song = new Button("", new ImageView(songImage));
-        song.setOnAction((ActionEvent e) -> {
-            mediaPlayer.play();
-        });
         song.setMaxWidth(20);
         song.setPrefWidth(20);
         song.setPrefHeight(20);
         Button mute = new Button("", new ImageView(muteImage));
-        mute.setOnAction((ActionEvent e) -> {
-            mediaPlayer.stop();
-        });
         //mute.setPadding(new Insets(10, 0, 10, 0));
         mute.setMaxWidth(20);
         mute.setPrefWidth(20);
