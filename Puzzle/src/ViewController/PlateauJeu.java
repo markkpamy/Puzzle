@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Observable;
 
 import Grille.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -45,6 +47,7 @@ import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
 
 /**
  * @author markk
@@ -84,7 +87,7 @@ public class PlateauJeu extends Application {
         //gPane1.setGridLinesVisible(true);
         gPane1.setPadding(new Insets(10));
         gPane1.setPrefWidth(160);
-        gPane1.setPrefHeight(540);
+        gPane1.setPrefHeight(250);
         BackgroundImage myBI = new BackgroundImage(new Image(new File("ressources\\background.png").toURI().toString()),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(160, 540, false, false, true, true));
         //then you set to your node
@@ -188,13 +191,18 @@ public class PlateauJeu extends Application {
         border.setCenter(puzzleView.getgPane2());
         border.setRight(gPane3);
         border.setTop(menuBar);
-        Scene scene = new Scene(border, 640, 545);
+        Scene scene = new Scene(border, 640, 290);
         primaryStage.setTitle("Tetris");
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(new File("ressources\\tetris-logo.png").toURI().toString()));
         primaryStage.show();
         //timeline
-
+        /*Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(100),
+                (ActionEvent ae) -> {
+                  PuzzleGameCore.play();
+        timeline.setCycleCount(Animation.INDEFINITE);
+*/
         //
         startGame.setOnAction((ActionEvent e) -> {
             PuzzleGameCore.play(plateau, puzzleView);

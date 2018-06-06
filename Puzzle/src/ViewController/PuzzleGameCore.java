@@ -18,22 +18,20 @@ public class PuzzleGameCore {
         agentMap.values().forEach(agent -> {
             agent.setPlateau(plateau);
         });
-        agentMap.values().forEach(agent -> {
-            Thread thread = new Thread(agent);
-            thread.start();
+        agentMap.values().forEach(agent -> { new Thread(agent).start();
         });
     }
 
     private static void setAgents(Plateau plateau) {
         Map<Integer, Agent> map = new HashMap<>();
         Agent mark = new Agent(1, "Mark", new Case(new Position(2, 6)), Agent.Color.RED);
-        map.put(mark.getIdAgent(), mark);
         Agent martial = new Agent(2, "Martial", new Case(new Position(1, 4)), Agent.Color.BLUE);
         Agent fabien = new Agent(3, "Fabien", new Case(new Position(7, 3)), Agent.Color.GREEN);
         Agent aknine = new Agent(4, "Aknine", new Case(new Position(8, 2)), Agent.Color.YELLOW);
         map.put(martial.getIdAgent(), martial);
         map.put(fabien.getIdAgent(), fabien);
         map.put(aknine.getIdAgent(), aknine);
+        map.put(mark.getIdAgent(), mark);
         plateau.setAgentMap(map);
     }
 
