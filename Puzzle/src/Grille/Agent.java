@@ -58,6 +58,11 @@ public class Agent implements Runnable {
             this.plateau.effaceTracePiece(this);
             move(this.plateau, nextMove);
             this.plateau.updatePlateau(this);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
