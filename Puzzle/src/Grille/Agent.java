@@ -11,6 +11,7 @@ import Comm.Message;
 import java.util.List;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.decrementExact;
 
 /**
  * @author markk
@@ -61,13 +62,33 @@ public class Agent implements Runnable {
             this.plateau.effaceTracePiece(this);
             move(this.plateau, nextMove);
             this.plateau.updatePlateau(this);
-            System.out.println(Communication.getInstance().readMessage(this));
-
+            receiveAndMove();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void receiveAndMove() {
+        Message message = null;
+        if ((message = Communication.getInstance().readMessage(this)) != null) {
+            switch (message.getType()) {
+                case "request":
+
+                    switch (message.getAction()) {
+                        case "move":
+                            break;
+                        default:
+                            break;
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 
