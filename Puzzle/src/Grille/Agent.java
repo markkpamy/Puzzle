@@ -12,7 +12,7 @@ import static java.lang.Math.abs;
 /**
  * @author markk
  */
-public class Agent extends Thread {
+public class Agent implements Runnable {
 
     public enum Color {
         CYAN, GREEN, RED, YELLOW, BLUE, PURPLE, BLACK, ORANGE
@@ -49,20 +49,15 @@ public class Agent extends Thread {
     }
 
     @Override
-    public void start() {
+    public void run() {
         System.out.println(currentCase.getPosition());
         System.out.println(goalCase.getPosition());
         while (!currentCase.getPosition().equals(goalCase.getPosition())) {
             System.out.println("dans le while");
             Move nextMove = chooseNextMove();
-//            this.plateau.effaceTracePiece(this);
+            this.plateau.effaceTracePiece(this);
             move(this.plateau, nextMove);
             this.plateau.updatePlateau(this);
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -90,7 +85,6 @@ public class Agent extends Thread {
 
     public void moveUp(Plateau plateau) {
         move(plateau, Move.UP);
-
     }
 
     public boolean verifMove(Plateau plateau, Move move) {

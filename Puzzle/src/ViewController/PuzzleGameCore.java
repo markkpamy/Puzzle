@@ -48,7 +48,10 @@ public class PuzzleGameCore {
         agentMap.values().forEach(agent -> {
             agent.setPlateau(plateau);
         });
-        agentMap.values().forEach(Agent::start);
+        agentMap.values().forEach(agent -> {
+            Thread thread = new Thread(agent);
+            thread.run();
+        });
     }
 
     private static void setAgents(Plateau plateau) {
