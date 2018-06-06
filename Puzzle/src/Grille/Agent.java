@@ -92,8 +92,10 @@ public class Agent implements Runnable {
 
     private void sendMessage(Plateau plateau, Position position) {
         Agent agent = plateau.findAgent(position);
-        Message message = new Message(this,agent,"request","move",goalCase.getPosition());
-        Communication.getInstance().writeMessage(agent,message);
+        if (agent!= null) {
+            Message message = new Message(this, agent, "request", "move", goalCase.getPosition());
+            Communication.getInstance().writeMessage(agent, message);
+        }
     }
 
     public synchronized void move(Plateau plateau, Move move) {
