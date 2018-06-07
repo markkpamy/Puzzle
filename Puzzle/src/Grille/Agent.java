@@ -55,16 +55,20 @@ public class Agent implements Runnable {
     public void run() {
         while (!this.plateau.isFinished()) {
             //System.out.println("dans le while");
-            Move nextMove = chooseNextMove();
-            this.plateau.effaceTracePiece(this);
-            move(this.plateau, nextMove);
-            this.plateau.updatePlateau(this);
+            setUp();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private synchronized void setUp() {
+        Move nextMove = chooseNextMove();
+        this.plateau.effaceTracePiece(this);
+        move(this.plateau, nextMove);
+        this.plateau.updatePlateau(this);
     }
 
     private void sendMessage(Plateau plateau, Position position) {

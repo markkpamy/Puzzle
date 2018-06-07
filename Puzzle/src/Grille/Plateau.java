@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import Grille.Agent.Color;
 
@@ -192,8 +193,7 @@ public class Plateau extends Observable {
     }
 
     public boolean isFinished() {
-        agentMap.values().removeIf(Agent::isGoalReached);
-        return agentMap.isEmpty();
+        return agentMap.values().stream().allMatch(Agent::isGoalReached);
     }
 
 }
