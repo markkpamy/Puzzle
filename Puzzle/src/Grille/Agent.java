@@ -8,7 +8,9 @@ package Grille;
 import Comm.Communication;
 import Comm.Message;
 
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static java.lang.Math.abs;
 
@@ -65,9 +67,14 @@ public class Agent implements Runnable {
     }
 
     private synchronized void setUp() {
-        Move nextMove = chooseNextMove();
+        Map<Move, Position> nextMoves = chooseNextMove();
         this.plateau.effaceTracePiece(this);
-        move(this.plateau, nextMove);
+        boolean succeed = false;
+        for (Map.Entry<Move, Position> entry : nextMoves.entrySet()) {
+            if (move(this.plateau, entry.getKey())){
+                break;
+            }
+        }
         this.plateau.updatePlateau(this);
     }
 
@@ -77,11 +84,13 @@ public class Agent implements Runnable {
         Communication.getInstance().writeMessage(agent,message);
     }
 
-    public synchronized void move(Plateau plateau, Move move) {
+    public boolean move(Plateau plateau, Move move) {
         if (verifMove(plateau, move)) {
             //System.out.println(this);
             this.getCurrentCase().setPosition(positionByMove(move));
+            return true;
         }
+        return false;
     }
 
 
@@ -120,29 +129,31 @@ public class Agent implements Runnable {
     /**
      * See which position is the closest to the goal
      */
-    public synchronized Move chooseNextMove() {
+    public Map<Move, Position> chooseNextMove() {
         // right
         Move move = Move.RIGHT;
+        Map<Move, Position> positions = new HashMap<>();
         Position right = positionByMove(move);
         Position left = positionByMove(Move.LEFT);
         Position up = positionByMove(Move.UP);
         Position down = positionByMove(Move.DOWN);
-        double i_best = goalCase.getPosition().getDistance(right);
-        double i_left = goalCase.getPosition().getDistance(left);
-        if (i_left < i_best) {
-            i_best = i_left;
-            move = Move.LEFT;
-        }
-        double i_up = goalCase.getPosition().getDistance(up);
-        if (i_up < i_best) {
-            i_best = i_up;
-            move = Move.UP;
-        }
-        double i_down = goalCase.getPosition().getDistance(down);
-        if (i_down < i_best) {
-            move = Move.DOWN;
-        }
-        return move;
+        positions.put(Move.RIGHT,right);
+        positions.put(Move.LEFT,left);
+        positions.put(Move.UP,up);
+        positions.put(Move.DOWN,down);
+        Map<Move, Position> result2 = new LinkedHashMap<>();
+        positions.entrySet().stream()
+                .sorted(new Comparator<Map.Entry<Move, Position>>() {
+                    @Override
+                    public int compare(Map.Entry<Move, Position> o1, Map.Entry<Move, Position> o2) {
+                        Integer a = (int)goalCase.getPosition().getDistance(o1.getValue());
+                        Integer b = (int)goalCase.getPosition().getDistance(o2.getValue());
+                        return a.compareTo(b);
+                    }
+                })
+                .forEachOrdered(x -> result2.put(x.getKey(), x.getValue()));
+        
+        return result2;
     }
 
     /**
