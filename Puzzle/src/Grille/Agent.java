@@ -150,7 +150,7 @@ public class Agent implements Runnable {
         }
        // System.out.println(position);
         if (plateau.getGrille()[position.getX()][position.getY()]){
-            System.out.println("bloque");
+//            System.out.println("bloque");
             sendMessage(plateau, position);
             return false;
         }
@@ -161,15 +161,22 @@ public class Agent implements Runnable {
         Move move = Move.RIGHT;
         Map<Move, Position> positions = new HashMap<>();
         Map<Move, Position> positionsResult = new HashMap<>();
-        Position right = positionByMove(move);
-        Position left = positionByMove(Move.LEFT);
-        Position up = positionByMove(Move.UP);
-        Position down = positionByMove(Move.DOWN);
-        positions.put(Move.RIGHT,right);
-        positions.put(Move.LEFT,left);
-        positions.put(Move.UP,up);
-        positions.put(Move.DOWN,down);
-
+        List<Integer> fourthFirstNumber = new ArrayList<>();
+        fourthFirstNumber.add(0);
+        fourthFirstNumber.add(1);
+        fourthFirstNumber.add(2);
+        fourthFirstNumber.add(3);
+        Collections.shuffle(fourthFirstNumber);
+//        System.out.println(fourthFirstNumber);
+        List<Map<Move,Position>> positionMap = new ArrayList<>();
+        for(int i = 0; i<4; i++) { positionMap.add(i,new HashMap<>());}
+        positionMap.get(fourthFirstNumber.get(0)).put(Move.RIGHT, positionByMove(move));
+        positionMap.get(fourthFirstNumber.get(1)).put(Move.LEFT, positionByMove(Move.LEFT));
+        positionMap.get(fourthFirstNumber.get(2)).put(Move.UP, positionByMove(Move.UP));
+        positionMap.get(fourthFirstNumber.get(3)).put(Move.DOWN, positionByMove(Move.DOWN));
+        for (Map<Move,Position> positionTemp : positionMap) {
+            positions.put(positionTemp.keySet().iterator().next(),positionTemp.values().iterator().next());
+        }
         positions.forEach((key, value) -> {
             if (verifMove(plateau, key)) {
                 positionsResult.put(key,value);
@@ -184,14 +191,22 @@ public class Agent implements Runnable {
         // right
         Move move = Move.RIGHT;
         Map<Move, Position> positions = new HashMap<>();
-        Position right = positionByMove(move);
-        Position left = positionByMove(Move.LEFT);
-        Position up = positionByMove(Move.UP);
-        Position down = positionByMove(Move.DOWN);
-        positions.put(Move.RIGHT,right);
-        positions.put(Move.LEFT,left);
-        positions.put(Move.UP,up);
-        positions.put(Move.DOWN,down);
+        Map<Move, Position> positionsResult = new HashMap<>();
+        List<Integer> fourthFirstNumber = new ArrayList<>();
+        fourthFirstNumber.add(0);
+        fourthFirstNumber.add(1);
+        fourthFirstNumber.add(2);
+        fourthFirstNumber.add(3);
+        Collections.shuffle(fourthFirstNumber);
+        List<Map<Move,Position>> positionMap = new ArrayList<>();
+        for(int i = 0; i<4; i++) { positionMap.add(i,new HashMap<>());}
+        positionMap.get(fourthFirstNumber.get(0)).put(Move.RIGHT, positionByMove(move));
+        positionMap.get(fourthFirstNumber.get(1)).put(Move.LEFT, positionByMove(Move.LEFT));
+        positionMap.get(fourthFirstNumber.get(2)).put(Move.UP, positionByMove(Move.UP));
+        positionMap.get(fourthFirstNumber.get(3)).put(Move.DOWN, positionByMove(Move.DOWN));
+        for (Map<Move,Position> positionTemp : positionMap) {
+            positions.put(positionTemp.keySet().iterator().next(),positionTemp.values().iterator().next());
+        }
         Map<Move, Position> result2 = new LinkedHashMap<>();
         positions.entrySet().stream()
                 .sorted(new Comparator<Map.Entry<Move, Position>>() {
