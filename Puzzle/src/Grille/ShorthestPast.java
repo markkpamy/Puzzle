@@ -6,6 +6,9 @@ import java.util.*;
 
 public class ShorthestPast {
 
+    /**
+     * ressources : https://gist.github.com/raymondchua/8064159
+     */
     private int cout;
     private List<Position> way;
     private Agent agent;
@@ -46,7 +49,7 @@ public class ShorthestPast {
                 double tmp_g_score = current.getG_score() + cost;
                 double tmp_f_score = tmp_g_score + child.getDistance(goal);
                 Node childNode = new Node(child);
-                if (explored.contains(child) && tmp_f_score >= childNode.getH_score()) {
+                if (explored.contains(child) && tmp_f_score >= childNode.getF_score()) {
                     continue;
                 } else if (!queue.contains(childNode) || (tmp_f_score < childNode.getF_score())) {
                     childNode.setParent(current);
@@ -79,6 +82,25 @@ public class ShorthestPast {
             }
         }
         return availablePositions;
+    }
+
+    public static List<Node> getNodes(Plateau plateau) {
+        HashSet<Position> added = new HashSet<>();
+        List<Node> nodes = new ArrayList<>();
+        boolean[][] grille = plateau.getGrille();
+        for (int x = 0; x < plateau.getNbCols();x++) {
+            for (int y = 0; y < plateau.getNbLignes(); y++) {
+                if (!grille[x][y]) {
+                    continue;
+                }
+                Position position = new Position(x, y);
+                added.add(position);
+                List<Position> adjagencyPositions = getAdjacencyPositions(position, plateau);
+                Node node = new Node(position);
+
+            }
+        }
+        return null;
     }
 
     public int getCout() {
