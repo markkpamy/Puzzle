@@ -63,13 +63,16 @@ public class Agent implements Runnable {
             if (!this.isGoalReached()) {
                 setUp();
             }
+            receiveAndMove();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            receiveAndMove();
 //            Communication.getInstance().displayMessages();
+//            if (this.getColor() == Color.GREEN) {
+//                Communication.getInstance().displayMessages();
+//            }
         }
     }
 
