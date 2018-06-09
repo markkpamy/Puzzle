@@ -7,6 +7,7 @@ package Grille;
 
 import Comm.Communication;
 import Comm.Message;
+import javafx.geometry.Pos;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -61,14 +62,14 @@ public class Agent implements Runnable {
             //System.out.println("dans le while");
             if (!this.isGoalReached()) {
                 setUp();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
             receiveAndMove();
-            Communication.getInstance().displayMessages();
+//            Communication.getInstance().displayMessages();
         }
     }
 
@@ -92,7 +93,7 @@ public class Agent implements Runnable {
         }
     }
     private synchronized void setUp() {
-        Map<Move, Position> nextMoves = chooseNextMove();
+        Map<Move, Position> nextMoves = isGoalReached()? moveEvenIfFinished(): chooseNextMove();
         this.plateau.effaceTracePiece(this);
         boolean succeed = false;
         for (Map.Entry<Move, Position> entry : nextMoves.entrySet()) {
@@ -154,6 +155,27 @@ public class Agent implements Runnable {
             return false;
         }
         return true;
+    }
+
+    public Map<Move,Position> moveEvenIfFinished(){
+        Move move = Move.RIGHT;
+        Map<Move, Position> positions = new HashMap<>();
+        Map<Move, Position> positionsResult = new HashMap<>();
+        Position right = positionByMove(move);
+        Position left = positionByMove(Move.LEFT);
+        Position up = positionByMove(Move.UP);
+        Position down = positionByMove(Move.DOWN);
+        positions.put(Move.RIGHT,right);
+        positions.put(Move.LEFT,left);
+        positions.put(Move.UP,up);
+        positions.put(Move.DOWN,down);
+
+        positions.forEach((key, value) -> {
+            if (verifMove(plateau, key)) {
+                positionsResult.put(key,value);
+            }
+        });
+        return positionsResult;
     }
     /**
      * See which position is the closest to the goal
