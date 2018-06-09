@@ -33,7 +33,7 @@ public class Communication {
     }
 
     public void displayMessages(){
-        this.messages.forEach((a,b) -> System.out.println(a + " " + b));
+        this.messages.forEach((a,b) -> System.out.println(String.valueOf(a) + " " + b.toString()));
     }
 
     public void displayMessagesofAgent(Agent agent){

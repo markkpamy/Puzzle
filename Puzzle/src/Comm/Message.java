@@ -58,4 +58,20 @@ public class Message {
     public void setPosition(Position position) {
         this.position = position;
     }
+
+    @Override
+    public String toString() {
+        return new StringBuilder().append("[")
+                .append(getEmitter())
+                .append(", ")
+                .append(getRecipient())
+                .append(", ")
+                .append(getType())
+                .append(", ")
+                .append(getAction())
+                .append(", ")
+                .append(getPosition())
+                .append("]")
+                .toString();
+    }
 }

@@ -64,6 +64,7 @@ public class Agent implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            receiveAndMove();
         }
     }
 
