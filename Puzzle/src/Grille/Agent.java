@@ -34,6 +34,7 @@ public class Agent implements Runnable {
     private Case currentCase;
     private Case goalCase;
     private Plateau plateau;
+    private ArrayList<Message> messageArrayList = new ArrayList<>();
 
     public Agent(int idAgent, String nameAgent, Case currentCase, Color color) {
         this(idAgent, nameAgent, currentCase, new Case(new Position(currentCase.getPosition().getY(), currentCase.getPosition().getX())), color);
@@ -58,13 +59,16 @@ public class Agent implements Runnable {
     public void run() {
         while (!this.plateau.isFinished()) {
             //System.out.println("dans le while");
-            setUp();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (!this.isGoalReached()) {
+                setUp();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
             receiveAndMove();
+            Communication.getInstance().displayMessages();
         }
     }
 
@@ -104,6 +108,7 @@ public class Agent implements Runnable {
         if (agent!= null) {
             Message message = new Message(this, agent, "request", "move", goalCase.getPosition());
             Communication.getInstance().writeMessage(agent, message);
+            messageArrayList.add(message);
         }
     }
 
@@ -144,6 +149,7 @@ public class Agent implements Runnable {
         }
        // System.out.println(position);
         if (plateau.getGrille()[position.getX()][position.getY()]){
+            System.out.println("bloque");
             sendMessage(plateau, position);
             return false;
         }

@@ -52,12 +52,26 @@ public class PuzzleGameCore {
         Agent aknine = new Agent(4, "Aknine", new Case(new Position(8, 2)), Agent.Color.YELLOW);
         Agent hulk = new Agent(5, "Hulk", new Case(new Position(1, 5)), Agent.Color.CYAN);
         Agent cptAmerica = new Agent(6, "cptAmerica", new Case(new Position(3, 1)), Agent.Color.ORANGE);
+
+        Agent mark2 = new Agent(7, "Mark2", new Case(new Position(6, 2)), Agent.Color.RED);
+        Agent martial2 = new Agent(8, "Martial2", new Case(new Position(4, 1)), Agent.Color.BLUE);
+        Agent fabien2 = new Agent(9, "Fabien", new Case(new Position(3, 7)), Agent.Color.GREEN);
+        Agent aknine2 = new Agent(10, "Aknine", new Case(new Position(2, 8)), Agent.Color.YELLOW);
+        Agent hulk2 = new Agent(11, "Hulk", new Case(new Position(5, 1)), Agent.Color.CYAN);
+        Agent cptAmerica2 = new Agent(12, "cptAmerica", new Case(new Position(1, 3)), Agent.Color.ORANGE);
         map.put(martial.getIdAgent(), martial);
         map.put(fabien.getIdAgent(), fabien);
         map.put(aknine.getIdAgent(), aknine);
         map.put(mark.getIdAgent(), mark);
         map.put(hulk.getIdAgent(), hulk);
         map.put(cptAmerica.getIdAgent(), cptAmerica);
+
+        map.put(martial2.getIdAgent(), martial2);
+        map.put(fabien2.getIdAgent(), fabien2);
+        map.put(aknine2.getIdAgent(), aknine2);
+        map.put(mark2.getIdAgent(), mark2);
+        map.put(hulk2.getIdAgent(), hulk2);
+        map.put(cptAmerica2.getIdAgent(), cptAmerica2);
         Communication.getInstance().setCommunication(new ArrayList<Agent>(map.values()));
         plateau.setAgentMap(map);
     }
