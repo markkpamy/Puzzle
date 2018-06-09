@@ -36,6 +36,7 @@ public class Agent implements Runnable {
     private Case goalCase;
     private Plateau plateau;
     private ArrayList<Message> messageArrayList = new ArrayList<>();
+    private Move lastPosition;
 
     public Agent(int idAgent, String nameAgent, Case currentCase, Color color) {
         this(idAgent, nameAgent, currentCase, new Case(new Position(currentCase.getPosition().getY(), currentCase.getPosition().getX())), color);
@@ -101,6 +102,20 @@ public class Agent implements Runnable {
         boolean succeed = false;
         for (Map.Entry<Move, Position> entry : nextMoves.entrySet()) {
             if (move(this.plateau, entry.getKey())){
+                if (this.lastPosition == entry.getKey()) {
+                    break;
+                }
+                switch (entry.getKey()) {
+                    case UP:this.lastPosition = Move.RIGHT;
+                    break;
+                    case DOWN: this.lastPosition = Move.UP;
+                    break;
+                    case LEFT: this.lastPosition = Move.RIGHT;
+                    break;
+                    case RIGHT: this.lastPosition = Move.LEFT;
+                    break;
+                    default: this.lastPosition = null;
+                }
                 break;
             }
         }
