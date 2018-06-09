@@ -196,4 +196,8 @@ public class Plateau extends Observable {
         return agentMap.values().stream().allMatch(Agent::isGoalReached);
     }
 
+    public boolean isPositionAvailable(Position position) {
+        return !this.grille[position.getX()][position.getY()];
+    }
+
 }

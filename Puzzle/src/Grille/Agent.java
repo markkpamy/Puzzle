@@ -209,7 +209,6 @@ public class Agent implements Runnable {
         // right
         Move move = Move.RIGHT;
         Map<Move, Position> positions = new HashMap<>();
-        Map<Move, Position> positionsResult = new HashMap<>();
         List<Integer> fourthFirstNumber = new ArrayList<>();
         fourthFirstNumber.add(0);
         fourthFirstNumber.add(1);
@@ -292,22 +291,26 @@ public class Agent implements Runnable {
     }
 
     public Position positionByMove(Move move) {
-        Position position = null;
+        return positionsAround(currentCase.getPosition(), move);
+    }
+
+    public static Position positionsAround(Position position, Move move) {
+        Position result = null;
         switch (move) {
             case UP:
-                position = new Position(currentCase.getPosition().getX() -1,currentCase.getPosition().getY());
+                result = new Position(position.getX() -1, position.getY());
                 break;
             case DOWN:
-                position = new Position(currentCase.getPosition().getX() +1,currentCase.getPosition().getY());
+                result = new Position(position.getX() +1,position.getY());
                 break;
             case LEFT:
-                position = new Position(currentCase.getPosition().getX(),currentCase.getPosition().getY() - 1);
+                result = new Position(position.getX(),position.getY() - 1);
                 break;
             case RIGHT:
-                position = new Position(currentCase.getPosition().getX(),currentCase.getPosition().getY() + 1);
+                result = new Position(position.getX(),position.getY() + 1);
                 break;
         }
-        return position;
+        return result;
     }
 
     public boolean isGoalReached() {
