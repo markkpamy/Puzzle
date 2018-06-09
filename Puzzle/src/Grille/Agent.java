@@ -74,10 +74,7 @@ public class Agent implements Runnable {
                 case "request":
                     switch (message.getAction()) {
                         case "move":
-                            Move nextMove = chooseNextMove();
-                            this.plateau.effaceTracePiece(this);
-                            move(this.plateau, nextMove);
-                            this.plateau.updatePlateau(this);
+                            setUp();
                             break;
                         default:
                             break;
