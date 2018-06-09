@@ -1,16 +1,21 @@
 package Grille;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Node {
 
     private Position position;
     private double g_score = 1000;
     private double h_score = 1000;
     private double f_score = 1000;
+    private List<Node> adjacencies;
     private Node parent;
     private final int movement_cost = 1;
 
     public Node(Position position) {
         this.position = position;
+        adjacencies = new ArrayList<>();
     }
 
     public Position getPosition() {
@@ -51,5 +56,9 @@ public class Node {
 
     public void setParent(Node parent) {
         this.parent = parent;
+    }
+
+    public void addAdjacencyNode(Node node) {
+        this.adjacencies.add(node);
     }
 }

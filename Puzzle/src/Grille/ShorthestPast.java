@@ -11,7 +11,7 @@ public class ShorthestPast {
     private Agent agent;
     private boolean[][] grille;
 
-    public ShorthestPast(Agent agent, Plateau plateau) {
+    public static List<Position> aStar(Agent agent, Plateau plateau) {
         HashSet<Node> explored = new HashSet<>();
         Position goal = agent.getGoalCase().getPosition();
         Position start = agent.getCurrentCase().getPosition();
@@ -32,9 +32,9 @@ public class ShorthestPast {
         Node startNode = new Node(start);
         startNode.setG_score(cost);
         queue.add(startNode);
-
+        Node current = null;
         while ((!queue.isEmpty()) && !found) {
-            Node current = queue.poll();
+            current = queue.poll();
 
             explored.add(current);
             //goal found
@@ -60,12 +60,17 @@ public class ShorthestPast {
                     queue.add(childNode);
                 }
             }
-
-
         }
+        List<Position> way = new ArrayList<>();
+        while (current.getParent() != null) {
+            way.add(current.getParent().getPosition());
+            current = current.getParent();
+        }
+        Collections.reverse(way);
+        return way;
     }
 
-    public List<Position> getAdjacencyPositions(Position position, Plateau plateau){
+    public static List<Position> getAdjacencyPositions(Position position, Plateau plateau){
         List<Position> availablePositions = new ArrayList<>();
         for (Agent.Move move : Agent.Move.values()) {
             Position tmp = Agent.positionsAround(position, move);
