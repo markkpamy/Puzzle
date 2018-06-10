@@ -7,18 +7,10 @@ package Grille;
 
 import Comm.Communication;
 import Comm.Message;
-import javafx.geometry.Pos;
+import org.omg.CORBA.ShortHolder;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.decrementExact;
-
-/**
- * @author markk
- */
 public class Agent implements Runnable {
 
     public enum Color {
@@ -37,6 +29,7 @@ public class Agent implements Runnable {
     private Plateau plateau;
     private ArrayList<Message> messageArrayList = new ArrayList<>();
     private Move lastPosition;
+    private Queue<Position> way;
 
     public Agent(int idAgent, String nameAgent, Case currentCase, Color color) {
         this(idAgent, nameAgent, currentCase, new Case(new Position(currentCase.getPosition().getY(), currentCase.getPosition().getX())), color);
@@ -100,6 +93,7 @@ public class Agent implements Runnable {
         Map<Move, Position> nextMoves = isGoalReached()? moveEvenIfFinished(): chooseNextMove();
         this.plateau.effaceTracePiece(this);
         boolean succeed = false;
+//        System.out.println(nextMoves);
         for (Map.Entry<Move, Position> entry : nextMoves.entrySet()) {
             if (move(this.plateau, entry.getKey())){
                 if (this.lastPosition == entry.getKey()) {
@@ -134,7 +128,7 @@ public class Agent implements Runnable {
     public boolean move(Plateau plateau, Move move) {
         if (verifMove(plateau, move)) {
             //System.out.println(this);
-            this.getCurrentCase().setPosition(positionByMove(move));
+            this.getCurrentCase().setPosition(getPositionByMove(move));
             return true;
         }
         return false;
@@ -143,7 +137,21 @@ public class Agent implements Runnable {
 
     public boolean verifMove(Plateau plateau, Move move) {
         boolean result = true;
-        Position position = positionByMove(move);
+        Position position = getPositionByMove(move);
+        if (!verifIfOffLimits(plateau, move, position)) {
+            return false;
+        }
+       // System.out.println(position);
+        if (plateau.getGrille()[position.getX()][position.getY()]){
+//            System.out.println("bloque");
+            sendMessage(plateau, position);
+            return false;
+        }
+        return true;
+    }
+
+    public boolean verifIfOffLimits(Plateau plateau, Move move, Position position) {
+        boolean result = true;
         switch (move) {
             case RIGHT:
                 if ((position.getY() > plateau.getNbCols() - 1)) {
@@ -166,16 +174,11 @@ public class Agent implements Runnable {
                 }
                 break;
         }
-       // System.out.println(position);
-        if (plateau.getGrille()[position.getX()][position.getY()]){
-//            System.out.println("bloque");
-            sendMessage(plateau, position);
-            return false;
-        }
         return true;
     }
 
     public Map<Move,Position> moveEvenIfFinished(){
+        System.out.println("entré dans moveEventIfFinished");
         Move move = Move.RIGHT;
         Map<Move, Position> positions = new HashMap<>();
         Map<Move, Position> positionsResult = new HashMap<>();
@@ -188,10 +191,10 @@ public class Agent implements Runnable {
 //        System.out.println(fourthFirstNumber);
         List<Map<Move,Position>> positionMap = new ArrayList<>();
         for(int i = 0; i<4; i++) { positionMap.add(i,new HashMap<>());}
-        positionMap.get(fourthFirstNumber.get(0)).put(Move.RIGHT, positionByMove(move));
-        positionMap.get(fourthFirstNumber.get(1)).put(Move.LEFT, positionByMove(Move.LEFT));
-        positionMap.get(fourthFirstNumber.get(2)).put(Move.UP, positionByMove(Move.UP));
-        positionMap.get(fourthFirstNumber.get(3)).put(Move.DOWN, positionByMove(Move.DOWN));
+        positionMap.get(fourthFirstNumber.get(0)).put(Move.RIGHT, getPositionByMove(move));
+        positionMap.get(fourthFirstNumber.get(1)).put(Move.LEFT, getPositionByMove(Move.LEFT));
+        positionMap.get(fourthFirstNumber.get(2)).put(Move.UP, getPositionByMove(Move.UP));
+        positionMap.get(fourthFirstNumber.get(3)).put(Move.DOWN, getPositionByMove(Move.DOWN));
         for (Map<Move,Position> positionTemp : positionMap) {
             positions.put(positionTemp.keySet().iterator().next(),positionTemp.values().iterator().next());
         }
@@ -206,10 +209,30 @@ public class Agent implements Runnable {
      * See which position is the closest to the goal
      */
     public Map<Move, Position> chooseNextMove() {
-        // right
+        return bestWay();
+    }
+
+    public Map<Move, Position> bestWay() {
+        //        System.out.println("rentré dans chooseNextMove at position :" + this.currentCase.getPosition().toString());
+        ShorthestPast shorthestPast = new ShorthestPast(this, this.plateau);
+        way = shorthestPast.aStar();
+//        if (way == null) {
+//            System.out.println("erreur way is empty ");
+//            return null;
+//        } else {
+//            System.out.println("Agent: " + this.idAgent + " way:" + way);
+//        }
+        Position nextMove = way.poll();
+        nextMove = way.poll();
+//        System.out.println("nextMove: " + getMoveByPositon(nextMove) + "nextPosition" + nextMove);
+        Map<Move, Position> result = new HashMap<>();
+        result.put(getMoveByPositon(nextMove), nextMove);
+        return result;
+    }
+
+    public Map<Move, Position> bestCaseAround() {
         Move move = Move.RIGHT;
         Map<Move, Position> positions = new HashMap<>();
-        Map<Move, Position> positionsResult = new HashMap<>();
         List<Integer> fourthFirstNumber = new ArrayList<>();
         fourthFirstNumber.add(0);
         fourthFirstNumber.add(1);
@@ -218,10 +241,10 @@ public class Agent implements Runnable {
         Collections.shuffle(fourthFirstNumber);
         List<Map<Move,Position>> positionMap = new ArrayList<>();
         for(int i = 0; i<4; i++) { positionMap.add(i,new HashMap<>());}
-        positionMap.get(fourthFirstNumber.get(0)).put(Move.RIGHT, positionByMove(move));
-        positionMap.get(fourthFirstNumber.get(1)).put(Move.LEFT, positionByMove(Move.LEFT));
-        positionMap.get(fourthFirstNumber.get(2)).put(Move.UP, positionByMove(Move.UP));
-        positionMap.get(fourthFirstNumber.get(3)).put(Move.DOWN, positionByMove(Move.DOWN));
+        positionMap.get(fourthFirstNumber.get(0)).put(Move.RIGHT, getPositionByMove(move));
+        positionMap.get(fourthFirstNumber.get(1)).put(Move.LEFT, getPositionByMove(Move.LEFT));
+        positionMap.get(fourthFirstNumber.get(2)).put(Move.UP, getPositionByMove(Move.UP));
+        positionMap.get(fourthFirstNumber.get(3)).put(Move.DOWN, getPositionByMove(Move.DOWN));
         for (Map<Move,Position> positionTemp : positionMap) {
             positions.put(positionTemp.keySet().iterator().next(),positionTemp.values().iterator().next());
         }
@@ -236,7 +259,7 @@ public class Agent implements Runnable {
                     }
                 })
                 .forEachOrdered(x -> result2.put(x.getKey(), x.getValue()));
-        
+
         return result2;
     }
 
@@ -291,23 +314,44 @@ public class Agent implements Runnable {
         this.plateau = plateau;
     }
 
-    public Position positionByMove(Move move) {
-        Position position = null;
+    public Position getPositionByMove(Move move) {
+        return positionsAround(currentCase.getPosition(), move);
+    }
+
+    public Move getMoveByPositon(Position position) {
+        if (this.currentCase.getPosition().getX() == position.getX()) {
+            if (this.currentCase.getPosition().getY() + 1 == position.getY()) {
+                return Move.RIGHT;
+            } else if (this.currentCase.getPosition().getY() - 1 == position.getY()) {
+                return Move.LEFT;
+            }
+        } else if (this.currentCase.getPosition().getY() == position.getY()) {
+            if (this.currentCase.getPosition().getX() - 1 == position.getX()) {
+                return Move.UP;
+            } else if (this.currentCase.getPosition().getX() + 1 == position.getX()) {
+                return Move.DOWN;
+            }
+        }
+        return null;
+    }
+
+    public Position positionsAround(Position position, Move move) {
+        Position result = null;
         switch (move) {
             case UP:
-                position = new Position(currentCase.getPosition().getX() -1,currentCase.getPosition().getY());
+                result = new Position(position.getX() -1, position.getY());
                 break;
             case DOWN:
-                position = new Position(currentCase.getPosition().getX() +1,currentCase.getPosition().getY());
+                result = new Position(position.getX() +1,position.getY());
                 break;
             case LEFT:
-                position = new Position(currentCase.getPosition().getX(),currentCase.getPosition().getY() - 1);
+                result = new Position(position.getX(),position.getY() - 1);
                 break;
             case RIGHT:
-                position = new Position(currentCase.getPosition().getX(),currentCase.getPosition().getY() + 1);
+                result = new Position(position.getX(),position.getY() + 1);
                 break;
         }
-        return position;
+        return result;
     }
 
     public boolean isGoalReached() {
