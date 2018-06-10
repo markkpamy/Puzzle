@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import Grille.Agent.Color;
+import javafx.scene.text.Text;
 
 /**
  * @author markk
@@ -76,10 +77,11 @@ public class Plateau extends Observable {
 
     public synchronized void updatePlateau(Agent t) {
         naturalLanguageColors[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()] = t.getColor();
+        panCases[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()].setText(String.valueOf(t.getIdAgent()));
         this.displayPiece(t);
     }
 
-    public void setGrilleCaseTrue(int i, int j) {
+    public synchronized void setGrilleCaseTrue(int i, int j) {
         if (!this.grille[i][j]) {
             this.grille[i][j] = true;
             setChanged();
@@ -88,7 +90,7 @@ public class Plateau extends Observable {
     }
 
     //public void displayPiece(Tetrimino t){
-    public void setGrilleCaseFalse(int i, int j) {
+    public synchronized void setGrilleCaseFalse(int i, int j) {
         if (this.grille[i][j]) {
             this.grille[i][j] = false;
             setChanged();
@@ -195,5 +197,6 @@ public class Plateau extends Observable {
     public boolean isFinished() {
         return agentMap.values().stream().allMatch(Agent::isGoalReached);
     }
+
 
 }

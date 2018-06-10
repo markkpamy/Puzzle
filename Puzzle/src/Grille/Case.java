@@ -5,12 +5,24 @@
  */
 package Grille;
 
+import javafx.scene.text.Text;
+
 /**
  *
  * @author markk
  */
 public class Case {
     private Position position;
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    private String text;
     
     /**
      * @return the position
@@ -18,12 +30,16 @@ public class Case {
     public Case(Position coord){
     this.position =coord;
     }
+
+
     public Case (){
     this.position =null;
+    this.text = "";
     }
     public Position getPosition() {
         return position;
     }
+
 
     /**
      * @param position the position to set

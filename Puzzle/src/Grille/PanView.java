@@ -7,7 +7,12 @@ package Grille;
 
 
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -17,12 +22,16 @@ public class PanView {
     private GridPane gPane2 = new GridPane();
     private Rectangle[][] rectPan;
     private boolean[][] coloredRectPan;
+    private Text[][] text ;
     private javafx.scene.paint.Color[][] fxColorsRectPan;
     private Agent.Color naturalLanguageColors[][];
 
 
     public PanView(int nBlignes, int nBcols) {
         rectPan = new Rectangle[nBlignes][nBcols];
+        text = new Text[nBlignes][nBcols];
+        /*
+        */
         coloredRectPan = new boolean[nBlignes][nBcols];
         fxColorsRectPan = new javafx.scene.paint.Color[nBlignes][nBcols];
         naturalLanguageColors = new Agent.Color[nBlignes][nBcols];
@@ -32,14 +41,20 @@ public class PanView {
     public void drawView(int nBlignes, int nBcols) {
         for (int i = 0; i < nBlignes; i++) {
             for (int j = 0; j < nBcols; j++) {
-                getRectPan()[i][j] = new Rectangle(i, j, 30, 25);
+                StackPane stack = new StackPane();
+                text[i][j] = new Text("");
+                text[i][j].setFill(Color.WHITE);
+                //text[i][j].setFont(Font.font(null, FontWeight.BOLD, 15));
+                getRectPan()[i][j] = new Rectangle(i, j, 30, 30);
                 getRectPan()[i][j].setFill(javafx.scene.paint.Color.BLACK);
                 getRectPan()[i][j].setArcWidth(10.0);
                 getRectPan()[i][j].setArcHeight(10.0);
                 getColoredRectPan()[i][j] = false;
                 getFxColorsRectPan()[i][j] = javafx.scene.paint.Color.BLACK;
                 getRectPan()[i][j].setStroke(javafx.scene.paint.Color.WHITE);
-                getgPane2().add(getRectPan()[i][j], j, i);
+                stack.getChildren().addAll(getRectPan()[i][j],text[i][j]);
+                getgPane2().add(stack, j, i );
+
             }
         }
     }
@@ -113,5 +128,12 @@ public class PanView {
         this.naturalLanguageColors = colorsRectPans;
     }
 
+    public Text[][] getText() {
+        return text;
+    }
+
+    public void setText(Text[][] text) {
+        this.text = text;
+    }
     
 }
