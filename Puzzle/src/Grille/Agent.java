@@ -80,7 +80,7 @@ public class Agent implements Runnable {
                 case "request":
                     switch (message.getAction()) {
                         case "move":
-                            System.out.println("reçu par agent:" + idAgent);
+//                            System.out.println("reçu par agent:" + idAgent);
                             Communication.getInstance().writeMessage(message.getEmitter(),new Message(this,message.getEmitter(),"response","yes",this.goalCase.getPosition()));
                             setUp();
                             break;
@@ -137,7 +137,8 @@ public class Agent implements Runnable {
                 case "response":
                     switch (message.getAction()) {
                         case "yes":
-                            System.out.println("ok je peux continuer");
+                            setUp();
+//                            System.out.println("ok je peux continuer");
                             break;
                         default:
                             break;
@@ -153,7 +154,7 @@ public class Agent implements Runnable {
     }
 
     private void sendMessage(Plateau plateau, Position position) {
-        System.out.println("New message of agent:" + idAgent);
+//        System.out.println("New message of agent:" + idAgent);
         Agent agent = plateau.findAgent(position);
         if (agent!= null) {
             Message message = new Message(this, agent, "request", "move", goalCase.getPosition());
@@ -296,7 +297,7 @@ public class Agent implements Runnable {
                     }
                 })
                 .forEachOrdered(x -> result2.put(x.getKey(), x.getValue()));
-        System.out.println(result2);
+//        System.out.println(result2);
         return result2;
     }
 
