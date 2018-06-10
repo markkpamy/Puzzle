@@ -7,6 +7,7 @@ package Grille;
 
 import Comm.Communication;
 import Comm.Message;
+import javafx.geometry.Pos;
 import org.omg.CORBA.ShortHolder;
 
 import java.util.*;
@@ -53,14 +54,16 @@ public class Agent implements Runnable {
     @Override
     public void run() {
         while (!this.plateau.isFinished()) {
+//            System.out.println("agent: " + this.getIdAgent());
             //System.out.println("dans le while");
-            if (!this.isGoalReached()) {
-                setUp();
-            }
-            receiveAndMove();
             try {
+                if (!this.isGoalReached()) {
+                    setUp();
+                }
+                receiveAndMove();
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
+                System.out.println("Agent: " + getIdAgent() + e.getMessage());
                 e.printStackTrace();
             }
 //            Communication.getInstance().displayMessages();
@@ -70,13 +73,15 @@ public class Agent implements Runnable {
         }
     }
 
-    private void receiveAndMove() {
+    private void receiveAndMove() throws InterruptedException {
         Message message = null;
         if ((message = Communication.getInstance().readMessage(this)) != null) {
             switch (message.getType()) {
                 case "request":
                     switch (message.getAction()) {
                         case "move":
+                            System.out.println("reçu par agent:" + idAgent);
+                            Communication.getInstance().writeMessage(message.getEmitter(),new Message(this,message.getEmitter(),"response","yes",this.goalCase.getPosition()));
                             setUp();
                             break;
                         default:
@@ -89,34 +94,53 @@ public class Agent implements Runnable {
 
         }
     }
-    private synchronized void setUp() {
+    private synchronized void setUp() throws InterruptedException {
+        Message message;
         Map<Move, Position> nextMoves = isGoalReached()? moveEvenIfFinished(): chooseNextMove();
+        Position position = nextMoves.values().iterator().next();
+        Move move = nextMoves.keySet().iterator().next();
         this.plateau.effaceTracePiece(this);
         boolean succeed = false;
-//        System.out.println(nextMoves);
-        for (Map.Entry<Move, Position> entry : nextMoves.entrySet()) {
-            if (move(this.plateau, entry.getKey())){
-                if (this.lastPosition == entry.getKey()) {
-                    break;
-                }
-                switch (entry.getKey()) {
-                    case UP:this.lastPosition = Move.RIGHT;
-                    break;
-                    case DOWN: this.lastPosition = Move.UP;
-                    break;
-                    case LEFT: this.lastPosition = Move.RIGHT;
-                    break;
-                    case RIGHT: this.lastPosition = Move.LEFT;
-                    break;
-                    default: this.lastPosition = null;
-                }
+        if (move(this.plateau, move)){
+            switch (move) {
+                case UP:this.lastPosition = Move.RIGHT;
                 break;
+                case DOWN: this.lastPosition = Move.UP;
+                break;
+                case LEFT: this.lastPosition = Move.RIGHT;
+                break;
+                case RIGHT: this.lastPosition = Move.LEFT;
+                break;
+                default: this.lastPosition = null;
             }
+        } else {
+            sendMessage(plateau,position);
+
+            do{
+                this.wait(1000);
+            } while ((message = Communication.getInstance().readMessage(this)) == null);
+            this.wait(1000);
+            switch (message.getType()) {
+                case "response":
+                    switch (message.getAction()) {
+                        case "yes":
+                            System.out.println("ok je peux continuer");
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+
         }
         this.plateau.updatePlateau(this);
     }
 
     private void sendMessage(Plateau plateau, Position position) {
+        System.out.println("New message of agent:" + idAgent);
         Agent agent = plateau.findAgent(position);
         if (agent!= null) {
             Message message = new Message(this, agent, "request", "move", goalCase.getPosition());
@@ -144,7 +168,7 @@ public class Agent implements Runnable {
        // System.out.println(position);
         if (plateau.getGrille()[position.getX()][position.getY()]){
 //            System.out.println("bloque");
-            sendMessage(plateau, position);
+//            sendMessage(plateau, position);
             return false;
         }
         return true;
