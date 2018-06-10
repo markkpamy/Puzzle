@@ -97,6 +97,14 @@ public class Agent implements Runnable {
     private synchronized void setUp() throws InterruptedException {
         Message message;
         Map<Move, Position> nextMoves = isGoalReached()? moveEvenIfFinished(): chooseNextMove();
+        if (nextMoves == null) {
+            nextMoves = bestCaseAround();
+        }
+        do {
+            Thread.sleep(1000);
+            nextMoves = bestCaseAround();
+        } while (nextMoves == null || nextMoves.values().iterator().next() == null || nextMoves.keySet().iterator().next() == null);
+
         Position position = nextMoves.values().iterator().next();
         Move move = nextMoves.keySet().iterator().next();
         if (position == null || move == null) {
@@ -122,9 +130,9 @@ public class Agent implements Runnable {
             sendMessage(plateau,position);
 
             do{
-                this.wait(1000);
+                Thread.sleep(1000);
             } while ((message = Communication.getInstance().readMessage(this)) == null);
-            this.wait(1000);
+            Thread.sleep(1000);
             switch (message.getType()) {
                 case "response":
                     switch (message.getAction()) {
