@@ -99,6 +99,11 @@ public class Agent implements Runnable {
         Map<Move, Position> nextMoves = isGoalReached()? moveEvenIfFinished(): chooseNextMove();
         Position position = nextMoves.values().iterator().next();
         Move move = nextMoves.keySet().iterator().next();
+        if (position == null || move == null) {
+            nextMoves = bestCaseAround();
+            position = nextMoves.values().iterator().next();
+            move = nextMoves.keySet().iterator().next();
+        }
         this.plateau.effaceTracePiece(this);
         boolean succeed = false;
         if (move(this.plateau, move)){
@@ -283,7 +288,7 @@ public class Agent implements Runnable {
                     }
                 })
                 .forEachOrdered(x -> result2.put(x.getKey(), x.getValue()));
-
+        System.out.println(result2);
         return result2;
     }
 
@@ -343,6 +348,9 @@ public class Agent implements Runnable {
     }
 
     public Move getMoveByPositon(Position position) {
+        if (position == null) {
+            return null;
+        }
         if (this.currentCase.getPosition().getX() == position.getX()) {
             if (this.currentCase.getPosition().getY() + 1 == position.getY()) {
                 return Move.RIGHT;
