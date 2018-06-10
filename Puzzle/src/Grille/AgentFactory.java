@@ -22,14 +22,14 @@ public class AgentFactory {
     public Agent create() {
         Position startPosition;
         do {
-            int x = ThreadLocalRandom.current().nextInt(0, nbColumns);
-            int y = ThreadLocalRandom.current().nextInt(0, nbRows);
+            int x = ThreadLocalRandom.current().nextInt(0, nbColumns - 1);
+            int y = ThreadLocalRandom.current().nextInt(0, nbRows - 1);
             startPosition = new Position(x, y);
         } while (startPositionsUsed.contains(startPosition));
         Position goalPosition;
         do {
-            int x = ThreadLocalRandom.current().nextInt(0, nbColumns);
-            int y = ThreadLocalRandom.current().nextInt(0, nbRows);
+            int x = ThreadLocalRandom.current().nextInt(0, nbColumns - 1);
+            int y = ThreadLocalRandom.current().nextInt(0, nbRows - 1);
             goalPosition = new Position(x, y);
         } while (goalPositionsUsed.contains(goalPosition) || goalPosition.equals(startPosition));
         Agent.Color color = Agent.Color.BLUE;
