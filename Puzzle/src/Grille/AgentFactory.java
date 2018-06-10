@@ -1,6 +1,8 @@
 package Grille;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class AgentFactory {
@@ -36,5 +38,14 @@ public class AgentFactory {
         goalPositionsUsed.add(goalPosition);
         idAgent++;
         return agent;
+    }
+
+    public Map<Integer, Agent> createMultiple(int nbAgent) {
+        Map<Integer, Agent> agentMap = new HashMap<>();
+        for (int i = 0; i < nbAgent; i++) {
+            Agent agent = create();
+            agentMap.put(agent.getIdAgent(), agent);
+        }
+        return agentMap;
     }
 }
