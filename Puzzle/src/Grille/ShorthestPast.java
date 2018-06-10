@@ -1,11 +1,8 @@
 package Grille;
 
-import javafx.geometry.Pos;
-
 import java.util.*;
 
 public class ShorthestPast {
-
     /**
      * ressources : https://gist.github.com/raymondchua/8064159
      */
@@ -14,7 +11,7 @@ public class ShorthestPast {
     private Agent agent;
     private boolean[][] grille;
 
-    public static List<Position> aStar(Agent agent, Plateau plateau) {
+    public static Queue<Position> aStar(Agent agent, Plateau plateau) {
         HashSet<Node> explored = new HashSet<>();
         Position goal = agent.getGoalCase().getPosition();
         Position start = agent.getCurrentCase().getPosition();
@@ -45,13 +42,13 @@ public class ShorthestPast {
                 found = true;
             }
             cost++;
-            for (Position child : getAdjacencyPositions(current.getPosition(), plateau)) {
+            for (Position child : getAdjacencyPositions(current.getPosition(), plateau)) {  //@TODO test if not outside of grid
                 double tmp_g_score = current.getG_score() + cost;
                 double tmp_f_score = tmp_g_score + child.getDistance(goal);
                 Node childNode = new Node(child, current, goal);
                 if (explored.contains(child) && tmp_f_score >= childNode.getF_score()) {
                     continue;
-                } else if (!queue.contains(childNode) || (tmp_f_score < childNode.getF_score())) {
+                } else if (!queue.contains(childNode) || (tmp_f_score < childNode.getF_score())) {  //@TODO change if condition, not sure if this is changing something
                     if (queue.contains(childNode)) {
                         queue.remove(childNode);
                     }
@@ -59,12 +56,11 @@ public class ShorthestPast {
                 }
             }
         }
-        List<Position> way = new ArrayList<>();
+        Queue<Position> way = new ArrayDeque<>();
         while (current.getParent() != null) {
-            way.add(current.getParent().getPosition());
+            ((ArrayDeque<Position>) way).addFirst(current.getParent().getPosition());
             current = current.getParent();
         }
-        Collections.reverse(way);
         return way;
     }
 
