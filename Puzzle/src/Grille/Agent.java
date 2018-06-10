@@ -138,27 +138,8 @@ public class Agent implements Runnable {
     public boolean verifMove(Plateau plateau, Move move) {
         boolean result = true;
         Position position = getPositionByMove(move);
-        switch (move) {
-            case RIGHT:
-                if ((position.getY() > plateau.getNbCols() - 1)) {
-                    return false;
-                }
-                break;
-            case LEFT:
-                if (position.getY() < 0) {
-                    return  false;
-                }
-                break;
-            case UP:
-                if (position.getX() < 0) {
-                    return false;
-                }
-                break;
-            case DOWN:
-                if (position.getX() > plateau.getNbLignes() - 1) {
-                    return false;
-                }
-                break;
+        if (!verifIfOffLimits(plateau, move, position)) {
+            return false;
         }
        // System.out.println(position);
         if (plateau.getGrille()[position.getX()][position.getY()]){
@@ -228,7 +209,11 @@ public class Agent implements Runnable {
      * See which position is the closest to the goal
      */
     public Map<Move, Position> chooseNextMove() {
-//        System.out.println("rentré dans chooseNextMove at position :" + this.currentCase.getPosition().toString());
+        return bestWay();
+    }
+
+    public Map<Move, Position> bestWay() {
+        //        System.out.println("rentré dans chooseNextMove at position :" + this.currentCase.getPosition().toString());
         ShorthestPast shorthestPast = new ShorthestPast(this, this.plateau);
         way = shorthestPast.aStar();
 //        if (way == null) {
@@ -243,37 +228,39 @@ public class Agent implements Runnable {
         Map<Move, Position> result = new HashMap<>();
         result.put(getMoveByPositon(nextMove), nextMove);
         return result;
-        // right
-//        Move move = Move.RIGHT;
-//        Map<Move, Position> positions = new HashMap<>();
-//        List<Integer> fourthFirstNumber = new ArrayList<>();
-//        fourthFirstNumber.add(0);
-//        fourthFirstNumber.add(1);
-//        fourthFirstNumber.add(2);
-//        fourthFirstNumber.add(3);
-//        Collections.shuffle(fourthFirstNumber);
-//        List<Map<Move,Position>> positionMap = new ArrayList<>();
-//        for(int i = 0; i<4; i++) { positionMap.add(i,new HashMap<>());}
-//        positionMap.get(fourthFirstNumber.get(0)).put(Move.RIGHT, getPositionByMove(move));
-//        positionMap.get(fourthFirstNumber.get(1)).put(Move.LEFT, getPositionByMove(Move.LEFT));
-//        positionMap.get(fourthFirstNumber.get(2)).put(Move.UP, getPositionByMove(Move.UP));
-//        positionMap.get(fourthFirstNumber.get(3)).put(Move.DOWN, getPositionByMove(Move.DOWN));
-//        for (Map<Move,Position> positionTemp : positionMap) {
-//            positions.put(positionTemp.keySet().iterator().next(),positionTemp.values().iterator().next());
-//        }
-//        Map<Move, Position> result2 = new LinkedHashMap<>();
-//        positions.entrySet().stream()
-//                .sorted(new Comparator<Map.Entry<Move, Position>>() {
-//                    @Override
-//                    public int compare(Map.Entry<Move, Position> o1, Map.Entry<Move, Position> o2) {
-//                        Integer a = (int)goalCase.getPosition().getDistance(o1.getValue());
-//                        Integer b = (int)goalCase.getPosition().getDistance(o2.getValue());
-//                        return a.compareTo(b);
-//                    }
-//                })
-//                .forEachOrdered(x -> result2.put(x.getKey(), x.getValue()));
-//
-//        return result2;
+    }
+
+    public Map<Move, Position> bestCaseAround() {
+        Move move = Move.RIGHT;
+        Map<Move, Position> positions = new HashMap<>();
+        List<Integer> fourthFirstNumber = new ArrayList<>();
+        fourthFirstNumber.add(0);
+        fourthFirstNumber.add(1);
+        fourthFirstNumber.add(2);
+        fourthFirstNumber.add(3);
+        Collections.shuffle(fourthFirstNumber);
+        List<Map<Move,Position>> positionMap = new ArrayList<>();
+        for(int i = 0; i<4; i++) { positionMap.add(i,new HashMap<>());}
+        positionMap.get(fourthFirstNumber.get(0)).put(Move.RIGHT, getPositionByMove(move));
+        positionMap.get(fourthFirstNumber.get(1)).put(Move.LEFT, getPositionByMove(Move.LEFT));
+        positionMap.get(fourthFirstNumber.get(2)).put(Move.UP, getPositionByMove(Move.UP));
+        positionMap.get(fourthFirstNumber.get(3)).put(Move.DOWN, getPositionByMove(Move.DOWN));
+        for (Map<Move,Position> positionTemp : positionMap) {
+            positions.put(positionTemp.keySet().iterator().next(),positionTemp.values().iterator().next());
+        }
+        Map<Move, Position> result2 = new LinkedHashMap<>();
+        positions.entrySet().stream()
+                .sorted(new Comparator<Map.Entry<Move, Position>>() {
+                    @Override
+                    public int compare(Map.Entry<Move, Position> o1, Map.Entry<Move, Position> o2) {
+                        Integer a = (int)goalCase.getPosition().getDistance(o1.getValue());
+                        Integer b = (int)goalCase.getPosition().getDistance(o2.getValue());
+                        return a.compareTo(b);
+                    }
+                })
+                .forEachOrdered(x -> result2.put(x.getKey(), x.getValue()));
+
+        return result2;
     }
 
     /**
@@ -345,7 +332,6 @@ public class Agent implements Runnable {
                 return Move.DOWN;
             }
         }
-
         return null;
     }
 
@@ -365,7 +351,6 @@ public class Agent implements Runnable {
                 result = new Position(position.getX(),position.getY() + 1);
                 break;
         }
-//        System.out.println(result);
         return result;
     }
 
