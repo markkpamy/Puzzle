@@ -8,14 +8,19 @@ public class Node {
     private Position position;
     private double g_score = 1000;
     private double h_score = 1000;
-    private double f_score = 1000;
-    private List<Node> adjacencies;
     private Node parent;
     private final int movement_cost = 1;
 
+
+    public Node(Position position, Node parent, Position goal) {
+        this.position = position;
+        this.parent = parent;
+        this.g_score = parent.getG_score() + movement_cost;
+        this.h_score = goal.getDistance(position);
+    }
     public Node(Position position) {
         this.position = position;
-        adjacencies = new ArrayList<>();
+        this.g_score = 0;
     }
 
     public Position getPosition() {
@@ -43,11 +48,7 @@ public class Node {
     }
 
     public double getF_score() {
-        return f_score;
-    }
-
-    public void setF_score(double f_score) {
-        this.f_score = f_score;
+        return this.g_score + this.h_score;
     }
 
     public Node getParent() {
@@ -56,9 +57,5 @@ public class Node {
 
     public void setParent(Node parent) {
         this.parent = parent;
-    }
-
-    public void addAdjacencyNode(Node node) {
-        this.adjacencies.add(node);
     }
 }

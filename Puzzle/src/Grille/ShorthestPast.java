@@ -48,18 +48,13 @@ public class ShorthestPast {
             for (Position child : getAdjacencyPositions(current.getPosition(), plateau)) {
                 double tmp_g_score = current.getG_score() + cost;
                 double tmp_f_score = tmp_g_score + child.getDistance(goal);
-                Node childNode = new Node(child);
+                Node childNode = new Node(child, current, goal);
                 if (explored.contains(child) && tmp_f_score >= childNode.getF_score()) {
                     continue;
                 } else if (!queue.contains(childNode) || (tmp_f_score < childNode.getF_score())) {
-                    childNode.setParent(current);
-                    childNode.setG_score(tmp_g_score);
-                    childNode.setF_score(tmp_f_score);
-
                     if (queue.contains(childNode)) {
                         queue.remove(childNode);
                     }
-
                     queue.add(childNode);
                 }
             }
