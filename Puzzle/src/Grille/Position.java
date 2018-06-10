@@ -56,6 +56,11 @@ public class Position {
     }
 
     @Override
+    public int hashCode() {
+        return x * 31 + y;
+    }
+
+    @Override
     public String toString() {
         return "{Position: ("+x+", "+y+")}";
     }

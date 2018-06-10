@@ -31,12 +31,13 @@ public class AgentFactory {
             int x = ThreadLocalRandom.current().nextInt(0, nbColumns);
             int y = ThreadLocalRandom.current().nextInt(0, nbRows);
             goalPosition = new Position(x, y);
-        } while (goalPositionsUsed.contains(goalPosition)|| goalPosition.equals(startPosition));
-        Agent.Color color = Agent.Color.RED;
+        } while (goalPositionsUsed.contains(goalPosition) || goalPosition.equals(startPosition));
+        Agent.Color color = Agent.Color.BLUE;
         Agent agent = new Agent(idAgent, "", new Case(startPosition), new Case(goalPosition), color);
         startPositionsUsed.add(startPosition);
         goalPositionsUsed.add(goalPosition);
         idAgent++;
+        System.out.println(agent);
         return agent;
     }
 

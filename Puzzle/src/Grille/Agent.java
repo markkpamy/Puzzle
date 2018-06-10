@@ -360,6 +360,6 @@ public class Agent implements Runnable {
 
     @Override
     public String toString() {
-        return "Agent:"+this.color + " position:" + this.currentCase.getPosition() + " destination:" + this.goalCase.getPosition();
+        return "Agent:"+this.getIdAgent() + " position:" + this.currentCase.getPosition() + " destination:" + this.goalCase.getPosition();
     }
 }
