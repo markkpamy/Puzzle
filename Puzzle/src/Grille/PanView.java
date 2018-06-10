@@ -44,8 +44,8 @@ public class PanView {
                 StackPane stack = new StackPane();
                 text[i][j] = new Text("");
                 text[i][j].setFill(Color.WHITE);
-                //text[i][j].setFont(Font.font(null, FontWeight.BOLD, 15));
-                getRectPan()[i][j] = new Rectangle(i, j, 30, 30);
+                text[i][j].setFont(Font.font(null, FontWeight.BOLD, 15));
+                getRectPan()[i][j] = new Rectangle(i, j, 30, 25);
                 getRectPan()[i][j].setFill(javafx.scene.paint.Color.BLACK);
                 getRectPan()[i][j].setArcWidth(10.0);
                 getRectPan()[i][j].setArcHeight(10.0);

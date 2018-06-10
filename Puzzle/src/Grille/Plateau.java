@@ -45,7 +45,8 @@ public class Plateau extends Observable {
     }
 
     public void displayPieces() {
-        agentMap.values().forEach(this::displayPiece);
+
+        agentMap.values().forEach(this::updatePlateau);
     }
 
     public synchronized boolean displayPiece(Agent t) {

@@ -22,9 +22,9 @@ public class PuzzleGameCore {
         agentMap.values().forEach(agent -> {
             view.getNaturalLanguageColors()[agent.getCurrentCase().getPosition().getX()][agent.getCurrentCase().getPosition().getY()] = agent.getColor();
         });
-       /* agentMap.values().forEach(agent -> {
+        agentMap.values().forEach(agent -> {
             view.getText()[agent.getCurrentCase().getPosition().getX()][agent.getCurrentCase().getPosition().getY()].setText(String.valueOf(agent.getIdAgent()));
-        });*/
+        });
         plateau.displayPieces();
         agentMap.values().forEach(agent -> {
             agent.setPlateau(plateau);
