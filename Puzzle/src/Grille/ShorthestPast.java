@@ -10,8 +10,14 @@ public class ShorthestPast {
     private List<Position> way;
     private Agent agent;
     private boolean[][] grille;
+    private Plateau plateau;
 
-    public static Queue<Position> aStar(Agent agent, Plateau plateau) {
+    public ShorthestPast(Agent agent, Plateau plateau) {
+        this.agent = agent;
+        this.plateau = plateau;
+    }
+
+    public Queue<Position> aStar() {
         HashSet<Node> explored = new HashSet<>();
         Position goal = agent.getGoalCase().getPosition();
         Position start = agent.getCurrentCase().getPosition();
@@ -20,9 +26,7 @@ public class ShorthestPast {
             public int compare(Node o1, Node o2) {
                 if (o1.getPosition().getDistance(goal) > o2.getPosition().getDistance(goal)) {
                     return 1;
-                } else if (o1.getPosition().getDistance(goal) < o2.getPosition().getDistance(goal)) {
-                    return -1;
-                } else {
+                }  else {
                     return 0;
                 }
             }
@@ -35,7 +39,9 @@ public class ShorthestPast {
         Node current = null;
         while ((!queue.isEmpty()) && !found) {
             current = queue.poll();
-
+            if (current == null) {
+                System.out.println("erreur null sur current"); return null;
+            }
             explored.add(current);
             //goal found
             if (current.equals(goal)) {
@@ -46,10 +52,10 @@ public class ShorthestPast {
                 double tmp_g_score = current.getG_score() + cost;
                 double tmp_f_score = tmp_g_score + child.getDistance(goal);
                 Node childNode = new Node(child, current, goal);
-                if (explored.contains(child) && tmp_f_score >= childNode.getF_score()) {
+                if (contain(explored,child) && tmp_f_score >= childNode.getF_score()) {
                     continue;
-                } else if (!queue.contains(childNode) || (tmp_f_score < childNode.getF_score())) {  //@TODO change if condition, not sure if this is changing something
-                    if (queue.contains(childNode)) {
+                } else if (!queueContainsChildNode(queue,childNode) || (tmp_f_score < childNode.getF_score())) {  //@TODO change if condition, not sure if this is changing something
+                    if (queueContainsChildNode(queue, childNode)) {
                         queue.remove(childNode);
                     }
                     queue.add(childNode);
@@ -57,6 +63,7 @@ public class ShorthestPast {
             }
         }
         Queue<Position> way = new ArrayDeque<>();
+        ((ArrayDeque<Position>) way).addFirst(current.getPosition());
         while (current.getParent() != null) {
             ((ArrayDeque<Position>) way).addFirst(current.getParent().getPosition());
             current = current.getParent();
@@ -64,18 +71,28 @@ public class ShorthestPast {
         return way;
     }
 
-    public static List<Position> getAdjacencyPositions(Position position, Plateau plateau){
+    private boolean queueContainsChildNode(PriorityQueue<Node> queue, Node childNode) {
+        for (Node node: queue
+             ) {
+            if (node.getPosition() == childNode.getPosition()) return true;
+        }
+        return false;
+    }
+
+    public List<Position> getAdjacencyPositions(Position position, Plateau plateau){
         List<Position> availablePositions = new ArrayList<>();
         for (Agent.Move move : Agent.Move.values()) {
-            Position tmp = Agent.positionsAround(position, move);
-            if (plateau.isPositionAvailable(tmp)) {
-                availablePositions.add(tmp);
+            if (agent.verifIfOffLimits(plateau,move,position)) {
+                Position tmp = agent.positionsAround(position, move);
+                if (plateau.isPositionAvailable(tmp)) {
+                    availablePositions.add(tmp);
+                }
             }
         }
         return availablePositions;
     }
 
-    public static List<Node> getNodes(Plateau plateau) {
+    public List<Node> getNodes(Plateau plateau) {
         HashSet<Position> added = new HashSet<>();
         List<Node> nodes = new ArrayList<>();
         boolean[][] grille = plateau.getGrille();
@@ -101,5 +118,19 @@ public class ShorthestPast {
     public List<Position> getWay() {
         return way;
     }
+
+    public boolean contain(HashSet<Node> nodeHashSet, Position position) {
+        Node nodePos = new Node(position);
+        for (Node node: nodeHashSet
+             ) {
+            if (node.equals(nodePos)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+
 
 }

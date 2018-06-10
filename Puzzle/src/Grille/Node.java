@@ -1,8 +1,5 @@
 package Grille;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Node {
 
     private Position position;
@@ -21,6 +18,7 @@ public class Node {
     public Node(Position position) {
         this.position = position;
         this.g_score = 0;
+        this.parent = null;
     }
 
     public Position getPosition() {
@@ -58,4 +56,15 @@ public class Node {
     public void setParent(Node parent) {
         this.parent = parent;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Node n = (Node)obj;
+        return n.getPosition().equals(this.getPosition());
+    }
+
+    public boolean equals(Position position) {
+        return this.getPosition().equals(position);
+    }
+
 }

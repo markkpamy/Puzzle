@@ -7,6 +7,7 @@ package Grille;
 
 import Comm.Communication;
 import Comm.Message;
+import org.omg.CORBA.ShortHolder;
 
 import java.util.*;
 
@@ -92,6 +93,7 @@ public class Agent implements Runnable {
         Map<Move, Position> nextMoves = isGoalReached()? moveEvenIfFinished(): chooseNextMove();
         this.plateau.effaceTracePiece(this);
         boolean succeed = false;
+//        System.out.println(nextMoves);
         for (Map.Entry<Move, Position> entry : nextMoves.entrySet()) {
             if (move(this.plateau, entry.getKey())){
                 if (this.lastPosition == entry.getKey()) {
@@ -167,7 +169,35 @@ public class Agent implements Runnable {
         return true;
     }
 
+    public boolean verifIfOffLimits(Plateau plateau, Move move, Position position) {
+        boolean result = true;
+        switch (move) {
+            case RIGHT:
+                if ((position.getY() > plateau.getNbCols() - 1)) {
+                    return false;
+                }
+                break;
+            case LEFT:
+                if (position.getY() < 0) {
+                    return  false;
+                }
+                break;
+            case UP:
+                if (position.getX() < 0) {
+                    return false;
+                }
+                break;
+            case DOWN:
+                if (position.getX() > plateau.getNbLignes() - 1) {
+                    return false;
+                }
+                break;
+        }
+        return true;
+    }
+
     public Map<Move,Position> moveEvenIfFinished(){
+        System.out.println("entré dans moveEventIfFinished");
         Move move = Move.RIGHT;
         Map<Move, Position> positions = new HashMap<>();
         Map<Move, Position> positionsResult = new HashMap<>();
@@ -198,8 +228,18 @@ public class Agent implements Runnable {
      * See which position is the closest to the goal
      */
     public Map<Move, Position> chooseNextMove() {
-        way = ShorthestPast.aStar(this, this.plateau);
+//        System.out.println("rentré dans chooseNextMove at position :" + this.currentCase.getPosition().toString());
+        ShorthestPast shorthestPast = new ShorthestPast(this, this.plateau);
+        way = shorthestPast.aStar();
+//        if (way == null) {
+//            System.out.println("erreur way is empty ");
+//            return null;
+//        } else {
+//            System.out.println("Agent: " + this.idAgent + " way:" + way);
+//        }
         Position nextMove = way.poll();
+        nextMove = way.poll();
+//        System.out.println("nextMove: " + getMoveByPositon(nextMove) + "nextPosition" + nextMove);
         Map<Move, Position> result = new HashMap<>();
         result.put(getMoveByPositon(nextMove), nextMove);
         return result;
@@ -297,18 +337,19 @@ public class Agent implements Runnable {
                 return Move.RIGHT;
             } else if (this.currentCase.getPosition().getY() - 1 == position.getY()) {
                 return Move.LEFT;
-            } else if (this.currentCase.getPosition().getY() == position.getY()) {
-                if (this.currentCase.getPosition().getX() - 1 == position.getX()) {
-                    return Move.UP;
-                } else if (this.currentCase.getPosition().getX() + 1 == position.getX()) {
-                    return Move.DOWN;
-                }
+            }
+        } else if (this.currentCase.getPosition().getY() == position.getY()) {
+            if (this.currentCase.getPosition().getX() - 1 == position.getX()) {
+                return Move.UP;
+            } else if (this.currentCase.getPosition().getX() + 1 == position.getX()) {
+                return Move.DOWN;
             }
         }
+
         return null;
     }
 
-    public static Position positionsAround(Position position, Move move) {
+    public Position positionsAround(Position position, Move move) {
         Position result = null;
         switch (move) {
             case UP:
@@ -324,6 +365,7 @@ public class Agent implements Runnable {
                 result = new Position(position.getX(),position.getY() + 1);
                 break;
         }
+//        System.out.println(result);
         return result;
     }
 

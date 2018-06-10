@@ -197,6 +197,9 @@ public class Plateau extends Observable {
     }
 
     public boolean isPositionAvailable(Position position) {
+        if (position.getX()>=this.nbLignes || position.getY()>=this.nbCols|| position.getX()< 0|| position.getY()< 0) {
+            return false;
+        }
         return !this.grille[position.getX()][position.getY()];
     }
 
