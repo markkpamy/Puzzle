@@ -112,7 +112,6 @@ public class Agent implements Runnable {
             position = nextMoves.values().iterator().next();
             move = nextMoves.keySet().iterator().next();
         }
-        this.plateau.effaceTracePiece(this);
         boolean succeed = false;
         if (move(this.plateau, move)){
             switch (move) {
@@ -149,7 +148,6 @@ public class Agent implements Runnable {
 
 
         }
-        this.plateau.updatePlateau(this);
     }
 
     private void sendMessage(Plateau plateau, Position position) {
@@ -164,8 +162,9 @@ public class Agent implements Runnable {
 
     public boolean move(Plateau plateau, Move move) {
         if (verifMove(plateau, move)) {
-            //System.out.println(this);
+            plateau.effaceTracePiece(this);
             this.getCurrentCase().setPosition(getPositionByMove(move));
+            plateau.updatePlateau(this);
             return true;
         }
         return false;

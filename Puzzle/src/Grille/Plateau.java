@@ -90,7 +90,6 @@ public class Plateau extends Observable {
         }
     }
 
-    //public void displayPiece(Tetrimino t){
     public synchronized void setGrilleCaseFalse(int i, int j) {
         if (this.grille[i][j]) {
             this.grille[i][j] = false;
