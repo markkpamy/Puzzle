@@ -52,7 +52,7 @@ public class PuzzleGameCore {
 
     private static void setAgents(Plateau plateau) {
         AgentFactory agentFactory = new AgentFactory(plateau.getNbCols(), plateau.getNbLignes());
-        Map<Integer, Agent> map = agentFactory.createMultiple(10);
+        Map<Integer, Agent> map = agentFactory.createMultiple(30);
 //        Agent mark = new Agent(1, "Mark", new Case(new Position(2, 6)), Agent.Color.RED);
 //        Agent martial = new Agent(2, "Martial", new Case(new Position(1, 4)), Agent.Color.BLUE);
 //        Agent fabien = new Agent(3, "Fabien", new Case(new Position(7, 3)), Agent.Color.GREEN);

@@ -70,7 +70,9 @@ public class Agent implements Runnable {
 //            if (this.getColor() == Color.GREEN) {
 //                Communication.getInstance().displayMessages();
 //            }
+//            if (isGoalReached()) System.out.println("agent" + idAgent + "arrivé");
         }
+        System.out.println("Agent: " + idAgent + "finished");
     }
 
     private void receiveAndMove() throws InterruptedException {
@@ -80,7 +82,7 @@ public class Agent implements Runnable {
                 case "request":
                     switch (message.getAction()) {
                         case "move":
-//                            System.out.println("reçu par agent:" + idAgent);
+                            System.out.println("reçu par agent:" + idAgent);
                             Communication.getInstance().writeMessage(message.getEmitter(),new Message(this,message.getEmitter(),"response","yes",this.goalCase.getPosition()));
                             setUp();
                             break;
@@ -96,14 +98,17 @@ public class Agent implements Runnable {
     }
     private synchronized void setUp() throws InterruptedException {
         Message message;
+        boolean caseAround =false;
         Map<Move, Position> nextMoves = isGoalReached()? moveEvenIfFinished(): chooseNextMove();
         if (nextMoves == null) {
             nextMoves = bestCaseAround();
+            caseAround = true;
         }
-        do {
+        while (nextMoves == null || nextMoves.values().iterator().next() == null || nextMoves.keySet().iterator().next() == null) {
             Thread.sleep(1000);
             nextMoves = bestCaseAround();
-        } while (nextMoves == null || nextMoves.values().iterator().next() == null || nextMoves.keySet().iterator().next() == null);
+            caseAround = true;
+        }
 
         Position position = nextMoves.values().iterator().next();
         Move move = nextMoves.keySet().iterator().next();
@@ -111,9 +116,29 @@ public class Agent implements Runnable {
             nextMoves = bestCaseAround();
             position = nextMoves.values().iterator().next();
             move = nextMoves.keySet().iterator().next();
+            caseAround = true;
         }
         boolean succeed = false;
-        if (move(this.plateau, move)){
+
+        if (caseAround) {
+            for ( Map.Entry<Move,Position> movePositionEntry: nextMoves.entrySet()) {
+                if (move(this.plateau, movePositionEntry.getKey())){
+                    switch (movePositionEntry.getKey()) {
+                        case UP:this.lastPosition = Move.RIGHT;
+                            break;
+                        case DOWN: this.lastPosition = Move.UP;
+                            break;
+                        case LEFT: this.lastPosition = Move.RIGHT;
+                            break;
+                        case RIGHT: this.lastPosition = Move.LEFT;
+                            break;
+                        default: this.lastPosition = null;
+                        break;
+                    }
+                    continue;
+                }
+            }
+        } else if (move(this.plateau, move)){
             switch (move) {
                 case UP:this.lastPosition = Move.RIGHT;
                 break;
@@ -137,7 +162,7 @@ public class Agent implements Runnable {
                     switch (message.getAction()) {
                         case "yes":
                             setUp();
-//                            System.out.println("ok je peux continuer");
+                            System.out.println(idAgent + " ok je peux continuer");
                             break;
                         default:
                             break;
@@ -152,7 +177,7 @@ public class Agent implements Runnable {
     }
 
     private void sendMessage(Plateau plateau, Position position) {
-//        System.out.println("New message of agent:" + idAgent);
+        System.out.println("New message of agent:" + idAgent);
         Agent agent = plateau.findAgent(position);
         if (agent!= null) {
             Message message = new Message(this, agent, "request", "move", goalCase.getPosition());
