@@ -3,21 +3,19 @@ package ViewController;
 import Comm.Communication;
 import Grille.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
 public class PuzzleGameCore {
 
-    public static void play(PanView view) {
-        Plateau plateau = new Plateau(view.getRows(), view.getColumns());
+    public static void play(PanView view, int nbAgents,int rows,int columns) {
+        Plateau plateau = new Plateau(rows, columns);
         plateau.setNaturalLanguageColors(view.getNaturalLanguageColors());
         setObserver(plateau, view);
         plateau.clearPlateau();
-        setAgents(plateau);
+        setAgents(plateau,nbAgents);
         Map<Integer, Agent> agentMap =  plateau.getAgentMap();
         agentMap.values().forEach(agent -> {
             view.getNaturalLanguageColors()[agent.getCurrentCase().getPosition().getX()][agent.getCurrentCase().getPosition().getY()] = agent.getColor();
@@ -50,9 +48,9 @@ public class PuzzleGameCore {
         });
     }
 
-    private static void setAgents(Plateau plateau) {
+    private static void setAgents(Plateau plateau,int nbAgents) {
         AgentFactory agentFactory = new AgentFactory(plateau.getNbCols(), plateau.getNbLignes());
-        Map<Integer, Agent> map = agentFactory.createMultiple(15);
+        Map<Integer, Agent> map = agentFactory.createMultiple(nbAgents);
 //        Agent mark = new Agent(1, "Mark", new Case(new Position(2, 6)), Agent.Color.RED);
 //        Agent martial = new Agent(2, "Martial", new Case(new Position(1, 4)), Agent.Color.BLUE);
 //        Agent fabien = new Agent(3, "Fabien", new Case(new Position(7, 3)), Agent.Color.GREEN);

@@ -7,31 +7,20 @@ package ViewController;
 
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Observable;
 
 import Grille.*;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -41,13 +30,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.util.Duration;
 
 /**
  * @author markk
@@ -58,27 +40,7 @@ public class PlateauJeu extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Game Over");
-        alert.setHeaderText("Alerte !");
-        alert.setContentText("Le jeu est terminé");
-        //Creation du menu
-        MenuBar menuBar = new MenuBar();
-        // --- Menu Jeu
-        Menu menuJeu = new Menu("Jouer");
-        MenuItem commencer = new Menu("Commencer");
-        MenuItem sauvegarder = new Menu("Sauvegarder");
-        MenuItem charger = new Menu("Charger");
-        MenuItem quitter = new Menu("Quitter");
-        menuJeu.getItems().addAll(commencer, sauvegarder, charger, quitter);
-        // --- Menu Score
-        Menu menuScore = new Menu("Meilleurs Scores");
-        // --- Menu Aide
-        Menu menuAide = new Menu("Aide");
-        MenuItem regleJeu = new Menu("Rèles de jeu");
-        MenuItem aPropos = new Menu("A propos");
-        menuAide.getItems().addAll(regleJeu, aPropos);
-        menuBar.getMenus().addAll(menuJeu, menuScore, menuAide);
+
         BackgroundImage myBI = new BackgroundImage(new Image(new File("ressources\\background.png").toURI().toString()),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(160, 540, false, false, true, true));
         //GridPane2//
@@ -95,56 +57,91 @@ public class PlateauJeu extends Application {
         GridPane gPane3 = new GridPane();
         //gPane3.setGridLinesVisible(true);
         gPane3.setPrefWidth(170);
-        gPane3.setPrefHeight(540);
+        gPane3.setPrefHeight(520);
         //gPane3.setStyle("-fx-background-color: #333cc4;");
         gPane3.setBackground(new Background(myBI));
         VBox btnPanel = new VBox(5);
         Button startGame = new Button("Jouer");
-
+        Label agentNumberInputLabel = new Label();
+        agentNumberInputLabel.setText("Nombre d'agents :");
+        agentNumberInputLabel.setFont(Font.font(null, FontWeight.BOLD,13));
+        agentNumberInputLabel.setStyle(" -fx-background-color: white");
+        agentNumberInputLabel.setPrefHeight(10);
+        TextArea agentNumberInput = new TextArea();
+        agentNumberInput.setMaxWidth(20);
+        agentNumberInput.setPrefHeight(10);
+        //rows count
+        Label rowsNumberInputLabel = new Label();
+        rowsNumberInputLabel.setText("Nombre de lignes :");
+        rowsNumberInputLabel.setFont(Font.font(null, FontWeight.BOLD,13));
+        rowsNumberInputLabel.setStyle(" -fx-background-color: white");
+        rowsNumberInputLabel.setPrefHeight(10);
+        TextArea rowsNumberInput = new TextArea();
+        rowsNumberInput.setMaxWidth(20);
+        rowsNumberInput.setPrefHeight(10);
+        //////////
+        //columns count
+        Label columnsNumberInputLabel = new Label();
+        columnsNumberInputLabel.setText("Nombre de colonnes :");
+        columnsNumberInputLabel.setFont(Font.font(null, FontWeight.BOLD,13));
+        columnsNumberInputLabel.setStyle(" -fx-background-color: white");
+        columnsNumberInputLabel.setPrefHeight(10);
+        TextArea columnsNumberInput = new TextArea();
+        columnsNumberInput.setMaxWidth(20);
+        columnsNumberInput.setPrefHeight(10);
+        /////////
         startGame.setPrefWidth(60);
-        //startGame.setPadding(new Insets(10, 0, 10, 0));
-        HBox songPanel = new HBox(5);
-        Image muteImage = new Image(new File("ressources\\mute.png").toURI().toString());
-        Image songImage = new Image(new File("ressources\\song.png").toURI().toString());
-        Image pauseImage = new Image(new File("ressources\\pause.png").toURI().toString());
-        Button song = new Button("", new ImageView(songImage));
-        song.setMaxWidth(20);
-        song.setPrefWidth(20);
-        song.setPrefHeight(20);
-        Button mute = new Button("", new ImageView(muteImage));
-        //mute.setPadding(new Insets(10, 0, 10, 0));
-        mute.setMaxWidth(20);
-        mute.setPrefWidth(20);
-        mute.setPrefHeight(20);
-        Button pause = new Button("", new ImageView(pauseImage));
-
-        pause.setMaxWidth(20);
-        pause.setPrefWidth(20);
-        pause.setPrefHeight(20);
+        startGame.setPrefWidth(60);
         btnPanel.getChildren().add(startGame);
-        songPanel.getChildren().add(song);
-        songPanel.getChildren().add(mute);
-        songPanel.getChildren().add(pause);
+        btnPanel.getChildren().add(rowsNumberInputLabel);
+        btnPanel.getChildren().add(rowsNumberInput);
+        btnPanel.getChildren().add(columnsNumberInputLabel);
+        btnPanel.getChildren().add(columnsNumberInput);
+        btnPanel.getChildren().add(agentNumberInputLabel);
+        btnPanel.getChildren().add(agentNumberInput);
 
         GridPane.setMargin(btnPanel, new Insets(10, 0, 10, 0));
         btnPanel.setAlignment(Pos.CENTER);
-        songPanel.setAlignment(Pos.CENTER);
         gPane3.add(btnPanel, 0, 7, 4, 4);
-        gPane3.add(songPanel, 0, 11, 4, 1);
         gPane3.setAlignment(Pos.CENTER);
         gPane3.setPadding(new Insets(10));
         //BorderPane
         BorderPane border = new BorderPane();
-        border.setCenter(puzzleView.getgPane2());
-        border.setRight(gPane3);
-        border.setTop(menuBar);
-        Scene scene = new Scene(border, 480, 290);
+        border.setCenter(gPane3);
+        border.setRight(puzzleView.getgPane2());
+        Scene scene = new Scene(border, 480, 260);
         primaryStage.setTitle("Puzzle");
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(new File("ressources\\puzzle-logo.jpg").toURI().toString()));
         primaryStage.show();
         startGame.setOnAction((ActionEvent e) -> {
-            PuzzleGameCore.play(puzzleView);
+
+            if(!agentNumberInput.getText().equals("") && !rowsNumberInput.getText().equals("") && !columnsNumberInput.getText().equals("")){
+                int nbAgents = Integer.parseInt(agentNumberInput.getText());
+                int rowsNumber = Integer.parseInt(rowsNumberInput.getText());
+                int columnsNumber = Integer.parseInt(columnsNumberInput.getText());
+                if(  nbAgents> 0 && rowsNumber > 0 && columnsNumber> 0){
+                    if(nbAgents > rowsNumber*columnsNumber){
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Nombres d'agents incorrect !");
+                        alert.setHeaderText("Alerte !");
+                        alert.setContentText(""+nbAgents+" doit être < à "+rowsNumber +"* "+columnsNumber );
+                        alert.showAndWait();
+                    }else PuzzleGameCore.play(puzzleView, nbAgents,rowsNumber,columnsNumber);
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Valeurs manquantes !");
+                    alert.setHeaderText("Alerte !");
+                    alert.setContentText("une valeur est < 0");
+                    alert.showAndWait();
+                }
+            }else{
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Entrez les valeurs!");
+                alert.setHeaderText("Alerte !");
+                alert.setContentText("Champs vides");
+                alert.showAndWait();
+            }
         });
         //
     }
