@@ -14,7 +14,7 @@ public class PuzzleGameCore {
         Plateau plateau = new Plateau(rows, columns);
         Plateau finalState = new Plateau(rows, columns);
         plateau.setNaturalLanguageColors(gameView.getNaturalLanguageColors());
-        finalState.setNaturalLanguageColors(finalState.getNaturalLanguageColors());
+        finalState.setNaturalLanguageColors(finalStateView.getNaturalLanguageColors());
         setObserver(plateau, gameView);
         setObserver(finalState, finalStateView);
         plateau.clearPlateau();
