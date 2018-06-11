@@ -10,24 +10,30 @@ import java.util.Observable;
 
 public class PuzzleGameCore {
 
-    public static void play(PanView view, int nbAgents,int rows,int columns) {
+    public static void play(PanView gameView, PanView finalStateView, int nbAgents, int rows, int columns) {
         Plateau plateau = new Plateau(rows, columns);
-        plateau.setNaturalLanguageColors(view.getNaturalLanguageColors());
-        setObserver(plateau, view);
+        Plateau finalState = new Plateau(rows, columns);
+        plateau.setNaturalLanguageColors(gameView.getNaturalLanguageColors());
+        finalState.setNaturalLanguageColors(finalState.getNaturalLanguageColors());
+        setObserver(plateau, gameView);
+        setObserver(finalState, finalStateView);
         plateau.clearPlateau();
-        setAgents(plateau,nbAgents);
-        Map<Integer, Agent> agentMap =  plateau.getAgentMap();
+        finalState.clearPlateau();
+        setAgents(plateau, nbAgents);
+        Map<Integer, Agent> agentMap = plateau.getAgentMap();
         agentMap.values().forEach(agent -> {
-            view.getNaturalLanguageColors()[agent.getCurrentCase().getPosition().getX()][agent.getCurrentCase().getPosition().getY()] = agent.getColor();
+            gameView.getNaturalLanguageColors()[agent.getCurrentCase().getPosition().getX()][agent.getCurrentCase().getPosition().getY()] = agent.getColor();
         });
         agentMap.values().forEach(agent -> {
-            view.getText()[agent.getCurrentCase().getPosition().getX()][agent.getCurrentCase().getPosition().getY()].setText(String.valueOf(agent.getIdAgent()));
+            gameView.getText()[agent.getCurrentCase().getPosition().getX()][agent.getCurrentCase().getPosition().getY()].setText(String.valueOf(agent.getIdAgent()));
         });
+        updateFinalStateView(finalState,agentMap);
         plateau.displayPieces();
         agentMap.values().forEach(agent -> {
             agent.setPlateau(plateau);
         });
-        agentMap.values().forEach(agent -> { new Thread(agent).start();
+        agentMap.values().forEach(agent -> {
+            new Thread(agent).start();
         });
     }
 
@@ -48,7 +54,15 @@ public class PuzzleGameCore {
         });
     }
 
-    private static void setAgents(Plateau plateau,int nbAgents) {
+    public static void updateFinalStateView(Plateau plateau, Map<Integer, Agent> agentMap) {
+        agentMap.values().forEach(agent -> {
+            plateau.getNaturalLanguageColors()[agent.getGoalCase().getPosition().getX()][agent.getGoalCase().getPosition().getY()] = agent.getColor();
+            plateau.getPanCases()[agent.getGoalCase().getPosition().getX()][agent.getGoalCase().getPosition().getY()].setText(String.valueOf(agent.getIdAgent()));
+            plateau.setGrilleCaseTrue(agent.getGoalCase().getPosition().getX(), agent.getGoalCase().getPosition().getY());
+        });
+    }
+
+    private static void setAgents(Plateau plateau, int nbAgents) {
         AgentFactory agentFactory = new AgentFactory(plateau.getNbCols(), plateau.getNbLignes());
         Map<Integer, Agent> map = agentFactory.createMultiple(nbAgents);
 //        Agent mark = new Agent(1, "Mark", new Case(new Position(2, 6)), Agent.Color.RED);

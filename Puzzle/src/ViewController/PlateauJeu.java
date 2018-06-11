@@ -47,10 +47,15 @@ public class PlateauJeu extends Application {
         //*********//
         PanView puzzleView = new PanView(10, 10);
 
+
         puzzleView.getgPane2().setPrefWidth(300);
         puzzleView.getgPane2().setPrefHeight(520);
         puzzleView.getgPane2().requestFocus();
-        //
+        //FinalState GridPane//
+        PanView finalState = new PanView(10, 10);
+        finalState.getgPane2().setPrefWidth(300);
+        finalState.getgPane2().setPrefHeight(520);
+        finalState.getgPane2().requestFocus();
         //*********//
         //GridPane3//
         //*********//              
@@ -109,7 +114,8 @@ public class PlateauJeu extends Application {
         BorderPane border = new BorderPane();
         border.setCenter(gPane3);
         border.setRight(puzzleView.getgPane2());
-        Scene scene = new Scene(border, 480, 260);
+        border.setLeft(finalState.getgPane2());
+        Scene scene = new Scene(border, 780, 260);
         primaryStage.setTitle("Puzzle");
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(new File("ressources\\puzzle-logo.jpg").toURI().toString()));
@@ -127,7 +133,7 @@ public class PlateauJeu extends Application {
                         alert.setHeaderText("Alerte !");
                         alert.setContentText(""+nbAgents+" doit être < à "+rowsNumber +"* "+columnsNumber );
                         alert.showAndWait();
-                    }else PuzzleGameCore.play(puzzleView, nbAgents,rowsNumber,columnsNumber);
+                    }else PuzzleGameCore.play(puzzleView, finalState,nbAgents,rowsNumber,columnsNumber);
                 }else{
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Valeurs manquantes !");
