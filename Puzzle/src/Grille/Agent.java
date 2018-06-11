@@ -100,7 +100,7 @@ public class Agent implements Runnable {
         Message message;
         boolean caseAround =false;
         Map<Move, Position> nextMoves = isGoalReached()? moveEvenIfFinished(): chooseNextMove();
-        while (nextMoves == null || nextMoves.values().iterator().next() == null || nextMoves.keySet().iterator().next() == null) {
+        while (nextMoves == null || nextMoves.values() == null || nextMoves.keySet() == null) {
             Thread.sleep(1000);
             nextMoves = bestCaseAround();
             caseAround = true;
