@@ -13,7 +13,7 @@ import java.util.Observable;
 public class PuzzleGameCore {
 
     public static void play(PanView view) {
-        Plateau plateau = new Plateau(3, 3);
+        Plateau plateau = new Plateau(view.getRows(), view.getColumns());
         plateau.setNaturalLanguageColors(view.getNaturalLanguageColors());
         setObserver(plateau, view);
         plateau.clearPlateau();
@@ -52,7 +52,7 @@ public class PuzzleGameCore {
 
     private static void setAgents(Plateau plateau) {
         AgentFactory agentFactory = new AgentFactory(plateau.getNbCols(), plateau.getNbLignes());
-        Map<Integer, Agent> map = agentFactory.createMultiple(5);
+        Map<Integer, Agent> map = agentFactory.createMultiple(45);
 //        Agent mark = new Agent(1, "Mark", new Case(new Position(2, 6)), Agent.Color.RED);
 //        Agent martial = new Agent(2, "Martial", new Case(new Position(1, 4)), Agent.Color.BLUE);
 //        Agent fabien = new Agent(3, "Fabien", new Case(new Position(7, 3)), Agent.Color.GREEN);

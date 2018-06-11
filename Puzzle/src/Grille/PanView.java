@@ -25,9 +25,13 @@ public class PanView {
     private Text[][] text ;
     private javafx.scene.paint.Color[][] fxColorsRectPan;
     private Agent.Color naturalLanguageColors[][];
+    private int rows;
+    private int columns;
 
 
     public PanView(int nBlignes, int nBcols) {
+        this.rows = nBlignes;
+        this.columns = nBcols;
         rectPan = new Rectangle[nBlignes][nBcols];
         text = new Text[nBlignes][nBcols];
         /*
@@ -135,5 +139,12 @@ public class PanView {
     public void setText(Text[][] text) {
         this.text = text;
     }
-    
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
 }
