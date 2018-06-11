@@ -52,7 +52,7 @@ public class Agent implements Runnable {
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
         while (!this.plateau.isFinished()) {
 //            System.out.println("agent: " + this.getIdAgent());
             //System.out.println("dans le while");
@@ -96,7 +96,7 @@ public class Agent implements Runnable {
 
         }
     }
-    private synchronized void setUp() throws InterruptedException {
+    private void setUp() throws InterruptedException {
         Message message;
         boolean caseAround =false;
         Map<Move, Position> nextMoves = isGoalReached()? moveEvenIfFinished(): chooseNextMove();
@@ -154,6 +154,7 @@ public class Agent implements Runnable {
             sendMessage(plateau,position);
 
             do{
+                System.out.println(idAgent + " wait...");
                 Thread.sleep(1000);
             } while ((message = Communication.getInstance().readMessage(this)) == null);
             Thread.sleep(1000);
