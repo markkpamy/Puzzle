@@ -13,7 +13,7 @@ import java.util.Observable;
 public class PuzzleGameCore {
 
     public static void play(PanView view) {
-        Plateau plateau = new Plateau(10, 10);
+        Plateau plateau = new Plateau(view.getRows(), view.getColumns());
         plateau.setNaturalLanguageColors(view.getNaturalLanguageColors());
         setObserver(plateau, view);
         plateau.clearPlateau();
