@@ -75,7 +75,11 @@ public class AgentFactory {
 
     public Map<Integer, Agent> createMultiple(int nbAgent) {
         Map<Integer, Agent> agentMap = new HashMap<>();
+        int limit = nbColumns * nbRows;
         for (int i = 0; i < nbAgent; i++) {
+            if (i == limit){
+                return agentMap;
+            }
             Agent agent = createAlternative();
             agentMap.put(agent.getIdAgent(), agent);
         }
