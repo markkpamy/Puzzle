@@ -52,7 +52,7 @@ public class Agent implements Runnable {
     }
 
     @Override
-    public synchronized void run() {
+    public void run() {
         while (!this.plateau.isFinished()) {
 //            System.out.println("agent: " + this.getIdAgent());
             //System.out.println("dans le while");
@@ -100,10 +100,6 @@ public class Agent implements Runnable {
         Message message;
         boolean caseAround =false;
         Map<Move, Position> nextMoves = isGoalReached()? moveEvenIfFinished(): chooseNextMove();
-        if (nextMoves == null) {
-            nextMoves = bestCaseAround();
-            caseAround = true;
-        }
         while (nextMoves == null || nextMoves.values().iterator().next() == null || nextMoves.keySet().iterator().next() == null) {
             Thread.sleep(1000);
             nextMoves = bestCaseAround();
@@ -135,7 +131,7 @@ public class Agent implements Runnable {
                         default: this.lastPosition = null;
                         break;
                     }
-                    continue;
+                    break;
                 }
             }
         } else if (move(this.plateau, move)){
@@ -155,9 +151,9 @@ public class Agent implements Runnable {
 
             do{
                 System.out.println(idAgent + " wait...");
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } while ((message = Communication.getInstance().readMessage(this)) == null);
-            Thread.sleep(1000);
+//            Thread.sleep(1000);
             switch (message.getType()) {
                 case "response":
                     switch (message.getAction()) {
@@ -187,7 +183,7 @@ public class Agent implements Runnable {
         }
     }
 
-    public boolean move(Plateau plateau, Move move) {
+    public synchronized boolean move(Plateau plateau, Move move) {
         if (verifMove(plateau, move)) {
             plateau.effaceTracePiece(this);
             this.getCurrentCase().setPosition(getPositionByMove(move));
@@ -240,7 +236,7 @@ public class Agent implements Runnable {
         return true;
     }
 
-    public Map<Move,Position> moveEvenIfFinished(){
+    public synchronized Map<Move,Position> moveEvenIfFinished(){
         System.out.println("entré dans moveEventIfFinished");
         Move move = Move.RIGHT;
         Map<Move, Position> positions = new HashMap<>();
