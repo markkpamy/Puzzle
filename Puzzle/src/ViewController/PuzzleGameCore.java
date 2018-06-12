@@ -2,6 +2,7 @@ package ViewController;
 
 import Comm.Communication;
 import Grille.*;
+import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -34,25 +35,34 @@ public class PuzzleGameCore {
     }
 
     private static void setObserver(Plateau plateau, PanView puzzleView) {
+
         plateau.addObserver((Observable o, Object arg) -> {
-            if (arg instanceof Case) {
-                Case tmp = (Case) arg;
-                if (!puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()]) {
-                    puzzleView.getRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()].setFill(convertColor(puzzleView.getNaturalLanguageColors()[tmp.getPosition().getX()][tmp.getPosition().getY()]));
-                    puzzleView.getText()[tmp.getPosition().getX()][tmp.getPosition().getY()].setText(tmp.getText());
-                    puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()] = true;
-                } else if (puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()]) {
-                    puzzleView.getRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()].setFill(Color.BLACK);
-                    puzzleView.getText()[tmp.getPosition().getX()][tmp.getPosition().getY()].setText("");
-                    puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()] = false;
-                }
-            }
+            Platform.runLater(new Runnable() {
+                                  @Override
+                                  public void run() {
+                                      if (arg instanceof Case) {
+                                          Case tmp = (Case) arg;
+                                          if (!puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()]) {
+                                              puzzleView.getRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()].setFill(convertColor(puzzleView.getNaturalLanguageColors()[tmp.getPosition().getX()][tmp.getPosition().getY()]));
+                                              puzzleView.getText()[tmp.getPosition().getX()][tmp.getPosition().getY()].setText(tmp.getText());
+                                              puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()] = true;
+                                          } else if (puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()]) {
+                                              puzzleView.getRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()].setFill(Color.BLACK);
+                                              puzzleView.getText()[tmp.getPosition().getX()][tmp.getPosition().getY()].setText("");
+                                              puzzleView.getColoredRectPan()[tmp.getPosition().getX()][tmp.getPosition().getY()] = false;
+                                          }
+                                      }
+                                  }
+                              }
+
+            );
+
         });
     }
 
     private static void setAgents(Plateau plateau) {
         AgentFactory agentFactory = new AgentFactory(plateau.getNbCols(), plateau.getNbLignes());
-        Map<Integer, Agent> map = agentFactory.createMultiple(10);
+        Map<Integer, Agent> map = agentFactory.createMultiple( 15);
 //        Agent mark = new Agent(1, "Mark", new Case(new Position(2, 6)), Agent.Color.RED);
 //        Agent martial = new Agent(2, "Martial", new Case(new Position(1, 4)), Agent.Color.BLUE);
 //        Agent fabien = new Agent(3, "Fabien", new Case(new Position(7, 3)), Agent.Color.GREEN);
