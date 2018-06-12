@@ -82,6 +82,12 @@ public class Plateau extends Observable {
         this.displayPiece(t);
     }
 
+    /*public synchronized void updateFinalStateView(Agent t) {
+        naturalLanguageColors[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()] = t.getColor();
+        panCases[t.getCurrentCase().getPosition().getX()][t.getCurrentCase().getPosition().getY()].setText(String.valueOf(t.getIdAgent()));
+        this.displayPiece(t);
+    }*/
+
     public synchronized void setGrilleCaseTrue(int i, int j) {
         if (!this.grille[i][j]) {
             this.grille[i][j] = true;
