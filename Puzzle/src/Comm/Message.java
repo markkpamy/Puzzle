@@ -19,6 +19,14 @@ public class Message {
         this.position = position;
     }
 
+    public Message() {
+        this.emitter = new Agent();
+        this.recipient = new Agent();
+        this.type = " ";
+        this.action = " ";
+        this.position = new Position(0,0);
+    }
+
     public Agent getEmitter() {
         return emitter;
     }
@@ -73,5 +81,14 @@ public class Message {
                 .append(getPosition())
                 .append("]")
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Message message = (Message) obj;
+        return this.emitter == message.getEmitter() &&
+                this.recipient == message.getRecipient() &&
+                this.action.equals(message.getAction()) &&
+                this.type.equals(message.getType());
     }
 }

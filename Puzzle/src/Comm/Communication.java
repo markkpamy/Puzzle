@@ -3,6 +3,7 @@ package Comm;
 import Grille.Agent;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Communication {
 
@@ -28,8 +29,12 @@ public class Communication {
         return this.messages.get(agent.getIdAgent()).pollFirst();
     }
 
-    public void writeMessage(Agent agent, Message message) {
+    public boolean writeMessage(Agent agent, Message message) {
+        if (this.messages.get(agent.getIdAgent()).contains(message)) {
+            return false;
+        }
         this.messages.get(agent.getIdAgent()).addLast(message);
+        return true;
     }
 
     public void displayMessages(){
@@ -38,5 +43,36 @@ public class Communication {
 
     public void displayMessagesofAgent(Agent agent){
         System.out.println(this.messages.get(agent.getIdAgent()));
+    }
+
+    public void clearMessageOfAllAgent() {
+        this.messages.forEach((i,l) -> l.clear());
+    }
+
+    public boolean checkMessageReceivedByPosition(Agent mainAgent,Agent futurReceiver) {
+        boolean check = false;
+        Iterator iterator = this.messages.entrySet().iterator();
+        if (iterator.hasNext()) {
+            Map.Entry<Integer, LinkedList<Message>> it = (Map.Entry<Integer, LinkedList<Message>>) iterator.next();
+
+            do {
+
+                if (mainAgent.getIdAgent() == it.getKey()) {
+                    for (Message message : it.getValue()) {
+                        if (message.getEmitter().getIdAgent() == futurReceiver.getIdAgent()) {
+//                            System.out.println("vrai");
+                            return true;
+                        }
+                    }
+                }
+
+                it = (Map.Entry<Integer, LinkedList<Message>>) iterator.next();
+            } while (iterator.hasNext());
+        }
+        return false;
+    }
+
+    public void resetMessagesOfAgent(Agent agent) {
+        this.messages.get(agent.getIdAgent()).clear();
     }
 }

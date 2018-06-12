@@ -83,7 +83,7 @@ public class PlateauJeu extends Application {
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(160, 540, false, false, true, true));
         //GridPane2//
         //*********//
-        PanView puzzleView = new PanView(8, 8);
+        PanView puzzleView = new PanView(5,5);
 
         puzzleView.getgPane2().setPrefWidth(300);
         puzzleView.getgPane2().setPrefHeight(520);

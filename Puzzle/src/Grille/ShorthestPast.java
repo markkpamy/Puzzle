@@ -82,7 +82,7 @@ public class ShorthestPast {
     public List<Position> getAdjacencyPositions(Position position, Plateau plateau){
         List<Position> availablePositions = new ArrayList<>();
         for (Agent.Move move : Agent.Move.values()) {
-            if (agent.verifIfOffLimits(plateau,move,position)) {
+            if (agent.isInLimits(plateau,move,position)) {
                 Position tmp = agent.positionsAround(position, move);
                 if (plateau.isPositionAvailable(tmp)) {
                     availablePositions.add(tmp);
