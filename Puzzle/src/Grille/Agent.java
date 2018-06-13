@@ -60,10 +60,21 @@ public class Agent implements Runnable {
     @Override
     public void run() {
 //        plateau = new Plateau(5,5);
-//        Agent cptAmerica2 = new Agent(12, "cptAmerica", new Case(new Position(0, 0)), Agent.Color.ORANGE);
+//        Agent cptAmerica2 = new Agent(12, "cptAmerica", new Case(new Position(0, 0)),new Case(new Position(1,0)), Agent.Color.ORANGE);
+//        Agent cptAmerica3 = new Agent(13, "cptAmerica", new Case(new Position(1, 0)), new Case(new Position(0, 0)), Agent.Color.ORANGE);
 //        Map<Integer, Agent> map = new HashMap<>();
 //        map.put(cptAmerica2.idAgent,cptAmerica2);
+//        map.put(cptAmerica3.idAgent,cptAmerica3);
 //        plateau.setAgentMap(map);
+//        ArrayList<Agent> list = new ArrayList<>();
+//        list.add(cptAmerica2);
+//        list.add(cptAmerica3);
+//        Communication.getInstance().setCommunication(list);
+//        Communication.getInstance().writeMessage(cptAmerica3,new Message(cptAmerica2,cptAmerica3,"request","move",new Position(1,0)));
+////        Communication.getInstance().writeMessage(cptAmerica2,new Message(cptAmerica3,cptAmerica2,"request","move",new Position(0,0)));
+//        Communication.getInstance().displayMessages();
+//        System.out.println(Communication.getInstance().checkMessageReceivedByPosition(cptAmerica3,cptAmerica2));
+
 //        System.out.println(isInLimits(plateau,Move.LEFT,new Position(0,0)));
         while (!this.plateau.isFinished()) {
 //            System.out.println("agent: " + this.getIdAgent());
@@ -73,7 +84,7 @@ public class Agent implements Runnable {
                     setUp();
                 }
                 receiveAndMove();
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 System.out.println("Agent: " + getIdAgent() + e.getMessage());
                 e.printStackTrace();
@@ -108,7 +119,7 @@ public class Agent implements Runnable {
                         requestFromAgent = message.getEmitter();
                         letPlace();
                         Communication.getInstance().writeMessage(message.getEmitter(), new Message(this, message.getEmitter(), "response", "yes", this.goalCase.getPosition()));
-                        Thread.sleep(600);
+                        Thread.sleep(1000);
                         break;
                     default:
                         break;
@@ -155,7 +166,7 @@ public class Agent implements Runnable {
             Agent testAgent = plateau.findAgent(position);
 //            System.out.println(testAgent);
             if ((testAgent != null) && (Communication.getInstance().checkMessageReceivedByPosition(this, testAgent))) {
-                return;
+                letPlace();
             }
             if (sent) {
                 waitForAnswer(testAgent);
@@ -196,6 +207,7 @@ public class Agent implements Runnable {
 
         if (move(this.plateau, movePositionEntry.getKey())) {
             System.out.println(idAgent + " a fait " + movePositionEntry.getKey() + " de " + movePositionEntry.getValue());
+//            Thread.sleep(500);
             setLastPosition (movePositionEntry.getKey());
         } else {
 
@@ -226,7 +238,7 @@ public class Agent implements Runnable {
             do {
 
                 System.out.println(idAgent + " wait... for " + receiver.getIdAgent());
-                Thread.sleep(100);
+                Thread.sleep(10);
             } while ((message = Communication.getInstance().readMessage(this)) == null);
 
             processMessage(message);
@@ -403,6 +415,11 @@ public class Agent implements Runnable {
                     positionsResult.put(key, value);
                 }
             }
+            if (agentTemp == null && isInLimits(plateau, key,getPositionByMove(key))) {
+                positionsResult.clear();
+                positionsResult.put(key,value);
+                return;
+            }
         });
 //        System.out.println(idAgent + "moves positions possibles: " + positionsResult);
 //        Thread.sleep(1500);
@@ -467,6 +484,7 @@ public class Agent implements Runnable {
                     if (agent == null || agent.getIdAgent() != requestFromAgent.getIdAgent()) {
                         result2.put(x.getKey(), x.getValue());
                     }
+                    return;
                 });
 //        System.out.println(result2);
         return result2;

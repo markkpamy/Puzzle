@@ -50,24 +50,11 @@ public class Communication {
     }
 
     public boolean checkMessageReceivedByPosition(Agent mainAgent,Agent futurReceiver) {
-        boolean check = false;
-        Iterator iterator = this.messages.entrySet().iterator();
-        if (iterator.hasNext()) {
-            Map.Entry<Integer, LinkedList<Message>> it = (Map.Entry<Integer, LinkedList<Message>>) iterator.next();
-
-            do {
-
-                if (mainAgent.getIdAgent() == it.getKey()) {
-                    for (Message message : it.getValue()) {
-                        if (message.getEmitter().getIdAgent() == futurReceiver.getIdAgent()) {
-//                            System.out.println("vrai");
-                            return true;
-                        }
-                    }
-                }
-
-                it = (Map.Entry<Integer, LinkedList<Message>>) iterator.next();
-            } while (iterator.hasNext());
+        LinkedList<Message> messageArrayList = this.messages.get(mainAgent.getIdAgent());
+        for (Message message : messageArrayList) {
+            if ((message.getEmitter().getIdAgent() == futurReceiver.getIdAgent()) && message.getType().equals("request") && message.getAction().equals("move")) {
+                return true;
+            }
         }
         return false;
     }
