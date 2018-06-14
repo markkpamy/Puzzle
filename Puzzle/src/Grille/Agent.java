@@ -119,7 +119,7 @@ public class Agent implements Runnable {
                         requestFromAgent = message.getEmitter();
                         letPlace();
                         Communication.getInstance().writeMessage(message.getEmitter(), new Message(this, message.getEmitter(), "response", "yes", this.goalCase.getPosition()));
-                        Thread.sleep(1000);
+                        Thread.sleep(100);
                         break;
                     default:
                         break;
@@ -129,6 +129,7 @@ public class Agent implements Runnable {
                 switch (message.getAction()) {
                     case "yes":
                         System.out.println(idAgent + " ok je peux continuer");
+                        letPlace();
                         break;
                     default:
                         break;
@@ -237,7 +238,7 @@ public class Agent implements Runnable {
             Message message = null;
             do {
 
-                System.out.println(idAgent + " wait... for " + receiver.getIdAgent());
+//                System.out.println(idAgent + " wait... for " + receiver.getIdAgent());
                 Thread.sleep(10);
             } while ((message = Communication.getInstance().readMessage(this)) == null);
 
@@ -383,6 +384,7 @@ public class Agent implements Runnable {
         Move move = Move.RIGHT;
         Map<Move, Position> positions = new HashMap<>();
         Map<Move, Position> positionsResult = new HashMap<>();
+        Map<Move, Position> testMovePosition = new HashMap<>();
         List<Integer> fourthFirstNumber = new ArrayList<>();
         fourthFirstNumber.add(0);
         fourthFirstNumber.add(1);
@@ -416,11 +418,19 @@ public class Agent implements Runnable {
                 }
             }
             if (agentTemp == null && isInLimits(plateau, key,getPositionByMove(key))) {
-                positionsResult.clear();
-                positionsResult.put(key,value);
-                return;
+//                positionsResult.clear();
+                testMovePosition.put(key,value);
+//                return;
             }
         });
+        if (!testMovePosition.isEmpty()) {
+
+             Object[] randomKeySet = testMovePosition.keySet().toArray();
+             Object key = randomKeySet[new Random().nextInt(randomKeySet.length)];
+            Position position = positionsResult.get((Move)key);
+            positionsResult.clear();
+            positionsResult.put((Move) key,position);
+        }
 //        System.out.println(idAgent + "moves positions possibles: " + positionsResult);
 //        Thread.sleep(1500);
 //        System.out.println(idAgent +"sorti de venifENded");
@@ -483,6 +493,7 @@ public class Agent implements Runnable {
                     Agent agent = plateau.findAgent(x.getValue());
                     if (agent == null || agent.getIdAgent() != requestFromAgent.getIdAgent()) {
                         result2.put(x.getKey(), x.getValue());
+                        return;
                     }
                     return;
                 });
