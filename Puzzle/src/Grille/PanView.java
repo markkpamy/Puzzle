@@ -62,6 +62,16 @@ public class PanView {
             }
         }
     }
+    public void reinit(){
+        for (int i = 0; i < this.rows; i++) {
+            for (int j = 0; j < this.columns; j++) {
+                text[i][j].setText("");
+                getRectPan()[i][j].setFill(javafx.scene.paint.Color.BLACK);
+                getColoredRectPan()[i][j] = false;
+                getFxColorsRectPan()[i][j] = javafx.scene.paint.Color.BLACK;
+            }
+        }
+    }
 
     /**
      * @return the gPane2

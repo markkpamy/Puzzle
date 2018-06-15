@@ -69,7 +69,7 @@ public class PlateauJeu extends Application {
         Button startGame = new Button("Jouer");
         Label agentNumberInputLabel = new Label();
         agentNumberInputLabel.setText("Nombre d'agents :");
-        agentNumberInputLabel.setFont(Font.font(null, FontWeight.BOLD,13));
+        agentNumberInputLabel.setFont(Font.font(null, FontWeight.BOLD, 13));
         agentNumberInputLabel.setStyle(" -fx-background-color: white");
         agentNumberInputLabel.setPrefHeight(10);
         TextArea agentNumberInput = new TextArea();
@@ -78,7 +78,7 @@ public class PlateauJeu extends Application {
         //rows count
         Label rowsNumberInputLabel = new Label();
         rowsNumberInputLabel.setText("Nombre de lignes :");
-        rowsNumberInputLabel.setFont(Font.font(null, FontWeight.BOLD,13));
+        rowsNumberInputLabel.setFont(Font.font(null, FontWeight.BOLD, 13));
         rowsNumberInputLabel.setStyle(" -fx-background-color: white");
         rowsNumberInputLabel.setPrefHeight(10);
         TextArea rowsNumberInput = new TextArea();
@@ -88,7 +88,7 @@ public class PlateauJeu extends Application {
         //columns count
         Label columnsNumberInputLabel = new Label();
         columnsNumberInputLabel.setText("Nombre de colonnes :");
-        columnsNumberInputLabel.setFont(Font.font(null, FontWeight.BOLD,13));
+        columnsNumberInputLabel.setFont(Font.font(null, FontWeight.BOLD, 13));
         columnsNumberInputLabel.setStyle(" -fx-background-color: white");
         columnsNumberInputLabel.setPrefHeight(10);
         TextArea columnsNumberInput = new TextArea();
@@ -122,26 +122,29 @@ public class PlateauJeu extends Application {
         primaryStage.show();
         startGame.setOnAction((ActionEvent e) -> {
 
-            if(!agentNumberInput.getText().equals("") && !rowsNumberInput.getText().equals("") && !columnsNumberInput.getText().equals("")){
+//TODO appui sur jouer   ==> re-init
+            if (!agentNumberInput.getText().equals("") && !rowsNumberInput.getText().equals("") && !columnsNumberInput.getText().equals("")) {
                 int nbAgents = Integer.parseInt(agentNumberInput.getText());
                 int rowsNumber = Integer.parseInt(rowsNumberInput.getText());
                 int columnsNumber = Integer.parseInt(columnsNumberInput.getText());
-                if(  nbAgents> 0 && rowsNumber > 0 && columnsNumber> 0){
-                    if(nbAgents > rowsNumber*columnsNumber){
+                if (nbAgents > 0 && rowsNumber > 0 && columnsNumber > 0) {
+                    if (nbAgents > rowsNumber * columnsNumber) {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Nombres d'agents incorrect !");
                         alert.setHeaderText("Alerte !");
-                        alert.setContentText(""+nbAgents+" doit être < à "+rowsNumber +"* "+columnsNumber );
+                        alert.setContentText("" + nbAgents + " doit être < à " + rowsNumber + "* " + columnsNumber);
                         alert.showAndWait();
-                    }else PuzzleGameCore.play(puzzleView, finalState,nbAgents,rowsNumber,columnsNumber);
-                }else{
+                    } else {
+                        PuzzleGameCore.play(puzzleView, finalState, nbAgents, rowsNumber, columnsNumber);
+                    }
+                } else {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Valeurs manquantes !");
                     alert.setHeaderText("Alerte !");
                     alert.setContentText("une valeur est < 0");
                     alert.showAndWait();
                 }
-            }else{
+            } else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Entrez les valeurs!");
                 alert.setHeaderText("Alerte !");
