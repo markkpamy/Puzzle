@@ -86,9 +86,13 @@ public class Message {
     @Override
     public boolean equals(Object obj) {
         Message message = (Message) obj;
-        return this.emitter == message.getEmitter() &&
-                this.recipient == message.getRecipient() &&
-                this.action.equals(message.getAction()) &&
-                this.type.equals(message.getType());
+        if (message == null) {
+            return false;
+        } else {
+            return this.emitter == message.getEmitter() &&
+                    this.recipient == message.getRecipient() &&
+                    this.action.equals(message.getAction()) &&
+                    this.type.equals(message.getType());
+        }
     }
 }

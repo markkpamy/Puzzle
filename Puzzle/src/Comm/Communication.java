@@ -30,10 +30,14 @@ public class Communication {
     }
 
     public boolean writeMessage(Agent agent, Message message) {
-        if (this.messages.get(agent.getIdAgent()).contains(message)) {
-            return false;
-        }
-        this.messages.get(agent.getIdAgent()).addLast(message);
+        if (this.messages != null && agent != null && this.messages.get(agent.getIdAgent()) !=null) {
+            if (this.messages.get(agent.getIdAgent()).contains(message)) {
+                return false;
+            }
+            this.messages.get(agent.getIdAgent()).addLast(message);
+        } else return false;
+
+
         return true;
     }
 
@@ -50,13 +54,24 @@ public class Communication {
     }
 
     public boolean checkMessageReceivedByPosition(Agent mainAgent,Agent futurReceiver) {
-        LinkedList<Message> messageArrayList = this.messages.get(mainAgent.getIdAgent());
-        for (Message message : messageArrayList) {
-            if ((message.getEmitter().getIdAgent() == futurReceiver.getIdAgent()) && message.getType().equals("request") && message.getAction().equals("move")) {
-                return true;
+        try {
+            if (mainAgent!= null && futurReceiver !=null) {
+                LinkedList<Message> messageArrayList = this.messages.get(mainAgent.getIdAgent());
+                if (!messageArrayList.isEmpty() && messageArrayList != null) {
+                    for (Message message : messageArrayList) {
+                        if ((message.getEmitter().getIdAgent() == futurReceiver.getIdAgent()) && message.getType().equals("request") && message.getAction().equals("move")) {
+                            return true;
+                        }
+                    }
+                }
             }
+        } catch (ConcurrentModificationException e) {
+            throw new ConcurrentModificationException();
+        } catch (NullPointerException e) {
+            throw new NullPointerException();
         }
         return false;
+
     }
 
     public void resetMessagesOfAgent(Agent agent) {

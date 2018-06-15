@@ -27,7 +27,6 @@ public class Agent implements Runnable {
     private Case currentCase;
     private Case goalCase;
     private Plateau plateau;
-    private ArrayList<Message> messageArrayList = new ArrayList<>();
     private Move lastPosition;
     private Queue<Position> way;
     private Agent requestFromAgent;
@@ -43,11 +42,6 @@ public class Agent implements Runnable {
         this.goalCase = goalCase;
         this.color = color;
         this.requestFromAgent = new Agent();
-//        for (Case[] c1:plateau.getPanCases()) {
-//            for (Case c2: c1) {
-//
-//            }
-//        }
     }
 
     public Agent() {
@@ -59,26 +53,7 @@ public class Agent implements Runnable {
 
     @Override
     public void run() {
-//        plateau = new Plateau(5,5);
-//        Agent cptAmerica2 = new Agent(12, "cptAmerica", new Case(new Position(0, 0)),new Case(new Position(1,0)), Agent.Color.ORANGE);
-//        Agent cptAmerica3 = new Agent(13, "cptAmerica", new Case(new Position(1, 0)), new Case(new Position(0, 0)), Agent.Color.ORANGE);
-//        Map<Integer, Agent> map = new HashMap<>();
-//        map.put(cptAmerica2.idAgent,cptAmerica2);
-//        map.put(cptAmerica3.idAgent,cptAmerica3);
-//        plateau.setAgentMap(map);
-//        ArrayList<Agent> list = new ArrayList<>();
-//        list.add(cptAmerica2);
-//        list.add(cptAmerica3);
-//        Communication.getInstance().setCommunication(list);
-//        Communication.getInstance().writeMessage(cptAmerica3,new Message(cptAmerica2,cptAmerica3,"request","move",new Position(1,0)));
-////        Communication.getInstance().writeMessage(cptAmerica2,new Message(cptAmerica3,cptAmerica2,"request","move",new Position(0,0)));
-//        Communication.getInstance().displayMessages();
-//        System.out.println(Communication.getInstance().checkMessageReceivedByPosition(cptAmerica3,cptAmerica2));
-
-//        System.out.println(isInLimits(plateau,Move.LEFT,new Position(0,0)));
         while (!this.plateau.isFinished()) {
-//            System.out.println("agent: " + this.getIdAgent());
-            //System.out.println("dans le while");
             try {
                 if (!this.isGoalReached()) {
                     setUp();
@@ -89,25 +64,15 @@ public class Agent implements Runnable {
                 System.out.println("Agent: " + getIdAgent() + e.getMessage());
                 e.printStackTrace();
             }
-//            Communication.getInstance().displayMessages();
-//            if (this.getColor() == Color.GREEN) {
-//                Communication.getInstance().displayMessages();
-//            }
-//            if (isGoalReached()) System.out.println("agent" + idAgent + "arrivé");
         }
-        System.out.println("Agent: " + idAgent + "finished");
+        System.out.println("Agent: " + idAgent + " finished");
     }
 
     private void receiveAndMove() throws InterruptedException {
-//        System.out.println(idAgent + "receiveAndMove enter");
         Message message = null;
-//        System.out.println("dans receive en move de " + idAgent);
             if ((message = Communication.getInstance().readMessage(this)) != null) {
                 processMessage(message);
-
             }
-
-//        System.out.println(idAgent + " receiveAndMove sortie");
     }
 
     private void processMessage(Message message) throws InterruptedException {
@@ -115,7 +80,6 @@ public class Agent implements Runnable {
             case "request":
                 switch (message.getAction()) {
                     case "move":
-                        System.out.println("reçu par agent:" + idAgent);
                         requestFromAgent = message.getEmitter();
                         letPlace();
                         Communication.getInstance().writeMessage(message.getEmitter(), new Message(this, message.getEmitter(), "response", "yes", this.goalCase.getPosition()));
@@ -128,7 +92,6 @@ public class Agent implements Runnable {
             case "response":
                 switch (message.getAction()) {
                     case "yes":
-                        System.out.println(idAgent + " ok je peux continuer");
                         letPlace();
                         break;
                     default:
@@ -141,7 +104,6 @@ public class Agent implements Runnable {
     }
 
     private void setUp() throws InterruptedException {
-        int count = 0;
         Message message = new Message();
 
         Map<Move, Position> nextMoves = isGoalReached() ? moveEvenIfFinished() : bestCaseAround();
@@ -162,12 +124,16 @@ public class Agent implements Runnable {
             setLastPosition(move);
         } else {
             boolean sent = sendMessage(plateau, position);
-//            System.out.println("c'est sent :" + sent);
-
             Agent testAgent = plateau.findAgent(position);
-//            System.out.println(testAgent);
-            if ((testAgent != null) && (Communication.getInstance().checkMessageReceivedByPosition(this, testAgent))) {
-                letPlace();
+            try {
+                if ((testAgent != null) && (Communication.getInstance().checkMessageReceivedByPosition(this, testAgent))) {
+                    letPlace();
+                }
+            } catch (ConcurrentModificationException e) {
+                if ((testAgent != null) && (Communication.getInstance().checkMessageReceivedByPosition(this, testAgent))) {
+                    letPlace();
+                }
+            } catch (NullPointerException e) {
             }
             if (sent) {
                 waitForAnswer(testAgent);
@@ -178,15 +144,11 @@ public class Agent implements Runnable {
 
     public void letPlace() throws InterruptedException {
 
-//        System.out.println(idAgent + " letPlace entrte");
-        int count = 0;
-        int nbOfTry = 0;
         Message message = new Message();
         Map.Entry<Move, Position> movePositionEntry = null;
         Agent agentTemp = null;
             Map<Move, Position> nextMoves = moveEvenIfFinished();
         Iterator ite = nextMoves.entrySet().iterator();
-//            do {
         if (ite == null || !ite.hasNext()) {
             nextMoves = bestCaseAround();
             ite = nextMoves.entrySet().iterator();
@@ -194,21 +156,9 @@ public class Agent implements Runnable {
         }
                 movePositionEntry = (Map.Entry<Move, Position>) ite.next();
                 agentTemp = plateau.findAgent(movePositionEntry.getValue());
-//                if (agentTemp == null) {
-//                    break;
-//                }
-//            } while (agentTemp.getIdAgent() == requestFromAgent.getIdAgent());
-
-//            if (agentTemp != null) {
-//                System.out.println("agent: "+ agentTemp.requestFromAgent + " request: " + requestFromAgent.getIdAgent());
-//            }
-//        System.out.println(idAgent +" move:" + movePositionEntry.getKey() + "destination:" + plateau.findAgent(movePositionEntry.getValue()) + " by " + idAgent + " from : " + requestFromAgent.getIdAgent());
-//        System.out.println(this.idAgent + " " + "position:" + this.currentCase.getPosition() + " next move" + nextMoves);
 
 
         if (move(this.plateau, movePositionEntry.getKey())) {
-            System.out.println(idAgent + " a fait " + movePositionEntry.getKey() + " de " + movePositionEntry.getValue());
-//            Thread.sleep(500);
             setLastPosition (movePositionEntry.getKey());
         } else {
 
@@ -217,28 +167,28 @@ public class Agent implements Runnable {
             if (test!=null && test.getIdAgent() == this.idAgent) {
                 return;
             }
-            System.out.println(idAgent + "send message to " + plateau.findAgent(movePositionEntry.getValue()));
             boolean sent = sendMessage(plateau, movePositionEntry.getValue());
-//            System.out.println("c'est sent :" + sent);
-            if ((test != null) && (Communication.getInstance().checkMessageReceivedByPosition(this, test))) {
-                return;
+            try {
+                if ((test != null) && (Communication.getInstance().checkMessageReceivedByPosition(this, test))) {
+                    return;
+                }
+            } catch (ConcurrentModificationException e) {
+                if ((test != null) && (Communication.getInstance().checkMessageReceivedByPosition(this, test))) {
+                    return;
+                }
+            } catch (NullPointerException e) {
+                System.out.println("");
             }
             if (sent) {
                 waitForAnswer(test);
             }
         }
-
-
-
-//        System.out.println(idAgent + " letPlace sortie");
     }
 
     public void waitForAnswer(Agent receiver) throws InterruptedException {
         if (receiver != null) {
             Message message = null;
             do {
-
-//                System.out.println(idAgent + " wait... for " + receiver.getIdAgent());
                 Thread.sleep(10);
             } while ((message = Communication.getInstance().readMessage(this)) == null);
 
@@ -264,60 +214,10 @@ public class Agent implements Runnable {
                 this.lastPosition = null;
         }
     }
-    private Map<Move,Position> casesAroundChecked() {
-
-        Map<Move,Position> casesAroundChecked = new HashMap<>();
-        LinkedList<Move> moves = new LinkedList<>();
-        moves.add(Move.RIGHT);
-        moves.add(Move.LEFT);
-        moves.add(Move.UP);
-        moves.add(Move.DOWN);
-        for (Move move : moves) {
-            Position position = getPositionByMove(move);
-            if (!(position.getY() > plateau.getNbCols() - 1) && !(position.getY() < 0) && !(position.getX() < 0) && !(position.getX() > plateau.getNbLignes() - 1)) {
-                casesAroundChecked.put(move,position);
-            }
-
-        }
-        return casesAroundChecked;
-    }
-
-
-    private Map<Move,Position> casesAround() {
-        Map<Move, Position> positions = new HashMap<>();
-        List<Integer> fourthFirstNumber = new ArrayList<>();
-        fourthFirstNumber.add(0);
-        fourthFirstNumber.add(1);
-        fourthFirstNumber.add(2);
-        fourthFirstNumber.add(3);
-        Collections.shuffle(fourthFirstNumber);
-        List<Map<Move,Position>> positionMap = new ArrayList<>();
-        for(int i = 0; i<4; i++) { positionMap.add(i,new HashMap<>());}
-        positionMap.get(fourthFirstNumber.get(0)).put(Move.RIGHT, getPositionByMove(Move.RIGHT));
-        positionMap.get(fourthFirstNumber.get(1)).put(Move.LEFT, getPositionByMove(Move.LEFT));
-        positionMap.get(fourthFirstNumber.get(2)).put(Move.UP, getPositionByMove(Move.UP));
-        positionMap.get(fourthFirstNumber.get(3)).put(Move.DOWN, getPositionByMove(Move.DOWN));
-        for (Map<Move,Position> positionTemp : positionMap) {
-            positions.put(positionTemp.keySet().iterator().next(),positionTemp.values().iterator().next());
-        }
-        Map<Move, Position> result2 = new LinkedHashMap<>();
-        positions.entrySet().stream()
-                .sorted(new Comparator<Map.Entry<Move, Position>>() {
-                    @Override
-                    public int compare(Map.Entry<Move, Position> o1, Map.Entry<Move, Position> o2) {
-                        Integer a = (int)goalCase.getPosition().getDistance(o1.getValue());
-                        Integer b = (int)goalCase.getPosition().getDistance(o2.getValue());
-                        return a.compareTo(b);
-                    }
-                })
-                .forEachOrdered(x -> result2.put(x.getKey(), x.getValue()));
-        return result2;
-    }
 
     private boolean sendMessage(Plateau plateau, Position position) {
         Agent agent = plateau.findAgent(position);
         if (agent!= null && !(agent.getIdAgent() == this.idAgent)) {
-//            System.out.println(idAgent + " send message to:" + agent.getIdAgent());
             Message message = new Message(this, agent, "request", "move", goalCase.getPosition());
             return Communication.getInstance().writeMessage(agent, message);
         } else return false;
@@ -325,10 +225,8 @@ public class Agent implements Runnable {
 
     public synchronized boolean move(Plateau plateau, Move move) {
         if (verifMove(plateau, move)) {
-//            System.out.println(idAgent + "j'ai bougé");
             plateau.effaceTracePiece(this);
             this.getCurrentCase().setPosition(getPositionByMove(move));
-//            System.out.println(idAgent + " position changé je suis à " + this.currentCase.getPosition());
             plateau.updatePlateau(this);
             return true;
         }
@@ -337,22 +235,17 @@ public class Agent implements Runnable {
 
 
     public boolean verifMove(Plateau plateau, Move move) {
-        boolean result = true;
         Position position = getPositionByMove(move);
         if (!isInLimits(plateau, move, position)) {
             return false;
         }
-       // System.out.println(position);
         if (plateau.getGrille()[position.getX()][position.getY()]){
-//            System.out.println(idAgent + "bloque car x:" + position.getX() + " y: " + position.getY() + "prise, request from" + requestFromAgent.getIdAgent());
-//            sendMessage(plateau, position);
             return false;
         }
         return true;
     }
 
     public boolean isInLimits(Plateau plateau, Move move, Position position) {
-        boolean result = true;
         switch (move) {
             case RIGHT:
                 if ((position.getY() > plateau.getNbCols() - 1)) {
@@ -380,7 +273,6 @@ public class Agent implements Runnable {
     }
 
     public Map<Move,Position> moveEvenIfFinished() throws InterruptedException {
-//        System.out.println(idAgent + " entré dans moveEventIfFinished and goalReach: " + isGoalReached());
         Move move = Move.RIGHT;
         Map<Move, Position> positions = new HashMap<>();
         Map<Move, Position> positionsResult = new HashMap<>();
@@ -391,7 +283,6 @@ public class Agent implements Runnable {
         fourthFirstNumber.add(2);
         fourthFirstNumber.add(3);
         Collections.shuffle(fourthFirstNumber);
-//        System.out.println(fourthFirstNumber);
         List<Map<Move,Position>> positionMap = new ArrayList<>();
         for(int i = 0; i<4; i++) { positionMap.add(i,new HashMap<>());}
         positionMap.get(fourthFirstNumber.get(0)).put(Move.RIGHT, getPositionByMove(move));
@@ -418,9 +309,7 @@ public class Agent implements Runnable {
                 }
             }
             if (agentTemp == null && isInLimits(plateau, key,getPositionByMove(key))) {
-//                positionsResult.clear();
                 testMovePosition.put(key,value);
-//                return;
             }
         });
         if (!testMovePosition.isEmpty()) {
@@ -431,9 +320,6 @@ public class Agent implements Runnable {
             positionsResult.clear();
             positionsResult.put((Move) key,position);
         }
-//        System.out.println(idAgent + "moves positions possibles: " + positionsResult);
-//        Thread.sleep(1500);
-//        System.out.println(idAgent +"sorti de venifENded");
         return positionsResult;
     }
     /**
@@ -444,18 +330,10 @@ public class Agent implements Runnable {
     }
 
     public Map<Move, Position> bestWay() {
-        //        System.out.println("rentré dans chooseNextMove at position :" + this.currentCase.getPosition().toString());
         ShorthestPast shorthestPast = new ShorthestPast(this, this.plateau);
         way = shorthestPast.aStar();
-//        if (way == null) {
-//            System.out.println("erreur way is empty ");
-//            return null;
-//        } else {
-//            System.out.println("Agent: " + this.idAgent + " way:" + way);
-//        }
         Position nextMove = way.poll();
         nextMove = way.poll();
-//        System.out.println("nextMove: " + getMoveByPositon(nextMove) + "nextPosition" + nextMove);
         Map<Move, Position> result = new HashMap<>();
         result.put(getMoveByPositon(nextMove), nextMove);
         return result;
@@ -497,7 +375,6 @@ public class Agent implements Runnable {
                     }
                     return;
                 });
-//        System.out.println(result2);
         return result2;
     }
 
@@ -532,7 +409,6 @@ public class Agent implements Runnable {
     }
 
     public List<Position> getShortestPath() {
-//getshortestpath à completer
         return null;
     }
 
