@@ -12,14 +12,16 @@ import java.util.Observable;
 public class PuzzleGameCore {
 
     public static void play(PanView gameView, PanView finalStateView, int nbAgents, int rows, int columns) {
+        gameView.reinit();
+        finalStateView.reinit();
         Plateau plateau = new Plateau(rows, columns);
         Plateau finalState = new Plateau(rows, columns);
+        plateau.clearPlateau();
+        finalState.clearPlateau();
         plateau.setNaturalLanguageColors(gameView.getNaturalLanguageColors());
         finalState.setNaturalLanguageColors(finalStateView.getNaturalLanguageColors());
         setObserver(plateau, gameView);
         setObserver(finalState, finalStateView);
-        plateau.clearPlateau();
-        finalState.clearPlateau();
         setAgents(plateau, nbAgents);
         Map<Integer, Agent> agentMap = plateau.getAgentMap();
         agentMap.values().forEach(agent -> {
