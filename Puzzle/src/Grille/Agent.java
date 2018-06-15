@@ -177,7 +177,6 @@ public class Agent implements Runnable {
                     return;
                 }
             } catch (NullPointerException e) {
-                System.out.println("");
             }
             if (sent) {
                 waitForAnswer(test);

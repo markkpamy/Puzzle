@@ -57,9 +57,9 @@ public class Communication {
         try {
             if (mainAgent!= null && futurReceiver !=null) {
                 LinkedList<Message> messageArrayList = this.messages.get(mainAgent.getIdAgent());
-                if (!messageArrayList.isEmpty() && messageArrayList != null) {
+                if (messageArrayList.size()>0 && !messageArrayList.isEmpty() && messageArrayList != null ) {
                     for (Message message : messageArrayList) {
-                        if ((message.getEmitter().getIdAgent() == futurReceiver.getIdAgent()) && message.getType().equals("request") && message.getAction().equals("move")) {
+                        if ((message !=null) && (!message.isEmpty()) && (message.getEmitter().getIdAgent() == futurReceiver.getIdAgent()) && message.getType().equals("request") && message.getAction().equals("move")) {
                             return true;
                         }
                     }

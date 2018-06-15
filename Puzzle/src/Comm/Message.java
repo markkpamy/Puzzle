@@ -95,4 +95,11 @@ public class Message {
                     this.type.equals(message.getType());
         }
     }
+
+    public boolean isEmpty() {
+        return this.emitter == null ||
+                this.recipient == null ||
+                this.action.equals("") ||
+                this.type.equals("");
+    }
 }
